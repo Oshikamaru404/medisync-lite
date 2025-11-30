@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 const Index = () => {
+  // Dashboard principal avec 6 modules
   const tiles = [
     {
       title: "Agenda",
