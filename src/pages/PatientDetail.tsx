@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, FileText, Upload, Search, Activity, StickyNote } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,7 @@ const PatientDetail = () => {
   const [selectedType, setSelectedType] = useState<string>("all");
 
   // Load medical data when available
-  useState(() => {
+  useEffect(() => {
     if (medicalRecord) {
       setMedicalData({
         antecedents: medicalRecord.antecedents || "",
@@ -46,13 +46,13 @@ const PatientDetail = () => {
         notes: medicalRecord.notes || "",
       });
     }
-  });
+  }, [medicalRecord]);
 
-  const handleSaveSection = (section: keyof typeof medicalData) => {
+  const handleSaveSection = (section: keyof typeof medicalData, value: string) => {
     if (!id) return;
     updateMedicalRecord.mutate({
       patientId: id,
-      data: { [section]: medicalData[section] },
+      data: { [section]: value },
     });
   };
 
@@ -139,7 +139,7 @@ const PatientDetail = () => {
               value={medicalData.antecedents}
               onSave={(value) => {
                 setMedicalData({ ...medicalData, antecedents: value });
-                handleSaveSection("antecedents");
+                handleSaveSection("antecedents", value);
               }}
               placeholder="Historique des maladies, opérations, hospitalisations..."
               templates={antecedentsTemplates}
@@ -156,7 +156,7 @@ const PatientDetail = () => {
               value={medicalData.allergies}
               onSave={(value) => {
                 setMedicalData({ ...medicalData, allergies: value });
-                handleSaveSection("allergies");
+                handleSaveSection("allergies", value);
               }}
               isEditing={editingSection === "allergies"}
               onEditToggle={() =>
@@ -169,7 +169,7 @@ const PatientDetail = () => {
               value={medicalData.traitements}
               onSave={(value) => {
                 setMedicalData({ ...medicalData, traitements: value });
-                handleSaveSection("traitements");
+                handleSaveSection("traitements", value);
               }}
               isEditing={editingSection === "traitements"}
               onEditToggle={() =>
@@ -183,7 +183,7 @@ const PatientDetail = () => {
               value={medicalData.notes}
               onSave={(value) => {
                 setMedicalData({ ...medicalData, notes: value });
-                handleSaveSection("notes");
+                handleSaveSection("notes", value);
               }}
               placeholder="Notes libres du praticien..."
               isEditing={editingSection === "notes"}
