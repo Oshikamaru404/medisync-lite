@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Edit, Plus, X } from "lucide-react";
+import { Edit, Plus, X, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -55,28 +55,33 @@ export const AllergiesSection = ({
   );
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 border-l-4 border-l-[hsl(var(--medical-allergies))] transition-all duration-300 hover:shadow-lg">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Allergies et Contre-indications</h3>
-        <Button variant="ghost" size="sm" onClick={onEditToggle}>
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-[hsl(var(--medical-allergies-light))] animate-scale-in">
+            <AlertTriangle className="w-5 h-5 text-[hsl(var(--medical-allergies))]" />
+          </div>
+          <h3 className="text-lg font-semibold">Allergies et Contre-indications</h3>
+        </div>
+        <Button variant="ghost" size="sm" onClick={onEditToggle} className="hover-scale">
           <Edit className="w-4 h-4" />
         </Button>
       </div>
 
       {isEditing ? (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-fade-in">
           {/* Selected Allergies */}
           {selectedAllergies.length > 0 && (
-            <div className="p-3 bg-destructive/5 border border-destructive/20 rounded-lg">
-              <p className="text-sm font-medium mb-2 text-destructive">
-                Allergies sélectionnées:
+            <div className="p-4 bg-[hsl(var(--medical-allergies-light))] border-2 border-[hsl(var(--medical-allergies))] rounded-lg animate-scale-in">
+              <p className="text-sm font-semibold mb-3 text-[hsl(var(--medical-allergies))] flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" />
+                Allergies sélectionnées ({selectedAllergies.length}):
               </p>
               <div className="flex flex-wrap gap-2">
                 {selectedAllergies.map((allergy, idx) => (
                   <Badge
                     key={idx}
-                    variant="destructive"
-                    className="cursor-pointer"
+                    className="cursor-pointer hover-scale bg-[hsl(var(--medical-allergies))] hover:bg-[hsl(var(--medical-allergies))]/80 text-white"
                     onClick={() => removeAllergy(allergy)}
                   >
                     {allergy}
@@ -99,8 +104,8 @@ export const AllergiesSection = ({
           </div>
 
           {/* Common Allergies */}
-          <div>
-            <p className="text-sm text-muted-foreground mb-2">
+          <div className="p-4 rounded-lg bg-muted/30">
+            <p className="text-sm font-medium mb-3 text-muted-foreground">
               Allergies courantes (cliquez pour ajouter):
             </p>
             <div className="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
@@ -108,7 +113,14 @@ export const AllergiesSection = ({
                 <Badge
                   key={idx}
                   variant={selectedAllergies.includes(allergy) ? "default" : "outline"}
-                  className="cursor-pointer hover:bg-primary/80 transition-colors"
+                  className="cursor-pointer hover-scale transition-all duration-200"
+                  style={selectedAllergies.includes(allergy) ? {
+                    backgroundColor: 'hsl(var(--medical-allergies))',
+                    borderColor: 'hsl(var(--medical-allergies))',
+                    color: 'white'
+                  } : {
+                    borderColor: 'hsl(var(--medical-allergies) / 0.3)'
+                  }}
                   onClick={() => toggleAllergy(allergy)}
                 >
                   {selectedAllergies.includes(allergy) && "✓ "}

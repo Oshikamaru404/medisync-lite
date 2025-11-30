@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Edit, Plus, X, Search } from "lucide-react";
+import { Edit, Plus, X, Search, Pill } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -76,20 +76,28 @@ export const TreatmentsSection = ({
   );
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 border-l-4 border-l-[hsl(var(--medical-treatments))] transition-all duration-300 hover:shadow-lg">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Traitements en Cours</h3>
-        <Button variant="ghost" size="sm" onClick={onEditToggle}>
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-[hsl(var(--medical-treatments-light))] animate-scale-in">
+            <Pill className="w-5 h-5 text-[hsl(var(--medical-treatments))]" />
+          </div>
+          <h3 className="text-lg font-semibold">Traitements en Cours</h3>
+        </div>
+        <Button variant="ghost" size="sm" onClick={onEditToggle} className="hover-scale">
           <Edit className="w-4 h-4" />
         </Button>
       </div>
 
       {isEditing ? (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-fade-in">
           {/* Current Treatments */}
           {treatments.length > 0 && (
-            <div className="p-3 bg-primary/5 border border-primary/20 rounded-lg space-y-2">
-              <p className="text-sm font-medium mb-2">Traitements actuels:</p>
+            <div className="p-4 bg-[hsl(var(--medical-treatments-light))] border-2 border-[hsl(var(--medical-treatments))] rounded-lg space-y-2 animate-scale-in">
+              <p className="text-sm font-semibold mb-3 text-[hsl(var(--medical-treatments))] flex items-center gap-2">
+                <Pill className="w-4 h-4" />
+                Traitements actuels ({treatments.length}):
+              </p>
               {treatments.map((treatment, idx) => (
                 <div
                   key={idx}
@@ -115,8 +123,11 @@ export const TreatmentsSection = ({
           )}
 
           {/* Add New Treatment */}
-          <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
-            <p className="text-sm font-medium">Ajouter un traitement:</p>
+          <div className="space-y-3 p-4 border-2 rounded-lg bg-muted/30" style={{ borderColor: 'hsl(var(--medical-treatments) / 0.3)' }}>
+            <p className="text-sm font-semibold text-[hsl(var(--medical-treatments))] flex items-center gap-2">
+              <Plus className="w-4 h-4" />
+              Ajouter un traitement:
+            </p>
 
             {/* Medicament Autocomplete */}
             <div>
@@ -186,13 +197,21 @@ export const TreatmentsSection = ({
             {/* Frequency */}
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Fréquence</label>
-              <div className="flex gap-2 mb-2">
+              <div className="flex flex-wrap gap-2 mb-2">
                 {["1x/jour", "2x/jour", "3x/jour", "Matin", "Soir", "Matin et soir"].map(
                   (freq) => (
                     <Badge
                       key={freq}
                       variant="outline"
-                      className="cursor-pointer hover:bg-primary/10"
+                      className="cursor-pointer hover-scale transition-all duration-200"
+                      style={{
+                        borderColor: currentTreatment.frequence === freq 
+                          ? 'hsl(var(--medical-treatments))' 
+                          : 'hsl(var(--medical-treatments) / 0.3)',
+                        backgroundColor: currentTreatment.frequence === freq 
+                          ? 'hsl(var(--medical-treatments-light))' 
+                          : 'transparent'
+                      }}
                       onClick={() =>
                         setCurrentTreatment({ ...currentTreatment, frequence: freq })
                       }

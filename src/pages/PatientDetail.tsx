@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, FileText, Upload, Search } from "lucide-react";
+import { ArrowLeft, FileText, Upload, Search, Activity, StickyNote } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -147,6 +147,8 @@ const PatientDetail = () => {
               onEditToggle={() =>
                 setEditingSection(editingSection === "antecedents" ? null : "antecedents")
               }
+              icon={Activity}
+              colorClass="medical-antecedents"
             />
 
             {/* Allergies */}
@@ -188,6 +190,8 @@ const PatientDetail = () => {
               onEditToggle={() =>
                 setEditingSection(editingSection === "notes" ? null : "notes")
               }
+              icon={StickyNote}
+              colorClass="medical-notes"
             />
           </TabsContent>
 
