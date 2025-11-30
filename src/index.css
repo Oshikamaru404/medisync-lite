@@ -43,6 +43,23 @@ All colors MUST be HSL.
     --shadow-tile: 210 40% 85%;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+    --tile-agenda: 210 85% 48%;
+    --tile-agenda-light: 210 100% 96%;
+    --tile-patients: 146 55% 48%;
+    --tile-patients-light: 146 45% 95%;
+    --tile-dossiers: 25 95% 53%;
+    --tile-dossiers-light: 25 100% 96%;
+    --tile-scanner: 270 70% 60%;
+    --tile-scanner-light: 270 70% 96%;
+    --tile-comptabilite: 190 75% 45%;
+    --tile-comptabilite-light: 190 75% 95%;
+    --tile-statistiques: 330 75% 60%;
+    --tile-statistiques-light: 330 75% 95%;
+    --tile-sync: 240 60% 58%;
+    --tile-sync-light: 240 60% 96%;
+    --tile-settings: 215 15% 50%;
+    --tile-settings-light: 215 15% 94%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 215 25% 27%;
     --sidebar-primary: 210 85% 48%;
@@ -85,6 +102,23 @@ All colors MUST be HSL.
     --medical-blue-light: 210 60% 25%;
     --medical-green-light: 146 35% 25%;
     --shadow-tile: 215 28% 12%;
+
+    --tile-agenda: 210 85% 60%;
+    --tile-agenda-light: 210 60% 25%;
+    --tile-patients: 146 55% 55%;
+    --tile-patients-light: 146 40% 25%;
+    --tile-dossiers: 25 90% 58%;
+    --tile-dossiers-light: 25 60% 25%;
+    --tile-scanner: 270 70% 65%;
+    --tile-scanner-light: 270 50% 25%;
+    --tile-comptabilite: 190 70% 50%;
+    --tile-comptabilite-light: 190 50% 25%;
+    --tile-statistiques: 330 70% 65%;
+    --tile-statistiques-light: 330 50% 25%;
+    --tile-sync: 240 60% 65%;
+    --tile-sync-light: 240 45% 25%;
+    --tile-settings: 215 15% 55%;
+    --tile-settings-light: 215 15% 22%;
 
     --sidebar-background: 215 28% 15%;
     --sidebar-foreground: 210 40% 98%;

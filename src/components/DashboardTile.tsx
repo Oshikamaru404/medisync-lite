@@ -6,7 +6,7 @@ interface DashboardTileProps {
   description: string;
   icon: LucideIcon;
   onClick?: () => void;
-  variant?: "primary" | "secondary" | "default";
+  colorScheme?: "agenda" | "patients" | "dossiers" | "scanner" | "comptabilite" | "statistiques" | "sync" | "settings";
   disabled?: boolean;
 }
 
@@ -15,14 +15,31 @@ export const DashboardTile = ({
   description,
   icon: Icon,
   onClick,
-  variant = "default",
+  colorScheme = "settings",
   disabled = false,
 }: DashboardTileProps) => {
+  const getColorClasses = () => {
+    const colors = {
+      agenda: { bg: "bg-tile-agenda-light", icon: "bg-tile-agenda", text: "text-white" },
+      patients: { bg: "bg-tile-patients-light", icon: "bg-tile-patients", text: "text-white" },
+      dossiers: { bg: "bg-tile-dossiers-light", icon: "bg-tile-dossiers", text: "text-white" },
+      scanner: { bg: "bg-tile-scanner-light", icon: "bg-tile-scanner", text: "text-white" },
+      comptabilite: { bg: "bg-tile-comptabilite-light", icon: "bg-tile-comptabilite", text: "text-white" },
+      statistiques: { bg: "bg-tile-statistiques-light", icon: "bg-tile-statistiques", text: "text-white" },
+      sync: { bg: "bg-tile-sync-light", icon: "bg-tile-sync", text: "text-white" },
+      settings: { bg: "bg-tile-settings-light", icon: "bg-tile-settings", text: "text-white" },
+    };
+    return colors[colorScheme];
+  };
+
+  const colors = getColorClasses();
+
   return (
     <div
       onClick={disabled ? undefined : onClick}
       className={cn(
-        "tile-card group",
+        "tile-card group overflow-hidden relative",
+        colors.bg,
         disabled && "opacity-50 cursor-not-allowed hover:shadow-lg hover:translate-y-0"
       )}
     >
@@ -30,19 +47,10 @@ export const DashboardTile = ({
         <div
           className={cn(
             "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
-            variant === "primary" && "bg-primary",
-            variant === "secondary" && "bg-secondary",
-            variant === "default" && "bg-muted"
+            colors.icon
           )}
         >
-          <Icon
-            className={cn(
-              "w-8 h-8",
-              variant === "primary" && "text-primary-foreground",
-              variant === "secondary" && "text-secondary-foreground",
-              variant === "default" && "text-muted-foreground"
-            )}
-          />
+          <Icon className={cn("w-8 h-8", colors.text)} />
         </div>
         <div className="text-center">
           <h3 className="text-lg font-semibold text-card-foreground mb-1">
