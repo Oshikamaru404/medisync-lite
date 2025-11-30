@@ -101,6 +101,7 @@ const Patients = () => {
               <Card
                 key={patient.id}
                 className="p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigate(`/patients/${patient.id}`)}
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between">
