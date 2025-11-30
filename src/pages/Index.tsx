@@ -6,27 +6,16 @@ import {
   BarChart3,
   RefreshCw,
   Settings,
-  FolderOpen,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
-  const { toast } = useToast();
-
-  const handleTileClick = (feature: string) => {
-    toast({
-      title: feature,
-      description: "Cette fonctionnalité sera bientôt disponible",
-    });
-  };
-
   const tiles = [
     {
       title: "Agenda",
       description: "Gérer les rendez-vous",
       icon: Calendar,
       colorScheme: "agenda" as const,
-      onClick: () => handleTileClick("Agenda"),
+      href: "/agenda",
     },
     {
       title: "Patients",
@@ -40,28 +29,28 @@ const Index = () => {
       description: "Gestion financière",
       icon: Calculator,
       colorScheme: "comptabilite" as const,
-      onClick: () => handleTileClick("Comptabilité"),
+      href: "/comptabilite",
     },
     {
       title: "Statistiques",
       description: "Tableaux de bord",
       icon: BarChart3,
       colorScheme: "statistiques" as const,
-      onClick: () => handleTileClick("Statistiques"),
+      href: "/statistiques",
     },
     {
       title: "Synchronisation",
       description: "Sync cloud (optionnel)",
       icon: RefreshCw,
       colorScheme: "sync" as const,
-      onClick: () => handleTileClick("Synchronisation"),
+      href: "/synchronisation",
     },
     {
       title: "Paramètres",
       description: "Configuration système",
       icon: Settings,
       colorScheme: "settings" as const,
-      onClick: () => handleTileClick("Paramètres"),
+      href: "/parametres",
     },
   ];
 
@@ -127,13 +116,13 @@ const Index = () => {
 
           <div className="bg-card rounded-xl border border-border p-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
-                <FolderOpen className="w-6 h-6 text-muted-foreground" />
+              <div className="w-12 h-12 rounded-lg bg-tile-agenda-light flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-tile-agenda" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">0</p>
                 <p className="text-sm text-muted-foreground">
-                  Dossiers consultés
+                  RDV cette semaine
                 </p>
               </div>
             </div>
