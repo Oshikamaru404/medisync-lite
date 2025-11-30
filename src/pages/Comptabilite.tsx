@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ArrowLeft, Plus, Euro, TrendingUp, FileText, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,24 +5,39 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { useInvoices } from "@/hooks/useInvoices";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const Comptabilite = () => {
   const navigate = useNavigate();
+  const { data: invoices = [], isLoading } = useInvoices();
 
-  // Mock data
+  // Calculate stats from real data
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  const totalMonth = invoices
+    .filter((inv) => {
+      const invDate = new Date(inv.date);
+      return invDate.getMonth() === currentMonth && invDate.getFullYear() === currentYear;
+    })
+    .reduce((sum, inv) => sum + inv.montant, 0);
+
+  const totalYear = invoices
+    .filter((inv) => new Date(inv.date).getFullYear() === currentYear)
+    .reduce((sum, inv) => sum + inv.montant, 0);
+
+  const pending = invoices
+    .filter((inv) => inv.statut === "pending")
+    .reduce((sum, inv) => sum + inv.montant, 0);
+
   const stats = {
-    totalMonth: 12500,
-    totalYear: 145000,
-    pending: 2500,
-    invoiceCount: 45,
+    totalMonth,
+    totalYear,
+    pending,
+    invoiceCount: invoices.length,
   };
-
-  const recentInvoices = [
-    { id: "F-2024-001", patient: "Jean Dupont", date: "2024-03-15", amount: 50, status: "paid" },
-    { id: "F-2024-002", patient: "Marie Martin", date: "2024-03-14", amount: 70, status: "paid" },
-    { id: "F-2024-003", patient: "Pierre Durand", date: "2024-03-14", amount: 60, status: "pending" },
-    { id: "F-2024-004", patient: "Sophie Bernard", date: "2024-03-13", amount: 50, status: "paid" },
-  ];
 
   const getStatusBadge = (status: string) => {
     return status === "paid" ? (
@@ -124,34 +138,50 @@ const Comptabilite = () => {
 
           <TabsContent value="invoices">
             <Card>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>N° Facture</TableHead>
-                    <TableHead>Patient</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Montant</TableHead>
-                    <TableHead>Statut</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentInvoices.map((invoice) => (
-                    <TableRow key={invoice.id} className="cursor-pointer hover:bg-muted/50">
-                      <TableCell className="font-medium">{invoice.id}</TableCell>
-                      <TableCell>{invoice.patient}</TableCell>
-                      <TableCell>{invoice.date}</TableCell>
-                      <TableCell className="font-semibold">{invoice.amount}€</TableCell>
-                      <TableCell>{getStatusBadge(invoice.status)}</TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm">
-                          Détails
-                        </Button>
-                      </TableCell>
+              {isLoading ? (
+                <div className="p-12 text-center">
+                  <p className="text-muted-foreground">Chargement des factures...</p>
+                </div>
+              ) : invoices.length === 0 ? (
+                <div className="p-12 text-center">
+                  <p className="text-muted-foreground">Aucune facture enregistrée</p>
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>N° Facture</TableHead>
+                      <TableHead>Patient</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Montant</TableHead>
+                      <TableHead>Statut</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {invoices.map((invoice) => (
+                      <TableRow key={invoice.id} className="cursor-pointer hover:bg-muted/50">
+                        <TableCell className="font-medium">{invoice.numero}</TableCell>
+                        <TableCell>
+                          {invoice.patient?.prenom} {invoice.patient?.nom}
+                        </TableCell>
+                        <TableCell>
+                          {format(new Date(invoice.date), "d MMMM yyyy", { locale: fr })}
+                        </TableCell>
+                        <TableCell className="font-semibold">
+                          {invoice.montant.toFixed(2)}€
+                        </TableCell>
+                        <TableCell>{getStatusBadge(invoice.statut)}</TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm">
+                            Détails
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </Card>
           </TabsContent>
 

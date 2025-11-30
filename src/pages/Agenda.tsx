@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Plus, Calendar as CalendarIcon, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Plus, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { format, addDays, startOfWeek, addWeeks, subWeeks } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useAppointments } from "@/hooks/useAppointments";
 
 const Agenda = () => {
   const navigate = useNavigate();
@@ -15,36 +16,17 @@ const Agenda = () => {
 
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
-
   const timeSlots = Array.from({ length: 11 }, (_, i) => `${8 + i}:00`);
 
-  // Mock appointments
-  const appointments = [
-    {
-      id: 1,
-      patientName: "Jean Dupont",
-      time: "09:00",
-      duration: 30,
-      status: "confirmed" as const,
-      type: "consultation",
-      date: format(new Date(), "yyyy-MM-dd"),
-    },
-    {
-      id: 2,
-      patientName: "Marie Martin",
-      time: "10:30",
-      duration: 30,
-      status: "arrived" as const,
-      type: "controle",
-      date: format(new Date(), "yyyy-MM-dd"),
-    },
-  ];
+  // Fetch appointments from Supabase
+  const today = format(currentDate, "yyyy-MM-dd");
+  const { data: appointments = [], isLoading } = useAppointments(today);
 
   const getStatusBadge = (status: string) => {
     const variants = {
       confirmed: { label: "Confirmé", className: "bg-tile-agenda" },
-      arrived: { label: "Arrivé", className: "bg-tile-patients" },
-      inProgress: { label: "En cours", className: "bg-tile-comptabilite" },
+      pending: { label: "En attente", className: "bg-tile-patients" },
+      cancelled: { label: "Annulé", className: "bg-muted" },
       completed: { label: "Terminé", className: "bg-tile-statistiques" },
     };
     const variant = variants[status as keyof typeof variants] || variants.confirmed;
@@ -164,25 +146,39 @@ const Agenda = () => {
                   <Badge variant="outline">{appointments.length} RDV</Badge>
                 </div>
 
-                <div className="space-y-3">
-                  {appointments.map((apt) => (
-                    <Card key={apt.id} className="p-4 hover:shadow-md transition-shadow cursor-pointer">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="text-center">
-                            <p className="text-2xl font-bold text-tile-agenda">{apt.time}</p>
-                            <p className="text-xs text-muted-foreground">{apt.duration} min</p>
+                {isLoading ? (
+                  <p className="text-center text-muted-foreground py-8">Chargement...</p>
+                ) : appointments.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">
+                    Aucun rendez-vous pour cette journée
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {appointments.map((apt) => (
+                      <Card key={apt.id} className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="text-center">
+                              <p className="text-2xl font-bold text-tile-agenda">
+                                {apt.heure_debut.slice(0, 5)}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {apt.heure_fin.slice(0, 5)}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="font-semibold text-foreground">
+                                {apt.patient?.prenom} {apt.patient?.nom}
+                              </p>
+                              <p className="text-sm text-muted-foreground capitalize">{apt.type}</p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-semibold text-foreground">{apt.patientName}</p>
-                            <p className="text-sm text-muted-foreground capitalize">{apt.type}</p>
-                          </div>
+                          {getStatusBadge(apt.statut)}
                         </div>
-                        {getStatusBadge(apt.status)}
-                      </div>
-                    </Card>
-                  ))}
-                </div>
+                      </Card>
+                    ))}
+                  </div>
+                )}
               </div>
             </Card>
           </TabsContent>

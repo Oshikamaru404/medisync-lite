@@ -3,15 +3,40 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePatients } from "@/hooks/usePatients";
+import { useAppointments } from "@/hooks/useAppointments";
+import { useInvoices } from "@/hooks/useInvoices";
 
 const Statistiques = () => {
   const navigate = useNavigate();
 
+  const { data: patients = [] } = usePatients();
+  const { data: appointments = [] } = useAppointments();
+  const { data: invoices = [] } = useInvoices();
+
+  // Calculate real statistics
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  const appointmentsMonth = appointments.filter((apt) => {
+    const aptDate = new Date(apt.date);
+    return aptDate.getMonth() === currentMonth && aptDate.getFullYear() === currentYear;
+  }).length;
+
+  const revenueMonth = invoices
+    .filter((inv) => {
+      const invDate = new Date(inv.date);
+      return invDate.getMonth() === currentMonth && invDate.getFullYear() === currentYear;
+    })
+    .reduce((sum, inv) => sum + inv.montant, 0);
+
+  const averagePerDay = appointmentsMonth > 0 ? Math.round(appointmentsMonth / 30) : 0;
+
   const stats = {
-    totalPatients: 245,
-    appointmentsMonth: 128,
-    revenueMonth: 12500,
-    averagePerDay: 8,
+    totalPatients: patients.length,
+    appointmentsMonth,
+    revenueMonth,
+    averagePerDay,
   };
 
   return (
