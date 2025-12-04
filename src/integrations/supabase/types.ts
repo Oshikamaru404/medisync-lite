@@ -226,15 +226,69 @@ export type Database = {
         }
         Relationships: []
       }
+      queue: {
+        Row: {
+          called_at: string | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          invoice_id: string | null
+          montant_consultation: number | null
+          motif: string | null
+          numero_ordre: number
+          patient_id: string
+          status: Database["public"]["Enums"]["queue_status"]
+        }
+        Insert: {
+          called_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          invoice_id?: string | null
+          montant_consultation?: number | null
+          motif?: string | null
+          numero_ordre: number
+          patient_id: string
+          status?: Database["public"]["Enums"]["queue_status"]
+        }
+        Update: {
+          called_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          invoice_id?: string | null
+          montant_consultation?: number | null
+          motif?: string | null
+          numero_ordre?: number
+          patient_id?: string
+          status?: Database["public"]["Enums"]["queue_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "queue_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "queue_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_invoice_number: { Args: never; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      queue_status: "waiting" | "in_consultation" | "completed" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -361,6 +415,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      queue_status: ["waiting", "in_consultation", "completed", "cancelled"],
+    },
   },
 } as const
