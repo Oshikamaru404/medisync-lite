@@ -7,10 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { usePatients } from "@/hooks/usePatients";
 import { Badge } from "@/components/ui/badge";
+import NewPatientDialog from "@/components/NewPatientDialog";
 
 const Patients = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isNewPatientOpen, setIsNewPatientOpen] = useState(false);
   const { data: patients = [], isLoading } = usePatients();
 
   // Filter patients based on search query
@@ -46,11 +48,12 @@ const Patients = () => {
                 Dossiers médicaux, documents et historique
               </p>
             </div>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => setIsNewPatientOpen(true)}>
               <Plus className="w-4 h-4" />
               Nouveau patient
             </Button>
           </div>
+          <NewPatientDialog open={isNewPatientOpen} onOpenChange={setIsNewPatientOpen} />
         </div>
       </header>
 
@@ -89,7 +92,7 @@ const Patients = () => {
                   ? "Essayez une autre recherche"
                   : "Commencez par ajouter votre premier patient pour gérer leurs dossiers médicaux"}
               </p>
-              <Button className="gap-2">
+              <Button className="gap-2" onClick={() => setIsNewPatientOpen(true)}>
                 <Plus className="w-4 h-4" />
                 Ajouter un patient
               </Button>
