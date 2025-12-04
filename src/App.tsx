@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Patients from "./pages/Patients";
 import PatientDetail from "./pages/PatientDetail";
 import Agenda from "./pages/Agenda";
+import FileAttente from "./pages/FileAttente";
 import Comptabilite from "./pages/Comptabilite";
 import Statistiques from "./pages/Statistiques";
 import Synchronisation from "./pages/Synchronisation";
@@ -24,6 +25,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/agenda" element={<Agenda />} />
+          <Route path="/file-attente" element={<FileAttente />} />
           <Route path="/patients" element={<Patients />} />
           <Route path="/patients/:id" element={<PatientDetail />} />
           <Route path="/comptabilite" element={<Comptabilite />} />

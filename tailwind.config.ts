@@ -80,6 +80,8 @@ export default {
           "sync-light": "hsl(var(--tile-sync-light))",
           settings: "hsl(var(--tile-settings))",
           "settings-light": "hsl(var(--tile-settings-light))",
+          queue: "hsl(var(--tile-queue))",
+          "queue-light": "hsl(var(--tile-queue-light))",
         },
       },
       borderRadius: {

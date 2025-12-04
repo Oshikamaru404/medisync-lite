@@ -6,6 +6,7 @@ import {
   BarChart3,
   RefreshCw,
   Settings,
+  ListOrdered,
 } from "lucide-react";
 
 const Index = () => {
@@ -17,6 +18,13 @@ const Index = () => {
       icon: Calendar,
       colorScheme: "agenda" as const,
       href: "/agenda",
+    },
+    {
+      title: "File d'attente",
+      description: "Gestion des consultations",
+      icon: ListOrdered,
+      colorScheme: "queue" as const,
+      href: "/file-attente",
     },
     {
       title: "Patients",

@@ -59,6 +59,8 @@ All colors MUST be HSL.
     --tile-sync-light: 240 60% 96%;
     --tile-settings: 215 15% 50%;
     --tile-settings-light: 215 15% 94%;
+    --tile-queue: 35 90% 55%;
+    --tile-queue-light: 35 100% 95%;
 
     --medical-antecedents: 210 85% 48%;
     --medical-antecedents-light: 210 100% 96%;
@@ -128,6 +130,8 @@ All colors MUST be HSL.
     --tile-sync-light: 240 45% 25%;
     --tile-settings: 215 15% 55%;
     --tile-settings-light: 215 15% 22%;
+    --tile-queue: 35 85% 60%;
+    --tile-queue-light: 35 60% 25%;
 
     --medical-antecedents: 210 85% 58%;
     --medical-antecedents-light: 210 60% 25%;

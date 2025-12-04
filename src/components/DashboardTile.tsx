@@ -8,7 +8,7 @@ interface DashboardTileProps {
   icon: LucideIcon;
   onClick?: () => void;
   href?: string;
-  colorScheme?: "agenda" | "patients" | "dossiers" | "scanner" | "comptabilite" | "statistiques" | "sync" | "settings";
+  colorScheme?: "agenda" | "patients" | "dossiers" | "scanner" | "comptabilite" | "statistiques" | "sync" | "settings" | "queue";
   disabled?: boolean;
 }
 
@@ -41,6 +41,7 @@ export const DashboardTile = ({
       statistiques: { bg: "bg-tile-statistiques-light", icon: "bg-tile-statistiques", text: "text-white" },
       sync: { bg: "bg-tile-sync-light", icon: "bg-tile-sync", text: "text-white" },
       settings: { bg: "bg-tile-settings-light", icon: "bg-tile-settings", text: "text-white" },
+      queue: { bg: "bg-tile-queue-light", icon: "bg-tile-queue", text: "text-white" },
     };
     return colors[colorScheme];
   };
