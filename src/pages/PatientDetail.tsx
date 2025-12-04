@@ -17,14 +17,14 @@ import { DocumentUploadDialog } from "@/components/DocumentUploadDialog";
 import { antecedentsTemplates } from "@/data/medicalTemplates";
 import { cn } from "@/lib/utils";
 
-const DOCUMENT_TYPE_STYLES: Record<string, { icon: typeof FileText; bgColor: string; borderColor: string; textColor: string; badgeClass: string }> = {
-  "Ordonnance": { icon: Pill, bgColor: "bg-blue-500/10", borderColor: "border-blue-300", textColor: "text-blue-600", badgeClass: "bg-blue-100 text-blue-700 border-blue-300" },
-  "Analyse": { icon: TestTube, bgColor: "bg-green-500/10", borderColor: "border-green-300", textColor: "text-green-600", badgeClass: "bg-green-100 text-green-700 border-green-300" },
-  "Radiologie": { icon: Scan, bgColor: "bg-purple-500/10", borderColor: "border-purple-300", textColor: "text-purple-600", badgeClass: "bg-purple-100 text-purple-700 border-purple-300" },
-  "Compte rendu": { icon: ClipboardList, bgColor: "bg-orange-500/10", borderColor: "border-orange-300", textColor: "text-orange-600", badgeClass: "bg-orange-100 text-orange-700 border-orange-300" },
-  "Certificat": { icon: Award, bgColor: "bg-yellow-500/10", borderColor: "border-yellow-300", textColor: "text-yellow-600", badgeClass: "bg-yellow-100 text-yellow-700 border-yellow-300" },
-  "Courrier": { icon: Mail, bgColor: "bg-cyan-500/10", borderColor: "border-cyan-300", textColor: "text-cyan-600", badgeClass: "bg-cyan-100 text-cyan-700 border-cyan-300" },
-  "Autre": { icon: MoreHorizontal, bgColor: "bg-gray-500/10", borderColor: "border-gray-300", textColor: "text-gray-600", badgeClass: "bg-gray-100 text-gray-700 border-gray-300" },
+const DOCUMENT_TYPE_STYLES: Record<string, { icon: typeof FileText; barColor: string; iconColor: string }> = {
+  "Ordonnance": { icon: Pill, barColor: "bg-blue-500", iconColor: "text-blue-600" },
+  "Analyse": { icon: TestTube, barColor: "bg-green-500", iconColor: "text-green-600" },
+  "Radiologie": { icon: Scan, barColor: "bg-purple-500", iconColor: "text-purple-600" },
+  "Compte rendu": { icon: ClipboardList, barColor: "bg-orange-500", iconColor: "text-orange-600" },
+  "Certificat": { icon: Award, barColor: "bg-yellow-500", iconColor: "text-yellow-600" },
+  "Courrier": { icon: Mail, barColor: "bg-cyan-500", iconColor: "text-cyan-600" },
+  "Autre": { icon: MoreHorizontal, barColor: "bg-gray-500", iconColor: "text-gray-600" },
 };
 
 const getDocumentStyle = (type: string) => {
@@ -280,12 +280,12 @@ const PatientDetail = () => {
                     >
                       <div className="flex">
                         {/* Color indicator bar */}
-                        <div className={cn("w-1.5 shrink-0", style.textColor.replace('text-', 'bg-'))} />
+                        <div className={cn("w-1.5 shrink-0", style.barColor)} />
                         
                         <div className="flex-1 p-4">
                           <div className="flex items-start justify-between mb-3">
                             <div className="p-2 rounded-lg bg-muted">
-                              <Icon className={cn("w-5 h-5", style.textColor)} />
+                              <Icon className={cn("w-5 h-5", style.iconColor)} />
                             </div>
                             <div className="flex items-center gap-2">
                               <Badge variant="secondary" className="text-xs">{doc.type}</Badge>
