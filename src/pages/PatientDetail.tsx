@@ -17,14 +17,14 @@ import { DocumentUploadDialog } from "@/components/DocumentUploadDialog";
 import { antecedentsTemplates } from "@/data/medicalTemplates";
 import { cn } from "@/lib/utils";
 
-const DOCUMENT_TYPE_STYLES: Record<string, { icon: typeof FileText; barColor: string; iconColor: string }> = {
-  "Ordonnance": { icon: Pill, barColor: "bg-blue-500", iconColor: "text-blue-600" },
-  "Analyse": { icon: TestTube, barColor: "bg-green-500", iconColor: "text-green-600" },
-  "Radiologie": { icon: Scan, barColor: "bg-purple-500", iconColor: "text-purple-600" },
-  "Compte rendu": { icon: ClipboardList, barColor: "bg-orange-500", iconColor: "text-orange-600" },
-  "Certificat": { icon: Award, barColor: "bg-yellow-500", iconColor: "text-yellow-600" },
-  "Courrier": { icon: Mail, barColor: "bg-cyan-500", iconColor: "text-cyan-600" },
-  "Autre": { icon: MoreHorizontal, barColor: "bg-gray-500", iconColor: "text-gray-600" },
+const DOCUMENT_TYPE_STYLES: Record<string, { icon: typeof FileText; barColor: string; iconColor: string; badgeClass: string }> = {
+  "Ordonnance": { icon: Pill, barColor: "bg-blue-500", iconColor: "text-blue-600", badgeClass: "bg-blue-100 text-blue-700" },
+  "Analyse": { icon: TestTube, barColor: "bg-green-500", iconColor: "text-green-600", badgeClass: "bg-green-100 text-green-700" },
+  "Radiologie": { icon: Scan, barColor: "bg-purple-500", iconColor: "text-purple-600", badgeClass: "bg-purple-100 text-purple-700" },
+  "Compte rendu": { icon: ClipboardList, barColor: "bg-orange-500", iconColor: "text-orange-600", badgeClass: "bg-orange-100 text-orange-700" },
+  "Certificat": { icon: Award, barColor: "bg-yellow-500", iconColor: "text-yellow-600", badgeClass: "bg-yellow-100 text-yellow-700" },
+  "Courrier": { icon: Mail, barColor: "bg-cyan-500", iconColor: "text-cyan-600", badgeClass: "bg-cyan-100 text-cyan-700" },
+  "Autre": { icon: MoreHorizontal, barColor: "bg-gray-500", iconColor: "text-gray-600", badgeClass: "bg-gray-100 text-gray-700" },
 };
 
 const getDocumentStyle = (type: string) => {
@@ -288,7 +288,7 @@ const PatientDetail = () => {
                               <Icon className={cn("w-5 h-5", style.iconColor)} />
                             </div>
                             <div className="flex items-center gap-2">
-                              <Badge variant="secondary" className="text-xs">{doc.type}</Badge>
+                              <Badge className={cn("text-xs", style.badgeClass)}>{doc.type}</Badge>
                               <Button
                                 variant="ghost"
                                 size="icon"
