@@ -298,7 +298,9 @@ const PatientDetail = () => {
                           ✕
                         </Button>
                       </div>
-                      <h4 className={cn("font-semibold mb-2 transition-colors", style.textColor)}>{doc.nom}</h4>
+                      <div className="bg-background/80 rounded-md px-3 py-2 mb-2">
+                        <h4 className="font-semibold text-foreground leading-tight">{doc.nom}</h4>
+                      </div>
                       <p className="text-sm text-muted-foreground">
                         {new Date(doc.created_at).toLocaleDateString("fr-FR")}
                       </p>
