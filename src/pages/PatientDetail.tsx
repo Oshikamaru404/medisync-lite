@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, FileText, Upload, Search, Activity, StickyNote } from "lucide-react";
+import { ArrowLeft, FileText, Upload, Search, Activity, StickyNote, Pill, TestTube, Scan, ClipboardList, Award, Mail, MoreHorizontal } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,21 @@ import { AllergiesSection } from "@/components/AllergiesSection";
 import { TreatmentsSection } from "@/components/TreatmentsSection";
 import { DocumentUploadDialog } from "@/components/DocumentUploadDialog";
 import { antecedentsTemplates } from "@/data/medicalTemplates";
+import { cn } from "@/lib/utils";
+
+const DOCUMENT_TYPE_STYLES: Record<string, { icon: typeof FileText; bgColor: string; borderColor: string; textColor: string; badgeClass: string }> = {
+  "Ordonnance": { icon: Pill, bgColor: "bg-blue-500/10", borderColor: "border-blue-300", textColor: "text-blue-600", badgeClass: "bg-blue-100 text-blue-700 border-blue-300" },
+  "Analyse": { icon: TestTube, bgColor: "bg-green-500/10", borderColor: "border-green-300", textColor: "text-green-600", badgeClass: "bg-green-100 text-green-700 border-green-300" },
+  "Radiologie": { icon: Scan, bgColor: "bg-purple-500/10", borderColor: "border-purple-300", textColor: "text-purple-600", badgeClass: "bg-purple-100 text-purple-700 border-purple-300" },
+  "Compte rendu": { icon: ClipboardList, bgColor: "bg-orange-500/10", borderColor: "border-orange-300", textColor: "text-orange-600", badgeClass: "bg-orange-100 text-orange-700 border-orange-300" },
+  "Certificat": { icon: Award, bgColor: "bg-yellow-500/10", borderColor: "border-yellow-300", textColor: "text-yellow-600", badgeClass: "bg-yellow-100 text-yellow-700 border-yellow-300" },
+  "Courrier": { icon: Mail, bgColor: "bg-cyan-500/10", borderColor: "border-cyan-300", textColor: "text-cyan-600", badgeClass: "bg-cyan-100 text-cyan-700 border-cyan-300" },
+  "Autre": { icon: MoreHorizontal, bgColor: "bg-gray-500/10", borderColor: "border-gray-300", textColor: "text-gray-600", badgeClass: "bg-gray-100 text-gray-700 border-gray-300" },
+};
+
+const getDocumentStyle = (type: string) => {
+  return DOCUMENT_TYPE_STYLES[type] || DOCUMENT_TYPE_STYLES["Autre"];
+};
 
 const PatientDetail = () => {
   const navigate = useNavigate();
@@ -254,37 +269,45 @@ const PatientDetail = () => {
               </Card>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredDocuments.map((doc) => (
-                  <Card 
-                    key={doc.id} 
-                    className="p-4 hover:shadow-lg transition-shadow cursor-pointer group"
-                    onClick={() => window.open(doc.url, '_blank')}
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-[hsl(var(--tile-scanner))]" />
-                        <Badge variant="outline">{doc.type}</Badge>
+                {filteredDocuments.map((doc) => {
+                  const style = getDocumentStyle(doc.type);
+                  const Icon = style.icon;
+                  return (
+                    <Card 
+                      key={doc.id} 
+                      className={cn(
+                        "p-4 hover:shadow-lg transition-all cursor-pointer group border-2",
+                        style.bgColor,
+                        style.borderColor
+                      )}
+                      onClick={() => window.open(doc.url, '_blank')}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Icon className={cn("w-5 h-5", style.textColor)} />
+                          <Badge className={style.badgeClass}>{doc.type}</Badge>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            id && deleteDocument.mutate({ id: doc.id, patientId: id });
+                          }}
+                        >
+                          ✕
+                        </Button>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          id && deleteDocument.mutate({ id: doc.id, patientId: id });
-                        }}
-                      >
-                        ✕
-                      </Button>
-                    </div>
-                    <h4 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{doc.nom}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {new Date(doc.created_at).toLocaleDateString("fr-FR")}
-                    </p>
-                    <p className="text-xs text-primary mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      Cliquer pour ouvrir
-                    </p>
-                  </Card>
-                ))}
+                      <h4 className={cn("font-semibold mb-2 transition-colors", style.textColor)}>{doc.nom}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {new Date(doc.created_at).toLocaleDateString("fr-FR")}
+                      </p>
+                      <p className={cn("text-xs mt-2 opacity-0 group-hover:opacity-100 transition-opacity", style.textColor)}>
+                        Cliquer pour ouvrir
+                      </p>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </TabsContent>
