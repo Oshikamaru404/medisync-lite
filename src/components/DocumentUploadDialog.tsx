@@ -6,10 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Progress } from "@/components/ui/progress";
 import { useCreateDocument } from "@/hooks/useDocuments";
 import { toast } from "@/hooks/use-toast";
-import { createWorker } from "tesseract.js";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DocumentUploadDialogProps {
   patientId: string;
@@ -34,7 +33,6 @@ export const DocumentUploadDialog = ({ patientId, children }: DocumentUploadDial
   const [documentType, setDocumentType] = useState("");
   const [ocrText, setOcrText] = useState("");
   const [isProcessingOcr, setIsProcessingOcr] = useState(false);
-  const [ocrProgress, setOcrProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -53,36 +51,37 @@ export const DocumentUploadDialog = ({ patientId, children }: DocumentUploadDial
       reader.onload = (e) => setPreview(e.target?.result as string);
       reader.readAsDataURL(selectedFile);
     } else if (selectedFile.type === "application/pdf") {
-      setPreview(null); // PDF preview not supported yet
+      setPreview(null);
     }
   };
 
   const runOcr = async () => {
-    if (!file || !file.type.startsWith("image/")) {
+    if (!file || !preview) {
       toast({
         title: "OCR non disponible",
-        description: "L'OCR fonctionne uniquement sur les images",
+        description: "Veuillez d'abord sélectionner une image",
         variant: "destructive",
       });
       return;
     }
 
     setIsProcessingOcr(true);
-    setOcrProgress(0);
 
     try {
-      const worker = await createWorker("fra", 1, {
-        logger: (m) => {
-          if (m.status === "recognizing text") {
-            setOcrProgress(Math.round(m.progress * 100));
-          }
-        },
+      const { data, error } = await supabase.functions.invoke("ocr-extract", {
+        body: { imageBase64: preview },
       });
 
-      const { data: { text } } = await worker.recognize(file);
-      setOcrText(text);
-      await worker.terminate();
+      if (error) {
+        throw new Error(error.message);
+      }
 
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      setOcrText(data.text || "");
+      
       toast({
         title: "OCR terminé",
         description: "Le texte a été extrait avec succès",
@@ -91,12 +90,11 @@ export const DocumentUploadDialog = ({ patientId, children }: DocumentUploadDial
       console.error("OCR Error:", error);
       toast({
         title: "Erreur OCR",
-        description: "Impossible d'extraire le texte",
+        description: error instanceof Error ? error.message : "Impossible d'extraire le texte",
         variant: "destructive",
       });
     } finally {
       setIsProcessingOcr(false);
-      setOcrProgress(0);
     }
   };
 
@@ -148,7 +146,6 @@ export const DocumentUploadDialog = ({ patientId, children }: DocumentUploadDial
     setDocumentName("");
     setDocumentType("");
     setOcrText("");
-    setOcrProgress(0);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -258,7 +255,7 @@ export const DocumentUploadDialog = ({ patientId, children }: DocumentUploadDial
                 <div>
                   <h4 className="font-medium text-sm">Extraction de texte (OCR)</h4>
                   <p className="text-xs text-muted-foreground">
-                    Tesseract.js - Fonctionne hors ligne
+                    Gemini Vision - Haute précision
                   </p>
                 </div>
                 <Button
@@ -271,7 +268,7 @@ export const DocumentUploadDialog = ({ patientId, children }: DocumentUploadDial
                   {isProcessingOcr ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      {ocrProgress}%
+                      Extraction...
                     </>
                   ) : (
                     <>
@@ -281,10 +278,6 @@ export const DocumentUploadDialog = ({ patientId, children }: DocumentUploadDial
                   )}
                 </Button>
               </div>
-
-              {isProcessingOcr && (
-                <Progress value={ocrProgress} className="h-2" />
-              )}
 
               {ocrText && (
                 <div className="space-y-2">
