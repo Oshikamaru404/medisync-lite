@@ -7,12 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { usePatient } from "@/hooks/usePatients";
 import { useMedicalRecord, useCreateOrUpdateMedicalRecord } from "@/hooks/useMedicalRecords";
-import { useDocuments, useCreateDocument, useDeleteDocument } from "@/hooks/useDocuments";
+import { useDocuments, useDeleteDocument } from "@/hooks/useDocuments";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MedicalRecordSection } from "@/components/MedicalRecordSection";
 import { AllergiesSection } from "@/components/AllergiesSection";
 import { TreatmentsSection } from "@/components/TreatmentsSection";
+import { DocumentUploadDialog } from "@/components/DocumentUploadDialog";
 import { antecedentsTemplates } from "@/data/medicalTemplates";
 
 const PatientDetail = () => {
@@ -22,7 +23,6 @@ const PatientDetail = () => {
   const { data: medicalRecord, isLoading: recordLoading } = useMedicalRecord(id);
   const { data: documents = [], isLoading: docsLoading } = useDocuments(id);
   const updateMedicalRecord = useCreateOrUpdateMedicalRecord();
-  const createDocument = useCreateDocument();
   const deleteDocument = useDeleteDocument();
 
   const [editingSection, setEditingSection] = useState<string | null>(null);
@@ -223,10 +223,7 @@ const PatientDetail = () => {
                     ))}
                   </SelectContent>
                 </Select>
-                <Button className="gap-2">
-                  <Upload className="w-4 h-4" />
-                  Upload
-                </Button>
+                {id && <DocumentUploadDialog patientId={id} />}
               </div>
             </Card>
 
@@ -247,10 +244,12 @@ const PatientDetail = () => {
                   <p className="text-muted-foreground mb-6">
                     {searchQuery ? "Aucun document ne correspond à votre recherche" : "Aucun document scanné pour ce patient"}
                   </p>
-                  <Button className="gap-2">
-                    <Upload className="w-4 h-4" />
-                    Ajouter un document
-                  </Button>
+                  {id && <DocumentUploadDialog patientId={id}>
+                    <Button className="gap-2">
+                      <Upload className="w-4 h-4" />
+                      Ajouter un document
+                    </Button>
+                  </DocumentUploadDialog>}
                 </div>
               </Card>
             ) : (

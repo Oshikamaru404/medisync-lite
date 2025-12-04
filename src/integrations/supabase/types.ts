@@ -169,6 +169,24 @@ export type Database = {
           },
         ]
       }
+      medications: {
+        Row: {
+          created_at: string | null
+          id: string
+          nom: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          nom: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          nom?: string
+        }
+        Relationships: []
+      }
       patients: {
         Row: {
           adresse: string | null
