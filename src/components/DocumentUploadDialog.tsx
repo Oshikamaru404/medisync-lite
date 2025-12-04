@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect } from "react";
-import { Upload, FileText, Loader2, Eye, X } from "lucide-react";
+import { Upload, FileText, Loader2, Eye, X, Pill, TestTube, Scan, ClipboardList, Award, Mail, MoreHorizontal } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateDocument } from "@/hooks/useDocuments";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
 
 interface DocumentUploadDialogProps {
   patientId: string;
@@ -17,13 +17,13 @@ interface DocumentUploadDialogProps {
 }
 
 const DOCUMENT_TYPES = [
-  "Ordonnance",
-  "Analyse",
-  "Radiologie",
-  "Compte rendu",
-  "Certificat",
-  "Courrier",
-  "Autre",
+  { value: "Ordonnance", label: "Ordonnance", icon: Pill, color: "bg-blue-500/10 text-blue-600 border-blue-200 hover:bg-blue-500/20" },
+  { value: "Analyse", label: "Analyse", icon: TestTube, color: "bg-green-500/10 text-green-600 border-green-200 hover:bg-green-500/20" },
+  { value: "Radiologie", label: "Radio / IRM", icon: Scan, color: "bg-purple-500/10 text-purple-600 border-purple-200 hover:bg-purple-500/20" },
+  { value: "Compte rendu", label: "Compte rendu", icon: ClipboardList, color: "bg-orange-500/10 text-orange-600 border-orange-200 hover:bg-orange-500/20" },
+  { value: "Certificat", label: "Certificat", icon: Award, color: "bg-yellow-500/10 text-yellow-600 border-yellow-200 hover:bg-yellow-500/20" },
+  { value: "Courrier", label: "Courrier", icon: Mail, color: "bg-cyan-500/10 text-cyan-600 border-cyan-200 hover:bg-cyan-500/20" },
+  { value: "Autre", label: "Autre", icon: MoreHorizontal, color: "bg-gray-500/10 text-gray-600 border-gray-200 hover:bg-gray-500/20" },
 ];
 
 export const DocumentUploadDialog = ({ patientId, patientName, children }: DocumentUploadDialogProps) => {
@@ -246,32 +246,42 @@ export const DocumentUploadDialog = ({ patientId, patientName, children }: Docum
             />
           </div>
 
-          {/* Document Info */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="docName">Nom du document</Label>
-              <Input
-                id="docName"
-                value={documentName}
-                onChange={(e) => setDocumentName(e.target.value)}
-                placeholder="Ex: Ordonnance Dr. Martin"
-              />
+          {/* Document Type Selection */}
+          <div className="space-y-3">
+            <Label>Type de document</Label>
+            <div className="grid grid-cols-4 gap-2">
+              {DOCUMENT_TYPES.map((type) => {
+                const Icon = type.icon;
+                const isSelected = documentType === type.value;
+                return (
+                  <button
+                    key={type.value}
+                    type="button"
+                    onClick={() => setDocumentType(type.value)}
+                    className={cn(
+                      "flex flex-col items-center gap-1.5 p-3 rounded-lg border-2 transition-all",
+                      type.color,
+                      isSelected && "ring-2 ring-primary ring-offset-2 border-primary"
+                    )}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span className="text-xs font-medium">{type.label}</span>
+                  </button>
+                );
+              })}
             </div>
-            <div className="space-y-2">
-              <Label>Type de document</Label>
-              <Select value={documentType} onValueChange={setDocumentType}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner un type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {DOCUMENT_TYPES.map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          </div>
+
+          {/* Document Name */}
+          <div className="space-y-2">
+            <Label htmlFor="docName">Nom du document</Label>
+            <Input
+              id="docName"
+              value={documentName}
+              onChange={(e) => setDocumentName(e.target.value)}
+              placeholder="Généré automatiquement..."
+              className="bg-muted/50"
+            />
           </div>
 
           {/* OCR Section */}
