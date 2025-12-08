@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, FileText, Upload, Search, Activity, StickyNote, Pill, TestTube, Scan, ClipboardList, Award, Mail, MoreHorizontal, X, Eye, User, History } from "lucide-react";
+import { ArrowLeft, FileText, Upload, Search, Pill, TestTube, Scan, ClipboardList, Award, Mail, MoreHorizontal, X, Eye, History } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,13 +10,11 @@ import { useMedicalRecord, useCreateOrUpdateMedicalRecord } from "@/hooks/useMed
 import { useDocuments, useDeleteDocument } from "@/hooks/useDocuments";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MedicalRecordSection } from "@/components/MedicalRecordSection";
-import { AllergiesSection } from "@/components/AllergiesSection";
-import { TreatmentsSection } from "@/components/TreatmentsSection";
 import { DocumentUploadDialog } from "@/components/DocumentUploadDialog";
 import { PatientIdentityTab } from "@/components/PatientIdentityTab";
+import { PatientIdentityCompact } from "@/components/PatientIdentityCompact";
+import { MedicalRecordAccordion } from "@/components/MedicalRecordAccordion";
 import { PatientHistoryTab } from "@/components/PatientHistoryTab";
-import { antecedentsTemplates } from "@/data/medicalTemplates";
 import { cn } from "@/lib/utils";
 import { differenceInYears, parseISO } from "date-fns";
 
@@ -44,6 +42,7 @@ const PatientDetail = () => {
   const deleteDocument = useDeleteDocument();
 
   const [editingSection, setEditingSection] = useState<string | null>(null);
+  const [showIdentityEdit, setShowIdentityEdit] = useState(false);
   const [medicalData, setMedicalData] = useState({
     antecedents: "",
     allergies: "",
@@ -191,71 +190,53 @@ const PatientDetail = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Medical Record Tab - Combined with Identity */}
-          <TabsContent value="medical" className="mt-6 space-y-6">
-            {/* Patient Identity Section */}
-            <PatientIdentityTab patient={patient} />
+          {/* Medical Record Tab - 2 Column Layout */}
+          <TabsContent value="medical" className="mt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
+              {/* Left Column - Identity */}
+              <div className="hidden lg:block">
+                <PatientIdentityCompact 
+                  patient={patient} 
+                  onEdit={() => setShowIdentityEdit(true)} 
+                />
+              </div>
 
-            {/* Antécédents */}
-            <MedicalRecordSection
-              title="Antécédents Médicaux"
-              value={medicalData.antecedents}
-              onSave={(value) => {
-                setMedicalData({ ...medicalData, antecedents: value });
-                handleSaveSection("antecedents", value);
-              }}
-              placeholder="Historique des maladies, opérations, hospitalisations..."
-              templates={antecedentsTemplates}
-              isEditing={editingSection === "antecedents"}
-              onEditToggle={() =>
-                setEditingSection(editingSection === "antecedents" ? null : "antecedents")
-              }
-              icon={Activity}
-              colorClass="medical-antecedents"
-            />
+              {/* Right Column - Medical Sections */}
+              <div className="space-y-3">
+                {/* Mobile Identity Summary */}
+                <div className="lg:hidden mb-4">
+                  <PatientIdentityCompact 
+                    patient={patient} 
+                    onEdit={() => setShowIdentityEdit(true)} 
+                  />
+                </div>
 
-            {/* Allergies */}
-            <AllergiesSection
-              value={medicalData.allergies}
-              onSave={(value) => {
-                setMedicalData({ ...medicalData, allergies: value });
-                handleSaveSection("allergies", value);
-              }}
-              isEditing={editingSection === "allergies"}
-              onEditToggle={() =>
-                setEditingSection(editingSection === "allergies" ? null : "allergies")
-              }
-            />
+                <MedicalRecordAccordion
+                  data={medicalData}
+                  onSave={(section, value) => {
+                    setMedicalData({ ...medicalData, [section]: value });
+                    handleSaveSection(section as keyof typeof medicalData, value);
+                  }}
+                  editingSection={editingSection}
+                  onEditToggle={(section) => setEditingSection(section)}
+                />
+              </div>
+            </div>
 
-            {/* Traitements */}
-            <TreatmentsSection
-              value={medicalData.traitements}
-              onSave={(value) => {
-                setMedicalData({ ...medicalData, traitements: value });
-                handleSaveSection("traitements", value);
-              }}
-              isEditing={editingSection === "traitements"}
-              onEditToggle={() =>
-                setEditingSection(editingSection === "traitements" ? null : "traitements")
-              }
-            />
-
-            {/* Notes */}
-            <MedicalRecordSection
-              title="Notes Médicales"
-              value={medicalData.notes}
-              onSave={(value) => {
-                setMedicalData({ ...medicalData, notes: value });
-                handleSaveSection("notes", value);
-              }}
-              placeholder="Notes libres du praticien..."
-              isEditing={editingSection === "notes"}
-              onEditToggle={() =>
-                setEditingSection(editingSection === "notes" ? null : "notes")
-              }
-              icon={StickyNote}
-              colorClass="medical-notes"
-            />
+            {/* Identity Edit Dialog */}
+            {showIdentityEdit && (
+              <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                <Card className="w-full max-w-4xl max-h-[90vh] overflow-auto p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-lg font-semibold">Modifier les informations</h2>
+                    <Button variant="ghost" size="sm" onClick={() => setShowIdentityEdit(false)}>
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <PatientIdentityTab patient={patient} />
+                </Card>
+              </div>
+            )}
           </TabsContent>
 
           {/* Documents Tab */}
