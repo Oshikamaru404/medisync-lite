@@ -120,6 +120,8 @@ export const AppointmentDialog = ({
           adresse: null,
           mutuelle: null,
           personne_contact: null,
+          poids: null,
+          taille: null,
         });
         patientId = newPatient.id;
       } catch {

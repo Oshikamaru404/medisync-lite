@@ -1,4 +1,4 @@
-import { User, Phone, Shield, Edit, Hash, Ruler } from "lucide-react";
+import { User, Phone, Shield, Edit, Hash, Scale, Ruler } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,14 +28,30 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
     }
   };
 
+  const calculateIMC = (poids: number | null, taille: number | null) => {
+    if (!poids || !taille || taille === 0) return null;
+    const tailleM = taille / 100; // Convert cm to meters
+    return poids / (tailleM * tailleM);
+  };
+
+  const getIMCCategory = (imc: number) => {
+    if (imc < 18.5) return { label: "Insuffisance", color: "text-blue-600 dark:text-blue-400" };
+    if (imc < 25) return { label: "Normal", color: "text-green-600 dark:text-green-400" };
+    if (imc < 30) return { label: "Surpoids", color: "text-yellow-600 dark:text-yellow-400" };
+    return { label: "Obésité", color: "text-red-600 dark:text-red-400" };
+  };
+
   const age = calculateAge(patient.date_naissance);
   const sexe = (patient as any).sexe;
   const fullName = `${patient.prenom} ${patient.nom}`.toUpperCase();
+  const imc = calculateIMC(patient.poids, patient.taille);
+  const imcCategory = imc ? getIMCCategory(imc) : null;
 
-  const InfoRow = ({ icon: Icon, label, value, className }: { 
+  const InfoRow = ({ icon: Icon, label, value, extra, className }: { 
     icon: React.ElementType; 
     label: string; 
     value: string | null | undefined;
+    extra?: React.ReactNode;
     className?: string;
   }) => {
     if (!value) return null;
@@ -46,7 +62,10 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-xs text-muted-foreground">{label}</p>
-          <p className="text-sm font-medium text-foreground truncate">{value}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-medium text-foreground truncate">{value}</p>
+            {extra}
+          </div>
         </div>
       </div>
     );
@@ -110,12 +129,30 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
           value={patient.mutuelle ? `${patient.mutuelle}${(patient as any).numero_mutuelle ? ` (${(patient as any).numero_mutuelle})` : ''}` : null}
         />
 
-        {/* IMC - placeholder for future */}
-        <InfoRow 
-          icon={Ruler} 
-          label="IMC" 
-          value={null} // À ajouter quand les données seront disponibles
-        />
+        {/* Poids / Taille / IMC */}
+        {(patient.poids || patient.taille) && (
+          <div className="flex items-center gap-3 py-2">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-muted/50">
+              <Scale className="w-4 h-4 text-muted-foreground" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-muted-foreground">Morphologie</p>
+              <div className="flex items-center gap-2 text-sm font-medium text-foreground flex-wrap">
+                {patient.poids && <span>{patient.poids} kg</span>}
+                {patient.poids && patient.taille && <span className="text-muted-foreground">•</span>}
+                {patient.taille && <span>{patient.taille} cm</span>}
+                {imc && (
+                  <>
+                    <span className="text-muted-foreground">•</span>
+                    <span className={imcCategory?.color}>
+                      IMC {imc.toFixed(1)} ({imcCategory?.label})
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Contact d'urgence si présent */}
         {patient.personne_contact && (

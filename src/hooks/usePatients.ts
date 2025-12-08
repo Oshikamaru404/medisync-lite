@@ -13,6 +13,8 @@ export type Patient = {
   mutuelle: string | null;
   personne_contact: string | null;
   created_at: string;
+  poids: number | null;
+  taille: number | null;
 };
 
 export type PatientWithAllergies = Patient & {

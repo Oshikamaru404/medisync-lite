@@ -39,6 +39,8 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
     personne_contact: patient.personne_contact || "",
     telephone_personne_contact: (patient as any).telephone_personne_contact || "",
     lien_personne_contact: (patient as any).lien_personne_contact || "",
+    poids: patient.poids?.toString() || "",
+    taille: patient.taille?.toString() || "",
   });
 
   useEffect(() => {
@@ -55,6 +57,8 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
       personne_contact: patient.personne_contact || "",
       telephone_personne_contact: (patient as any).telephone_personne_contact || "",
       lien_personne_contact: (patient as any).lien_personne_contact || "",
+      poids: patient.poids?.toString() || "",
+      taille: patient.taille?.toString() || "",
     });
   }, [patient]);
 
@@ -73,6 +77,8 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
         id: patient.id, 
         ...formData,
         date_naissance: formData.date_naissance || null,
+        poids: formData.poids ? parseFloat(formData.poids) : null,
+        taille: formData.taille ? parseFloat(formData.taille) : null,
       },
       {
         onSuccess: () => setIsEditing(false),
@@ -94,6 +100,8 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
       personne_contact: patient.personne_contact || "",
       telephone_personne_contact: (patient as any).telephone_personne_contact || "",
       lien_personne_contact: (patient as any).lien_personne_contact || "",
+      poids: patient.poids?.toString() || "",
+      taille: patient.taille?.toString() || "",
     });
     setIsEditing(false);
   };
@@ -182,6 +190,30 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
                     <SelectItem value="Autre">Autre</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="poids">Poids (kg)</Label>
+                <Input
+                  id="poids"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  value={formData.poids}
+                  onChange={(e) => setFormData({ ...formData, poids: e.target.value })}
+                  placeholder="70"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="taille">Taille (cm)</Label>
+                <Input
+                  id="taille"
+                  type="number"
+                  step="1"
+                  min="0"
+                  value={formData.taille}
+                  onChange={(e) => setFormData({ ...formData, taille: e.target.value })}
+                  placeholder="175"
+                />
               </div>
             </div>
           ) : (

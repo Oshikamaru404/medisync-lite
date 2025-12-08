@@ -199,8 +199,10 @@ export type Database = {
           nom: string
           numero_mutuelle: string | null
           personne_contact: string | null
+          poids: number | null
           prenom: string
           sexe: string | null
+          taille: number | null
           telephone: string | null
           telephone_personne_contact: string | null
         }
@@ -215,8 +217,10 @@ export type Database = {
           nom: string
           numero_mutuelle?: string | null
           personne_contact?: string | null
+          poids?: number | null
           prenom: string
           sexe?: string | null
+          taille?: number | null
           telephone?: string | null
           telephone_personne_contact?: string | null
         }
@@ -231,8 +235,10 @@ export type Database = {
           nom?: string
           numero_mutuelle?: string | null
           personne_contact?: string | null
+          poids?: number | null
           prenom?: string
           sexe?: string | null
+          taille?: number | null
           telephone?: string | null
           telephone_personne_contact?: string | null
         }
