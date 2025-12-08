@@ -37,6 +37,8 @@ const NewPatientDialog = ({ open, onOpenChange }: NewPatientDialogProps) => {
       adresse: formData.adresse || null,
       mutuelle: formData.mutuelle || null,
       personne_contact: formData.personne_contact || null,
+      poids: null,
+      taille: null,
     });
 
     setFormData({
