@@ -87,9 +87,9 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
         </div>
         
         <h2 className="text-lg font-bold text-foreground tracking-wide">{fullName}</h2>
-        <p className="text-xs text-muted-foreground mt-1 font-mono">
-          ID: {patient.id.slice(0, 8).toUpperCase()}
-        </p>
+        <Badge className="mt-2 bg-primary/20 text-primary border-primary/30 font-mono font-bold text-xs">
+          CIN: {patient.id.slice(0, 8).toUpperCase()}
+        </Badge>
         
         <div className="flex items-center gap-2 mt-3 flex-wrap">
           {sexe && (
@@ -120,7 +120,7 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
             <p className="text-xs text-muted-foreground">Morphologie</p>
             <div className="flex items-center gap-1.5 mt-1 flex-wrap">
               {patient.poids ? (
-                <Badge variant="outline" className="text-xs font-normal">
+                <Badge variant="outline" className="text-xs font-medium bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-700">
                   {patient.poids} kg
                 </Badge>
               ) : (
@@ -129,7 +129,7 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
                 </Badge>
               )}
               {patient.taille ? (
-                <Badge variant="outline" className="text-xs font-normal">
+                <Badge variant="outline" className="text-xs font-medium bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-900/30 dark:text-sky-300 dark:border-sky-700">
                   {patient.taille} cm
                 </Badge>
               ) : (
@@ -138,7 +138,7 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
                 </Badge>
               )}
               {imc ? (
-                <Badge variant="outline" className={cn("text-xs font-medium", imcCategory?.color)}>
+                <Badge variant="outline" className={cn("text-xs font-bold", imcCategory?.color)}>
                   IMC {imc.toFixed(1)} • {imcCategory?.label}
                 </Badge>
               ) : (

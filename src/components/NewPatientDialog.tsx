@@ -15,6 +15,7 @@ const NewPatientDialog = ({ open, onOpenChange }: NewPatientDialogProps) => {
   const [formData, setFormData] = useState({
     nom: "",
     prenom: "",
+    cin: "",
     date_naissance: "",
     telephone: "",
     email: "",
@@ -44,6 +45,7 @@ const NewPatientDialog = ({ open, onOpenChange }: NewPatientDialogProps) => {
     setFormData({
       nom: "",
       prenom: "",
+      cin: "",
       date_naissance: "",
       telephone: "",
       email: "",
@@ -82,14 +84,25 @@ const NewPatientDialog = ({ open, onOpenChange }: NewPatientDialogProps) => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="date_naissance">Date de naissance</Label>
-            <Input
-              id="date_naissance"
-              type="date"
-              value={formData.date_naissance}
-              onChange={(e) => setFormData({ ...formData, date_naissance: e.target.value })}
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="cin">CIN / ID</Label>
+              <Input
+                id="cin"
+                placeholder="Ex: AB123456"
+                value={formData.cin}
+                onChange={(e) => setFormData({ ...formData, cin: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="date_naissance">Date de naissance</Label>
+              <Input
+                id="date_naissance"
+                type="date"
+                value={formData.date_naissance}
+                onChange={(e) => setFormData({ ...formData, date_naissance: e.target.value })}
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
