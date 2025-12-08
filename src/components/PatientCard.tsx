@@ -124,7 +124,7 @@ export const PatientCard = ({ patient, onClick }: PatientCardProps) => {
       {/* Allergy alert badge */}
       {patientHasAllergies && (
         <div className="absolute top-3 right-3 z-10">
-          <Badge className="bg-gradient-to-r from-red-500 to-red-500 text-white border-0 shadow-lg animate-pulse gap-1">
+          <Badge className="bg-gradient-to-r from-red-500 to-red-500 text-white border-0 shadow-lg animate-none">
             <AlertTriangle className="w-3 h-3" />
             Allergies
           </Badge>
