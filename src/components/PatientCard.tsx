@@ -9,6 +9,7 @@ interface Patient {
   id: string;
   nom: string;
   prenom: string;
+  cin?: string | null;
   email?: string | null;
   telephone?: string | null;
   mutuelle?: string | null;
@@ -145,7 +146,7 @@ export const PatientCard = ({ patient, onClick }: PatientCardProps) => {
               {patient.prenom} {patient.nom}
             </h3>
             <Badge className="mt-1 bg-primary/20 text-primary border-primary/30 font-mono font-bold text-[10px]">
-              ID: {patient.id.slice(0, 8).toUpperCase()}
+              {patient.cin ? `CIN: ${patient.cin}` : `ID: ${patient.id.slice(0, 8).toUpperCase()}`}
             </Badge>
           </div>
         </div>
