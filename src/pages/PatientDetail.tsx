@@ -164,10 +164,10 @@ const PatientDetail = () => {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         <Tabs defaultValue="identity" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-muted/50 p-1.5 h-auto gap-1">
+          <TabsList className="grid w-full grid-cols-4 bg-muted/30 p-1.5 h-auto gap-1.5">
             <TabsTrigger 
               value="identity"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-sky-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+              className="bg-blue-100/60 text-blue-700 hover:bg-blue-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-sky-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
             >
               <User className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Identité & Contacts</span>
@@ -175,7 +175,7 @@ const PatientDetail = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="medical"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+              className="bg-emerald-100/60 text-emerald-700 hover:bg-emerald-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
             >
               <FileText className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Dossier Médical</span>
@@ -183,7 +183,7 @@ const PatientDetail = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="documents"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+              className="bg-violet-100/60 text-violet-700 hover:bg-violet-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
             >
               <Upload className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Documents Scannés</span>
@@ -191,7 +191,7 @@ const PatientDetail = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="history"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+              className="bg-amber-100/60 text-amber-700 hover:bg-amber-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
             >
               <History className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Historique</span>
