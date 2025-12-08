@@ -62,6 +62,25 @@ All colors MUST be HSL.
     --tile-queue: 35 90% 55%;
     --tile-queue-light: 35 100% 95%;
 
+    /* Patient color coding by gender */
+    --patient-male: 210 85% 55%;
+    --patient-male-light: 210 100% 96%;
+    --patient-male-border: 210 85% 85%;
+    --patient-female: 330 70% 55%;
+    --patient-female-light: 330 100% 96%;
+    --patient-female-border: 330 70% 85%;
+    --patient-other: 270 60% 55%;
+    --patient-other-light: 270 60% 96%;
+    --patient-other-border: 270 60% 85%;
+
+    /* Patient age categories */
+    --age-child: 146 55% 52%;
+    --age-child-light: 146 55% 95%;
+    --age-adult: 210 85% 48%;
+    --age-adult-light: 210 100% 96%;
+    --age-senior: 25 95% 53%;
+    --age-senior-light: 25 100% 96%;
+
     --medical-antecedents: 210 85% 48%;
     --medical-antecedents-light: 210 100% 96%;
     --medical-allergies: 0 84% 60%;
@@ -132,6 +151,25 @@ All colors MUST be HSL.
     --tile-settings-light: 215 15% 22%;
     --tile-queue: 35 85% 60%;
     --tile-queue-light: 35 60% 25%;
+
+    /* Patient color coding by gender (dark mode) */
+    --patient-male: 210 85% 60%;
+    --patient-male-light: 210 60% 25%;
+    --patient-male-border: 210 60% 40%;
+    --patient-female: 330 70% 60%;
+    --patient-female-light: 330 50% 25%;
+    --patient-female-border: 330 50% 40%;
+    --patient-other: 270 60% 60%;
+    --patient-other-light: 270 50% 25%;
+    --patient-other-border: 270 50% 40%;
+
+    /* Patient age categories (dark mode) */
+    --age-child: 146 55% 55%;
+    --age-child-light: 146 40% 25%;
+    --age-adult: 210 85% 58%;
+    --age-adult-light: 210 60% 25%;
+    --age-senior: 25 90% 58%;
+    --age-senior-light: 25 60% 25%;
 
     --medical-antecedents: 210 85% 58%;
     --medical-antecedents-light: 210 60% 25%;
