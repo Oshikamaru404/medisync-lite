@@ -163,16 +163,8 @@ const PatientDetail = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
-        <Tabs defaultValue="identity" className="w-full">
+        <Tabs defaultValue="medical" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-muted/30 p-1.5 h-auto gap-1.5">
-            <TabsTrigger 
-              value="identity"
-              className="bg-blue-100/60 text-blue-700 hover:bg-blue-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-sky-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
-            >
-              <User className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Identité & Contacts</span>
-              <span className="sm:hidden">Identité</span>
-            </TabsTrigger>
             <TabsTrigger 
               value="medical"
               className="bg-emerald-100/60 text-emerald-700 hover:bg-emerald-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
@@ -180,6 +172,14 @@ const PatientDetail = () => {
               <FileText className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Dossier Médical</span>
               <span className="sm:hidden">Médical</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="identity"
+              className="bg-blue-100/60 text-blue-700 hover:bg-blue-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-sky-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+            >
+              <User className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Identité & Contacts</span>
+              <span className="sm:hidden">Identité</span>
             </TabsTrigger>
             <TabsTrigger 
               value="documents"
@@ -198,11 +198,6 @@ const PatientDetail = () => {
               <span className="sm:hidden">Historique</span>
             </TabsTrigger>
           </TabsList>
-
-          {/* Identity Tab */}
-          <TabsContent value="identity" className="mt-6">
-            <PatientIdentityTab patient={patient} />
-          </TabsContent>
 
           {/* Medical Record Tab */}
           <TabsContent value="medical" className="mt-6 space-y-6">
@@ -384,6 +379,11 @@ const PatientDetail = () => {
                 })}
               </div>
             )}
+          </TabsContent>
+
+          {/* Identity Tab */}
+          <TabsContent value="identity" className="mt-6">
+            <PatientIdentityTab patient={patient} />
           </TabsContent>
 
           {/* History Tab */}
