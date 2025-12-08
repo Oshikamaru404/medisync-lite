@@ -164,23 +164,35 @@ const PatientDetail = () => {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         <Tabs defaultValue="identity" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="identity">
+          <TabsList className="grid w-full grid-cols-4 bg-muted/50 p-1.5 h-auto gap-1">
+            <TabsTrigger 
+              value="identity"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-sky-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+            >
               <User className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Identité & Contacts</span>
               <span className="sm:hidden">Identité</span>
             </TabsTrigger>
-            <TabsTrigger value="medical">
+            <TabsTrigger 
+              value="medical"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+            >
               <FileText className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Dossier Médical</span>
               <span className="sm:hidden">Médical</span>
             </TabsTrigger>
-            <TabsTrigger value="documents">
+            <TabsTrigger 
+              value="documents"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+            >
               <Upload className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Documents Scannés</span>
               <span className="sm:hidden">Documents</span>
             </TabsTrigger>
-            <TabsTrigger value="history">
+            <TabsTrigger 
+              value="history"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+            >
               <History className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Historique</span>
               <span className="sm:hidden">Historique</span>
