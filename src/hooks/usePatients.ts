@@ -6,6 +6,7 @@ export type Patient = {
   id: string;
   nom: string;
   prenom: string;
+  cin: string | null;
   date_naissance: string | null;
   telephone: string | null;
   email: string | null;

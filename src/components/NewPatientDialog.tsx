@@ -32,6 +32,7 @@ const NewPatientDialog = ({ open, onOpenChange }: NewPatientDialogProps) => {
     await createPatient.mutateAsync({
       nom: formData.nom,
       prenom: formData.prenom,
+      cin: formData.cin || null,
       date_naissance: formData.date_naissance || null,
       telephone: formData.telephone || null,
       email: formData.email || null,

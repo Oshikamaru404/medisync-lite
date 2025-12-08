@@ -190,6 +190,7 @@ export type Database = {
       patients: {
         Row: {
           adresse: string | null
+          cin: string | null
           created_at: string | null
           date_naissance: string | null
           email: string | null
@@ -208,6 +209,7 @@ export type Database = {
         }
         Insert: {
           adresse?: string | null
+          cin?: string | null
           created_at?: string | null
           date_naissance?: string | null
           email?: string | null
@@ -226,6 +228,7 @@ export type Database = {
         }
         Update: {
           adresse?: string | null
+          cin?: string | null
           created_at?: string | null
           date_naissance?: string | null
           email?: string | null

@@ -114,6 +114,7 @@ export const AppointmentDialog = ({
         const newPatient = await createPatient.mutateAsync({
           nom: newPatientData.nom,
           prenom: newPatientData.prenom,
+          cin: null,
           date_naissance: null,
           telephone: newPatientData.telephone || null,
           email: null,
