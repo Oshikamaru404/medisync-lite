@@ -1,4 +1,4 @@
-import { User, Phone, Shield, Edit, Hash, Scale, Ruler } from "lucide-react";
+import { User, Phone, Shield, Edit, Scale } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -35,10 +35,10 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
   };
 
   const getIMCCategory = (imc: number) => {
-    if (imc < 18.5) return { label: "Insuffisance", color: "text-blue-600 dark:text-blue-400" };
-    if (imc < 25) return { label: "Normal", color: "text-green-600 dark:text-green-400" };
-    if (imc < 30) return { label: "Surpoids", color: "text-yellow-600 dark:text-yellow-400" };
-    return { label: "Obésité", color: "text-red-600 dark:text-red-400" };
+    if (imc < 18.5) return { label: "Insuffisance", color: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 border-blue-200" };
+    if (imc < 25) return { label: "Normal", color: "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 border-green-200" };
+    if (imc < 30) return { label: "Surpoids", color: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-300 border-yellow-200" };
+    return { label: "Obésité", color: "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300 border-red-200" };
   };
 
   const age = calculateAge(patient.date_naissance);
@@ -87,6 +87,9 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
         </div>
         
         <h2 className="text-lg font-bold text-foreground tracking-wide">{fullName}</h2>
+        <p className="text-xs text-muted-foreground mt-1 font-mono">
+          ID: {patient.id.slice(0, 8).toUpperCase()}
+        </p>
         
         <div className="flex items-center gap-2 mt-3 flex-wrap">
           {sexe && (
@@ -108,12 +111,44 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
       </div>
 
       <CardContent className="p-4 space-y-1">
-        {/* ID Patient */}
-        <InfoRow 
-          icon={Hash} 
-          label="N° Patient" 
-          value={patient.id.slice(0, 8).toUpperCase()}
-        />
+        {/* Morphologie */}
+        <div className="flex items-center gap-3 py-2">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-muted/50">
+            <Scale className="w-4 h-4 text-muted-foreground" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-muted-foreground">Morphologie</p>
+            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+              {patient.poids ? (
+                <Badge variant="outline" className="text-xs font-normal">
+                  {patient.poids} kg
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="text-xs font-normal text-muted-foreground">
+                  -- kg
+                </Badge>
+              )}
+              {patient.taille ? (
+                <Badge variant="outline" className="text-xs font-normal">
+                  {patient.taille} cm
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="text-xs font-normal text-muted-foreground">
+                  -- cm
+                </Badge>
+              )}
+              {imc ? (
+                <Badge variant="outline" className={cn("text-xs font-medium", imcCategory?.color)}>
+                  IMC {imc.toFixed(1)} • {imcCategory?.label}
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="text-xs font-normal text-muted-foreground">
+                  IMC --
+                </Badge>
+              )}
+            </div>
+          </div>
+        </div>
 
         {/* Téléphone */}
         <InfoRow 
@@ -128,31 +163,6 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
           label="Mutuelle" 
           value={patient.mutuelle ? `${patient.mutuelle}${(patient as any).numero_mutuelle ? ` (${(patient as any).numero_mutuelle})` : ''}` : null}
         />
-
-        {/* Poids / Taille / IMC */}
-        {(patient.poids || patient.taille) && (
-          <div className="flex items-center gap-3 py-2">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-muted/50">
-              <Scale className="w-4 h-4 text-muted-foreground" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-muted-foreground">Morphologie</p>
-              <div className="flex items-center gap-2 text-sm font-medium text-foreground flex-wrap">
-                {patient.poids && <span>{patient.poids} kg</span>}
-                {patient.poids && patient.taille && <span className="text-muted-foreground">•</span>}
-                {patient.taille && <span>{patient.taille} cm</span>}
-                {imc && (
-                  <>
-                    <span className="text-muted-foreground">•</span>
-                    <span className={imcCategory?.color}>
-                      IMC {imc.toFixed(1)} ({imcCategory?.label})
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Contact d'urgence si présent */}
         {patient.personne_contact && (
