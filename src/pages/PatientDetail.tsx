@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, FileText, Upload, Search, Activity, StickyNote, Pill, TestTube, Scan, ClipboardList, Award, Mail, MoreHorizontal, X, Eye } from "lucide-react";
+import { ArrowLeft, FileText, Upload, Search, Activity, StickyNote, Pill, TestTube, Scan, ClipboardList, Award, Mail, MoreHorizontal, X, Eye, User, History } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,11 @@ import { MedicalRecordSection } from "@/components/MedicalRecordSection";
 import { AllergiesSection } from "@/components/AllergiesSection";
 import { TreatmentsSection } from "@/components/TreatmentsSection";
 import { DocumentUploadDialog } from "@/components/DocumentUploadDialog";
+import { PatientIdentityTab } from "@/components/PatientIdentityTab";
+import { PatientHistoryTab } from "@/components/PatientHistoryTab";
 import { antecedentsTemplates } from "@/data/medicalTemplates";
 import { cn } from "@/lib/utils";
+import { differenceInYears, parseISO } from "date-fns";
 
 const DOCUMENT_TYPE_STYLES: Record<string, { icon: typeof FileText; barColor: string; iconColor: string; badgeClass: string }> = {
   "Ordonnance": { icon: Pill, barColor: "bg-blue-500", iconColor: "text-blue-600", badgeClass: "bg-blue-100 text-blue-700" },
@@ -80,6 +83,15 @@ const PatientDetail = () => {
 
   const documentTypes = Array.from(new Set(documents.map(d => d.type)));
 
+  const calculateAge = (dateNaissance: string | null) => {
+    if (!dateNaissance) return null;
+    try {
+      return differenceInYears(new Date(), parseISO(dateNaissance));
+    } catch {
+      return null;
+    }
+  };
+
   if (patientLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -101,6 +113,9 @@ const PatientDetail = () => {
     );
   }
 
+  const age = calculateAge(patient.date_naissance);
+  const sexe = (patient as any).sexe;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -116,9 +131,23 @@ const PatientDetail = () => {
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-foreground">
-                {patient.prenom} {patient.nom}
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-foreground">
+                  {patient.prenom} {patient.nom}
+                </h1>
+                {sexe && (
+                  <Badge className={cn(
+                    sexe === 'M' && "bg-blue-100 text-blue-700",
+                    sexe === 'F' && "bg-pink-100 text-pink-700",
+                    sexe === 'Autre' && "bg-gray-100 text-gray-700"
+                  )}>
+                    {sexe === 'M' ? '♂' : sexe === 'F' ? '♀' : '⚧'}
+                  </Badge>
+                )}
+                {age !== null && (
+                  <Badge variant="secondary">{age} ans</Badge>
+                )}
+              </div>
               <div className="flex gap-4 text-sm text-muted-foreground mt-1">
                 {patient.telephone && <span>📞 {patient.telephone}</span>}
                 {patient.email && <span>✉️ {patient.email}</span>}
@@ -134,17 +163,34 @@ const PatientDetail = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
-        <Tabs defaultValue="medical" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs defaultValue="identity" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="identity">
+              <User className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Identité & Contacts</span>
+              <span className="sm:hidden">Identité</span>
+            </TabsTrigger>
             <TabsTrigger value="medical">
               <FileText className="w-4 h-4 mr-2" />
-              Dossier Médical
+              <span className="hidden sm:inline">Dossier Médical</span>
+              <span className="sm:hidden">Médical</span>
             </TabsTrigger>
             <TabsTrigger value="documents">
               <Upload className="w-4 h-4 mr-2" />
-              Documents Scannés
+              <span className="hidden sm:inline">Documents Scannés</span>
+              <span className="sm:hidden">Documents</span>
+            </TabsTrigger>
+            <TabsTrigger value="history">
+              <History className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Historique</span>
+              <span className="sm:hidden">Historique</span>
             </TabsTrigger>
           </TabsList>
+
+          {/* Identity Tab */}
+          <TabsContent value="identity" className="mt-6">
+            <PatientIdentityTab patient={patient} />
+          </TabsContent>
 
           {/* Medical Record Tab */}
           <TabsContent value="medical" className="mt-6 space-y-6">
@@ -326,6 +372,11 @@ const PatientDetail = () => {
                 })}
               </div>
             )}
+          </TabsContent>
+
+          {/* History Tab */}
+          <TabsContent value="history" className="mt-6">
+            {id && <PatientHistoryTab patientId={id} />}
           </TabsContent>
         </Tabs>
       </main>
