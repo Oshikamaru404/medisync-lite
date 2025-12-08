@@ -194,11 +194,15 @@ export type Database = {
           date_naissance: string | null
           email: string | null
           id: string
+          lien_personne_contact: string | null
           mutuelle: string | null
           nom: string
+          numero_mutuelle: string | null
           personne_contact: string | null
           prenom: string
+          sexe: string | null
           telephone: string | null
+          telephone_personne_contact: string | null
         }
         Insert: {
           adresse?: string | null
@@ -206,11 +210,15 @@ export type Database = {
           date_naissance?: string | null
           email?: string | null
           id?: string
+          lien_personne_contact?: string | null
           mutuelle?: string | null
           nom: string
+          numero_mutuelle?: string | null
           personne_contact?: string | null
           prenom: string
+          sexe?: string | null
           telephone?: string | null
+          telephone_personne_contact?: string | null
         }
         Update: {
           adresse?: string | null
@@ -218,11 +226,15 @@ export type Database = {
           date_naissance?: string | null
           email?: string | null
           id?: string
+          lien_personne_contact?: string | null
           mutuelle?: string | null
           nom?: string
+          numero_mutuelle?: string | null
           personne_contact?: string | null
           prenom?: string
+          sexe?: string | null
           telephone?: string | null
+          telephone_personne_contact?: string | null
         }
         Relationships: []
       }
