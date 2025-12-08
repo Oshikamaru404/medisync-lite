@@ -47,15 +47,15 @@ export const PatientHistoryTab = ({ patientId }: PatientHistoryTabProps) => {
   const getStatusBadge = (status: string, invoiceStatus: string | null) => {
     if (status === 'completed') {
       if (invoiceStatus === 'paid') {
-        return <Badge className="bg-green-100 text-green-700"><CheckCircle className="w-3 h-3 mr-1" />Payé</Badge>;
+        return <Badge className="bg-secondary/20 text-secondary border border-secondary/30"><CheckCircle className="w-3 h-3 mr-1" />Payé</Badge>;
       }
       if (invoiceStatus === 'pending') {
-        return <Badge className="bg-yellow-100 text-yellow-700"><AlertCircle className="w-3 h-3 mr-1" />En attente</Badge>;
+        return <Badge className="bg-tile-queue/20 text-tile-queue border border-tile-queue/30"><AlertCircle className="w-3 h-3 mr-1" />En attente</Badge>;
       }
       return <Badge variant="secondary">Terminé</Badge>;
     }
     if (status === 'in_consultation') {
-      return <Badge className="bg-blue-100 text-blue-700">En cours</Badge>;
+      return <Badge className="bg-primary/20 text-primary border border-primary/30">En cours</Badge>;
     }
     if (status === 'confirmed') {
       return <Badge variant="secondary">Confirmé</Badge>;
@@ -75,7 +75,7 @@ export const PatientHistoryTab = ({ patientId }: PatientHistoryTabProps) => {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="border-l-4 border-l-primary bg-primary/5">
           <CardContent className="pt-6">
             <div className="text-center">
               <p className="text-3xl font-bold text-primary">{stats?.totalConsultations || 0}</p>
@@ -83,26 +83,26 @@ export const PatientHistoryTab = ({ patientId }: PatientHistoryTabProps) => {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-l-4 border-l-secondary bg-secondary/5">
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-3xl font-bold text-green-600">{stats?.totalPaid?.toLocaleString() || 0} DH</p>
+              <p className="text-3xl font-bold text-secondary">{stats?.totalPaid?.toLocaleString() || 0} DH</p>
               <p className="text-sm text-muted-foreground">Total Payé</p>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-l-4 border-l-tile-queue bg-tile-queue/5">
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-3xl font-bold text-yellow-600">{stats?.pendingAmount?.toLocaleString() || 0} DH</p>
+              <p className="text-3xl font-bold text-tile-queue">{stats?.pendingAmount?.toLocaleString() || 0} DH</p>
               <p className="text-sm text-muted-foreground">En attente</p>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-l-4 border-l-tile-scanner bg-tile-scanner/5">
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-sm font-medium text-foreground">
+              <p className="text-sm font-medium text-tile-scanner">
                 {stats?.firstVisit 
                   ? format(parseISO(stats.firstVisit), "dd MMM yyyy", { locale: fr })
                   : "-"

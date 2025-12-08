@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { ArrowLeft, Search, Plus } from "lucide-react";
+import { ArrowLeft, Search, Plus, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { usePatients } from "@/hooks/usePatients";
 import { Badge } from "@/components/ui/badge";
 import NewPatientDialog from "@/components/NewPatientDialog";
+import { PatientCard } from "@/components/PatientCard";
 
 const Patients = () => {
   const navigate = useNavigate();
@@ -101,84 +101,14 @@ const Patients = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredPatients.map((patient) => (
-              <Card
+              <PatientCard
                 key={patient.id}
-                className="p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                patient={patient}
                 onClick={() => navigate(`/patients/${patient.id}`)}
-              >
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-foreground">
-                        {patient.prenom} {patient.nom}
-                      </h3>
-                      {patient.email && (
-                        <p className="text-sm text-muted-foreground">{patient.email}</p>
-                      )}
-                    </div>
-                    <Badge variant="outline" className="bg-tile-patients/10">
-                      Patient
-                    </Badge>
-                  </div>
-                  {patient.telephone && (
-                    <p className="text-sm text-muted-foreground">📞 {patient.telephone}</p>
-                  )}
-                  {patient.mutuelle && (
-                    <p className="text-sm text-muted-foreground">🏥 {patient.mutuelle}</p>
-                  )}
-                </div>
-              </Card>
+              />
             ))}
           </div>
         )}
-
-        {/* Patient Detail View - Will be shown when a patient is selected */}
-        <div className="hidden">
-          <Tabs defaultValue="identite" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="identite">Identité & Contacts</TabsTrigger>
-              <TabsTrigger value="dossier">Dossier Médical</TabsTrigger>
-              <TabsTrigger value="documents">Documents Scannés</TabsTrigger>
-              <TabsTrigger value="historique">Historique</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="identite" className="mt-6">
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Informations du patient</h3>
-                <p className="text-muted-foreground">
-                  Identité, coordonnées, mutuelle, personne à contacter...
-                </p>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="dossier" className="mt-6">
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Dossier Médical</h3>
-                <p className="text-muted-foreground">
-                  Antécédents, allergies, traitements en cours, notes médicales...
-                </p>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="documents" className="mt-6">
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Documents Scannés</h3>
-                <p className="text-muted-foreground">
-                  Pièces d'identité, ordonnances, analyses, échographies, rapports...
-                </p>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="historique" className="mt-6">
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Historique des Consultations</h3>
-                <p className="text-muted-foreground">
-                  Liste chronologique des rendez-vous et consultations passés...
-                </p>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
       </main>
     </div>
   );

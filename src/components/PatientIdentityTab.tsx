@@ -131,10 +131,12 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
       </div>
 
       {/* Informations Personnelles */}
-      <Card>
-        <CardHeader className="pb-3">
+      <Card className="border-l-4 border-l-primary">
+        <CardHeader className="pb-3 bg-primary/5">
           <CardTitle className="flex items-center gap-2 text-lg">
-            <User className="w-5 h-5 text-primary" />
+            <div className="p-2 rounded-lg bg-primary/10">
+              <User className="w-5 h-5 text-primary" />
+            </div>
             Informations Personnelles
           </CardTitle>
         </CardHeader>
@@ -204,10 +206,10 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
               </div>
               <div>
                 <span className="text-sm text-muted-foreground">Sexe</span>
-                <p className="font-medium text-foreground">
-                  {(patient as any).sexe === 'M' && <Badge className="bg-blue-100 text-blue-700">Masculin</Badge>}
-                  {(patient as any).sexe === 'F' && <Badge className="bg-pink-100 text-pink-700">Féminin</Badge>}
-                  {(patient as any).sexe === 'Autre' && <Badge variant="secondary">Autre</Badge>}
+                <p className="font-medium text-foreground mt-1">
+                  {(patient as any).sexe === 'M' && <Badge className="bg-patient-male/20 text-patient-male border border-patient-male/30">♂ Masculin</Badge>}
+                  {(patient as any).sexe === 'F' && <Badge className="bg-patient-female/20 text-patient-female border border-patient-female/30">♀ Féminin</Badge>}
+                  {(patient as any).sexe === 'Autre' && <Badge className="bg-patient-other/20 text-patient-other border border-patient-other/30">Autre</Badge>}
                   {!(patient as any).sexe && <span className="text-muted-foreground italic">Non renseigné</span>}
                 </p>
               </div>
@@ -217,10 +219,12 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
       </Card>
 
       {/* Coordonnées */}
-      <Card>
-        <CardHeader className="pb-3">
+      <Card className="border-l-4 border-l-secondary">
+        <CardHeader className="pb-3 bg-secondary/5">
           <CardTitle className="flex items-center gap-2 text-lg">
-            <Phone className="w-5 h-5 text-primary" />
+            <div className="p-2 rounded-lg bg-secondary/10">
+              <Phone className="w-5 h-5 text-secondary" />
+            </div>
             Coordonnées
           </CardTitle>
         </CardHeader>
@@ -287,10 +291,12 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
       </Card>
 
       {/* Couverture Médicale */}
-      <Card>
-        <CardHeader className="pb-3">
+      <Card className="border-l-4 border-l-tile-dossiers">
+        <CardHeader className="pb-3 bg-tile-dossiers/5">
           <CardTitle className="flex items-center gap-2 text-lg">
-            <Shield className="w-5 h-5 text-primary" />
+            <div className="p-2 rounded-lg bg-tile-dossiers/10">
+              <Shield className="w-5 h-5 text-tile-dossiers" />
+            </div>
             Couverture Médicale
           </CardTitle>
         </CardHeader>
@@ -326,10 +332,12 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
       </Card>
 
       {/* Personne à Contacter */}
-      <Card>
-        <CardHeader className="pb-3">
+      <Card className="border-l-4 border-l-destructive">
+        <CardHeader className="pb-3 bg-destructive/5">
           <CardTitle className="flex items-center gap-2 text-lg">
-            <Users className="w-5 h-5 text-primary" />
+            <div className="p-2 rounded-lg bg-destructive/10">
+              <Users className="w-5 h-5 text-destructive" />
+            </div>
             Personne à Contacter en Cas d'Urgence
           </CardTitle>
         </CardHeader>
