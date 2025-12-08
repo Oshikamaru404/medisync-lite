@@ -15,17 +15,24 @@ export type Patient = {
   created_at: string;
 };
 
+export type PatientWithAllergies = Patient & {
+  medical_records?: { allergies: string | null } | null;
+};
+
 export const usePatients = () => {
   return useQuery({
     queryKey: ['patients'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('patients')
-        .select('*')
+        .select(`
+          *,
+          medical_records(allergies)
+        `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data as Patient[];
+      return data as PatientWithAllergies[];
     },
   });
 };

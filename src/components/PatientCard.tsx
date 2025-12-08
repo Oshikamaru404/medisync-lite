@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Phone, Shield, Calendar, Baby, UserCheck, Clock } from "lucide-react";
+import { User, Phone, Shield, Calendar, Baby, UserCheck, Clock, AlertTriangle } from "lucide-react";
 import { differenceInYears, parseISO, format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ interface Patient {
   date_naissance?: string | null;
   sexe?: string | null;
   created_at: string;
+  medical_records?: { allergies: string | null } | null;
 }
 
 interface PatientCardProps {
@@ -38,43 +39,48 @@ const getAgeCategory = (age: number | null): 'child' | 'adult' | 'senior' | null
   return 'adult';
 };
 
-const getAgeCategoryLabel = (category: 'child' | 'adult' | 'senior' | null): string => {
-  switch (category) {
-    case 'child': return 'Enfant';
-    case 'senior': return 'Senior';
-    case 'adult': return 'Adulte';
-    default: return '';
-  }
+const hasAllergies = (patient: Patient): boolean => {
+  if (!patient.medical_records) return false;
+  const allergies = patient.medical_records.allergies;
+  return !!allergies && allergies.trim().length > 0;
 };
 
-const getGenderStyles = (sexe: string | null | undefined) => {
+const getGenderGradient = (sexe: string | null | undefined) => {
   switch (sexe) {
     case 'M':
       return {
-        bgClass: 'bg-patient-male-light',
-        borderClass: 'border-patient-male-border',
-        iconColor: 'text-patient-male',
-        badgeClass: 'bg-patient-male/10 text-patient-male border-patient-male/30',
+        gradient: 'from-blue-50 via-blue-100/50 to-sky-50',
+        border: 'border-blue-200/60',
+        accent: 'bg-gradient-to-br from-blue-500 to-sky-400',
+        iconBg: 'bg-gradient-to-br from-blue-100 to-sky-100',
+        iconColor: 'text-blue-600',
+        badgeClass: 'bg-gradient-to-r from-blue-500 to-sky-400 text-white border-0',
       };
     case 'F':
       return {
-        bgClass: 'bg-patient-female-light',
-        borderClass: 'border-patient-female-border',
-        iconColor: 'text-patient-female',
-        badgeClass: 'bg-patient-female/10 text-patient-female border-patient-female/30',
+        gradient: 'from-pink-50 via-rose-100/50 to-fuchsia-50',
+        border: 'border-pink-200/60',
+        accent: 'bg-gradient-to-br from-pink-500 to-rose-400',
+        iconBg: 'bg-gradient-to-br from-pink-100 to-rose-100',
+        iconColor: 'text-pink-600',
+        badgeClass: 'bg-gradient-to-r from-pink-500 to-rose-400 text-white border-0',
       };
     case 'Autre':
       return {
-        bgClass: 'bg-patient-other-light',
-        borderClass: 'border-patient-other-border',
-        iconColor: 'text-patient-other',
-        badgeClass: 'bg-patient-other/10 text-patient-other border-patient-other/30',
+        gradient: 'from-violet-50 via-purple-100/50 to-indigo-50',
+        border: 'border-violet-200/60',
+        accent: 'bg-gradient-to-br from-violet-500 to-purple-400',
+        iconBg: 'bg-gradient-to-br from-violet-100 to-purple-100',
+        iconColor: 'text-violet-600',
+        badgeClass: 'bg-gradient-to-r from-violet-500 to-purple-400 text-white border-0',
       };
     default:
       return {
-        bgClass: 'bg-card',
-        borderClass: 'border-border',
-        iconColor: 'text-muted-foreground',
+        gradient: 'from-slate-50 via-gray-100/50 to-zinc-50',
+        border: 'border-slate-200/60',
+        accent: 'bg-gradient-to-br from-slate-500 to-gray-400',
+        iconBg: 'bg-gradient-to-br from-slate-100 to-gray-100',
+        iconColor: 'text-slate-600',
         badgeClass: 'bg-muted text-muted-foreground',
       };
   }
@@ -83,11 +89,11 @@ const getGenderStyles = (sexe: string | null | undefined) => {
 const getAgeBadgeStyles = (category: 'child' | 'adult' | 'senior' | null) => {
   switch (category) {
     case 'child':
-      return 'bg-age-child-light text-age-child border-age-child/30';
+      return 'bg-gradient-to-r from-amber-400 to-orange-400 text-white border-0';
     case 'senior':
-      return 'bg-age-senior-light text-age-senior border-age-senior/30';
+      return 'bg-gradient-to-r from-emerald-500 to-teal-400 text-white border-0';
     case 'adult':
-      return 'bg-age-adult-light text-age-adult border-age-adult/30';
+      return 'bg-gradient-to-r from-slate-500 to-gray-400 text-white border-0';
     default:
       return 'bg-muted text-muted-foreground';
   }
@@ -96,29 +102,53 @@ const getAgeBadgeStyles = (category: 'child' | 'adult' | 'senior' | null) => {
 export const PatientCard = ({ patient, onClick }: PatientCardProps) => {
   const age = calculateAge(patient.date_naissance);
   const ageCategory = getAgeCategory(age);
-  const genderStyles = getGenderStyles(patient.sexe);
+  const styles = getGenderGradient(patient.sexe);
+  const patientHasAllergies = hasAllergies(patient);
 
   return (
     <Card
       className={cn(
-        "p-5 hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:-translate-y-0.5",
-        genderStyles.bgClass,
-        genderStyles.borderClass
+        "relative overflow-hidden cursor-pointer transition-all duration-300",
+        "hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]",
+        "border-2",
+        styles.border
       )}
       onClick={onClick}
     >
-      <div className="space-y-3">
+      {/* Background gradient */}
+      <div className={cn(
+        "absolute inset-0 bg-gradient-to-br opacity-80",
+        styles.gradient
+      )} />
+      
+      {/* Decorative accent */}
+      <div className={cn(
+        "absolute top-0 right-0 w-24 h-24 rounded-bl-[100px] opacity-20",
+        styles.accent
+      )} />
+      
+      {/* Allergy alert badge */}
+      {patientHasAllergies && (
+        <div className="absolute top-3 right-3 z-10">
+          <Badge className="bg-gradient-to-r from-red-500 to-rose-500 text-white border-0 shadow-lg animate-pulse gap-1">
+            <AlertTriangle className="w-3 h-3" />
+            Allergies
+          </Badge>
+        </div>
+      )}
+
+      <div className="relative p-5 space-y-4">
         {/* Header with avatar and name */}
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-4">
           <div className={cn(
-            "w-12 h-12 rounded-full flex items-center justify-center shrink-0",
-            patient.sexe ? `bg-card` : 'bg-muted'
+            "w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-md",
+            styles.iconBg
           )}>
-            <User className={cn("w-6 h-6", genderStyles.iconColor)} />
+            <User className={cn("w-7 h-7", styles.iconColor)} />
           </div>
           
-          <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-foreground truncate">
+          <div className="flex-1 min-w-0 pt-1">
+            <h3 className="text-lg font-bold text-foreground truncate">
               {patient.prenom} {patient.nom}
             </h3>
             {patient.email && (
@@ -130,13 +160,13 @@ export const PatientCard = ({ patient, onClick }: PatientCardProps) => {
         {/* Badges row */}
         <div className="flex flex-wrap gap-2">
           {patient.sexe && (
-            <Badge variant="outline" className={cn("text-xs", genderStyles.badgeClass)}>
-              {patient.sexe === 'M' ? '♂ Homme' : patient.sexe === 'F' ? '♀ Femme' : 'Autre'}
+            <Badge className={cn("text-xs font-medium shadow-sm", styles.badgeClass)}>
+              {patient.sexe === 'M' ? '♂ Homme' : patient.sexe === 'F' ? '♀ Femme' : '⚧ Autre'}
             </Badge>
           )}
           
           {age !== null && (
-            <Badge variant="outline" className={cn("text-xs gap-1", getAgeBadgeStyles(ageCategory))}>
+            <Badge className={cn("text-xs font-medium shadow-sm gap-1", getAgeBadgeStyles(ageCategory))}>
               {ageCategory === 'child' && <Baby className="w-3 h-3" />}
               {ageCategory === 'senior' && <Clock className="w-3 h-3" />}
               {ageCategory === 'adult' && <UserCheck className="w-3 h-3" />}
@@ -145,26 +175,34 @@ export const PatientCard = ({ patient, onClick }: PatientCardProps) => {
           )}
         </div>
 
-        {/* Info rows */}
-        <div className="space-y-2 pt-1">
+        {/* Info rows with modern styling */}
+        <div className="space-y-2.5 pt-1">
           {patient.telephone && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Phone className="w-4 h-4 shrink-0" />
-              <span className="truncate">{patient.telephone}</span>
+            <div className="flex items-center gap-3 text-sm">
+              <div className="w-8 h-8 rounded-lg bg-background/80 flex items-center justify-center shadow-sm">
+                <Phone className="w-4 h-4 text-primary" />
+              </div>
+              <span className="text-foreground/80 truncate font-medium">{patient.telephone}</span>
             </div>
           )}
           
           {patient.mutuelle && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Shield className="w-4 h-4 shrink-0" />
-              <span className="truncate">{patient.mutuelle}</span>
+            <div className="flex items-center gap-3 text-sm">
+              <div className="w-8 h-8 rounded-lg bg-background/80 flex items-center justify-center shadow-sm">
+                <Shield className="w-4 h-4 text-emerald-500" />
+              </div>
+              <span className="text-foreground/80 truncate font-medium">{patient.mutuelle}</span>
             </div>
           )}
 
           {patient.date_naissance && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Calendar className="w-4 h-4 shrink-0" />
-              <span>{format(parseISO(patient.date_naissance), "dd MMM yyyy", { locale: fr })}</span>
+            <div className="flex items-center gap-3 text-sm">
+              <div className="w-8 h-8 rounded-lg bg-background/80 flex items-center justify-center shadow-sm">
+                <Calendar className="w-4 h-4 text-amber-500" />
+              </div>
+              <span className="text-foreground/80 font-medium">
+                {format(parseISO(patient.date_naissance), "dd MMM yyyy", { locale: fr })}
+              </span>
             </div>
           )}
         </div>
