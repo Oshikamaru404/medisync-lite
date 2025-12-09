@@ -1,4 +1,4 @@
-# MediCare ERP 
+# MediCare ERP Mehdi
 ## À propos
 
 MediCare ERP est un système de gestion médicale moderne, simple et offline-first pour les cabinets médicaux.
