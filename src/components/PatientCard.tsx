@@ -145,7 +145,7 @@ export const PatientCard = ({ patient, onClick }: PatientCardProps) => {
             <h3 className="text-lg font-bold text-foreground truncate">
               {patient.prenom} {patient.nom}
             </h3>
-            <Badge className="mt-1 bg-primary/20 text-primary border-primary/30 font-mono font-bold text-[10px]">
+            <Badge className="mt-1 bg-indigo-600 text-white border-indigo-700 font-mono font-bold text-xs shadow-sm">
               {patient.cin ? `CIN: ${patient.cin}` : `ID: ${patient.id.slice(0, 8).toUpperCase()}`}
             </Badge>
           </div>
