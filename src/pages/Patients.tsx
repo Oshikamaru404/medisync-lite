@@ -22,7 +22,8 @@ const Patients = () => {
       patient.nom.toLowerCase().includes(query) ||
       patient.prenom.toLowerCase().includes(query) ||
       patient.email?.toLowerCase().includes(query) ||
-      patient.telephone?.includes(query)
+      patient.telephone?.includes(query) ||
+      patient.cin?.toLowerCase().includes(query)
     );
   });
 
@@ -65,7 +66,7 @@ const Patients = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Rechercher un patient par nom, prénom ou numéro..."
+              placeholder="Rechercher par nom, prénom, CIN ou téléphone..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 h-12"

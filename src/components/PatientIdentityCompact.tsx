@@ -87,7 +87,7 @@ export const PatientIdentityCompact = ({ patient, onEdit }: PatientIdentityCompa
         </div>
         
         <h2 className="text-lg font-bold text-foreground tracking-wide">{fullName}</h2>
-        <Badge className="mt-2 bg-primary/20 text-primary border-primary/30 font-mono font-bold text-xs">
+        <Badge className="mt-2 bg-indigo-600 text-white border-indigo-700 font-mono font-bold text-xs shadow-sm">
           {(patient as any).cin ? `CIN: ${(patient as any).cin}` : `ID: ${patient.id.slice(0, 8).toUpperCase()}`}
         </Badge>
         
