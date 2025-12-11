@@ -8,6 +8,7 @@ import {
   Settings,
   ListOrdered,
 } from "lucide-react";
+import logo from "@/assets/logo.svg";
 
 const Index = () => {
   // Dashboard principal avec 6 modules
@@ -69,11 +70,9 @@ const Index = () => {
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">
-                MediCare ERP
-              </h1>
-              <p className="text-muted-foreground mt-1">
+            <div className="flex items-center gap-4">
+              <img src={logo} alt="MediCare ERP" className="h-14 w-auto" />
+              <p className="text-muted-foreground hidden sm:block">
                 Gestion médicale simplifiée et offline-first
               </p>
             </div>
