@@ -13,7 +13,7 @@ import { toast } from "sonner";
 
 const Parametres = () => {
   const navigate = useNavigate();
-  const { getSettingValue, updateSetting, isLoading } = useSettings();
+  const { settings, updateSetting, isLoading } = useSettings();
   
   // Cabinet & Doctor settings
   const [specialty, setSpecialty] = useState("");
@@ -27,22 +27,26 @@ const Parametres = () => {
   const [cabinetPhone, setCabinetPhone] = useState("+212 ");
   const [openTime, setOpenTime] = useState("08:00");
   const [closeTime, setCloseTime] = useState("19:00");
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      setSpecialty(getSettingValue("cabinet_specialty") || "");
-      setDoctorName(getSettingValue("doctor_name") || "");
-      setDoctorFirstName(getSettingValue("doctor_first_name") || "");
-      setDoctorEmail(getSettingValue("doctor_email") || "");
-      setDoctorPhone(getSettingValue("doctor_phone") || "+212 ");
-      setCabinetAddress(getSettingValue("cabinet_address") || "");
-      setCabinetZipCode(getSettingValue("cabinet_zip_code") || "");
-      setCabinetCity(getSettingValue("cabinet_city") || "");
-      setCabinetPhone(getSettingValue("cabinet_phone") || "+212 ");
-      setOpenTime(getSettingValue("open_time") || "08:00");
-      setCloseTime(getSettingValue("close_time") || "19:00");
+    if (!isLoading && settings && !initialized) {
+      const getValue = (key: string) => settings.find(s => s.key === key)?.value || "";
+      
+      setSpecialty(getValue("cabinet_specialty"));
+      setDoctorName(getValue("doctor_name"));
+      setDoctorFirstName(getValue("doctor_first_name"));
+      setDoctorEmail(getValue("doctor_email"));
+      setDoctorPhone(getValue("doctor_phone") || "+212 ");
+      setCabinetAddress(getValue("cabinet_address"));
+      setCabinetZipCode(getValue("cabinet_zip_code"));
+      setCabinetCity(getValue("cabinet_city"));
+      setCabinetPhone(getValue("cabinet_phone") || "+212 ");
+      setOpenTime(getValue("open_time") || "08:00");
+      setCloseTime(getValue("close_time") || "19:00");
+      setInitialized(true);
     }
-  }, [isLoading, getSettingValue]);
+  }, [isLoading, settings, initialized]);
 
   const formatMoroccanPhone = (value: string) => {
     // Keep +212 prefix and format the rest
