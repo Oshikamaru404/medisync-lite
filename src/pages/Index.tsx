@@ -69,23 +69,23 @@ const Index = () => {
       {/* Header */}
       <header className="relative overflow-hidden border-b border-border/50 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
         {/* Background decoration */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-50"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-50"></div>
         
-        <div className="relative container mx-auto px-6 py-6">
-          <div className="flex items-center justify-center">
-            {/* Logo container with subtle glow */}
+        <div className="relative container mx-auto px-6 py-5">
+          <div className="flex items-center justify-between">
+            {/* Logo container with subtle glow - left aligned */}
             <div className="relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary/15 to-secondary/15 rounded-xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
-              <div className="relative bg-card/70 backdrop-blur-sm px-6 py-3 rounded-xl border border-border/40 shadow-lg">
-                <img src={logo} alt="MediCare ERP" className="h-14 md:h-16 w-auto" />
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 to-secondary/15 rounded-xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+              <div className="relative bg-card/70 backdrop-blur-sm px-5 py-2.5 rounded-xl border border-border/40 shadow-lg">
+                <img src={logo} alt="MediCare ERP" className="h-16 md:h-20 w-auto" />
               </div>
             </div>
-          </div>
           
-          {/* Offline badge */}
-          <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
-            <div className="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
-            <span className="text-xs font-medium text-secondary">Offline</span>
+            {/* Offline badge - right aligned */}
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
+              <div className="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+              <span className="text-xs font-medium text-secondary">Offline</span>
+            </div>
           </div>
         </div>
       </header>
