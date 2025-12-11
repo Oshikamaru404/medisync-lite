@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { DashboardTile } from "@/components/DashboardTile";
 import {
   Calendar,
@@ -9,8 +10,19 @@ import {
   ListOrdered,
 } from "lucide-react";
 import logo from "@/assets/logo.svg";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const Index = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Dashboard principal avec 6 modules
   const tiles = [
     {
@@ -71,13 +83,28 @@ const Index = () => {
         {/* Background decoration */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-50"></div>
         
-        <div className="relative container mx-auto px-6 py-5">
+        <div className="relative container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo container with subtle glow - left aligned */}
             <div className="relative group">
               <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 to-secondary/15 rounded-xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
-              <div className="relative bg-card/70 backdrop-blur-sm px-5 py-2.5 rounded-xl border border-border/40 shadow-lg">
-                <img src={logo} alt="MediCare ERP" className="h-16 md:h-20 w-auto" />
+              <div className="relative bg-card/70 backdrop-blur-sm px-4 py-2 rounded-xl border border-border/40 shadow-lg">
+                <img src={logo} alt="MediCare ERP" className="h-12 md:h-14 w-auto" />
+              </div>
+            </div>
+            {/* Central element - Cabinet name & DateTime */}
+            <div className="flex flex-col items-center text-center">
+              <h1 className="text-lg md:text-xl font-semibold text-foreground tracking-tight">
+                Cabinet Médical
+              </h1>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <span className="capitalize">
+                  {format(currentTime, "EEEE d MMMM yyyy", { locale: fr })}
+                </span>
+                <span className="text-border">•</span>
+                <span className="font-mono text-primary">
+                  {format(currentTime, "HH:mm:ss")}
+                </span>
               </div>
             </div>
           
