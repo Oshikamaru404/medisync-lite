@@ -12,9 +12,11 @@ import {
 import logo from "@/assets/logo.svg";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useSettings } from "@/hooks/useSettings";
 
 const Index = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { cabinetName, isLoading: settingsLoading } = useSettings();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -95,7 +97,7 @@ const Index = () => {
             {/* Central element - Cabinet name & DateTime */}
             <div className="flex flex-col items-center text-center">
               <h1 className="text-lg md:text-xl font-semibold text-foreground tracking-tight">
-                Cabinet Médical
+                {settingsLoading ? "Chargement..." : cabinetName}
               </h1>
               <div className="flex items-center gap-2 text-muted-foreground text-sm">
                 <span className="capitalize">
