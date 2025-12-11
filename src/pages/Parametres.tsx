@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { ArrowLeft, User, Building2, Bell, Lock, Palette } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,9 +8,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { useSettings } from "@/hooks/useSettings";
 
 const Parametres = () => {
   const navigate = useNavigate();
+  const { getSettingValue, updateSetting, isLoading } = useSettings();
+  
+  const [specialty, setSpecialty] = useState("");
+  const [doctorName, setDoctorName] = useState("");
+
+  useEffect(() => {
+    if (!isLoading) {
+      setSpecialty(getSettingValue("cabinet_specialty"));
+      setDoctorName(getSettingValue("doctor_name"));
+    }
+  }, [isLoading, getSettingValue]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -101,10 +114,45 @@ const Parametres = () => {
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-6">Informations du cabinet</h3>
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="cabinetName">Nom du cabinet</Label>
-                  <Input id="cabinetName" placeholder="Cabinet médical..." />
+                <div className="p-4 rounded-lg bg-muted/50 border border-border">
+                  <p className="text-sm text-muted-foreground mb-1">Nom affiché :</p>
+                  <p className="font-semibold text-foreground">
+                    Cabinet {specialty || "[Spécialité]"} Dr {doctorName || "[Nom]"}
+                  </p>
                 </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="specialty">Spécialité</Label>
+                    <Input 
+                      id="specialty" 
+                      placeholder="Ex: Médecine Générale" 
+                      value={specialty}
+                      onChange={(e) => setSpecialty(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="doctorName">Nom du docteur</Label>
+                    <Input 
+                      id="doctorName" 
+                      placeholder="Ex: MARTIN" 
+                      value={doctorName}
+                      onChange={(e) => setDoctorName(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <Button 
+                  onClick={() => {
+                    updateSetting.mutate({ key: "cabinet_specialty", value: specialty });
+                    updateSetting.mutate({ key: "doctor_name", value: doctorName });
+                  }}
+                  disabled={updateSetting.isPending}
+                >
+                  Enregistrer le nom du cabinet
+                </Button>
+
+                <Separator />
 
                 <div className="space-y-2">
                   <Label htmlFor="address">Adresse</Label>
