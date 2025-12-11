@@ -69,31 +69,23 @@ const Index = () => {
       {/* Header */}
       <header className="relative overflow-hidden border-b border-border/50 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
         {/* Background decoration */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-60"></div>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-primary/5 to-transparent blur-3xl"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-50"></div>
         
-        <div className="relative container mx-auto px-6 py-12">
-          <div className="flex flex-col items-center justify-center gap-6">
-            {/* Logo container with glow effect */}
+        <div className="relative container mx-auto px-6 py-6">
+          <div className="flex items-center justify-center">
+            {/* Logo container with subtle glow */}
             <div className="relative group">
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-primary/10 to-secondary/20 rounded-3xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity duration-500"></div>
-              <div className="relative bg-card/80 backdrop-blur-sm px-10 py-6 rounded-2xl border border-border/50 shadow-xl shadow-primary/5">
-                <img src={logo} alt="MediCare ERP" className="h-24 md:h-28 lg:h-32 w-auto drop-shadow-lg" />
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/15 to-secondary/15 rounded-xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
+              <div className="relative bg-card/70 backdrop-blur-sm px-6 py-3 rounded-xl border border-border/40 shadow-lg">
+                <img src={logo} alt="MediCare ERP" className="h-14 md:h-16 w-auto" />
               </div>
             </div>
-            
-            {/* Tagline */}
-            <p className="text-muted-foreground text-sm md:text-base tracking-wide">
-              Gestion médicale simplifiée • Offline-first
-            </p>
           </div>
           
-          {/* Offline badge - positioned absolute */}
-          <div className="absolute right-6 top-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 backdrop-blur-sm">
-            <div className="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></div>
-            <span className="text-sm font-medium text-secondary">
-              Mode Offline
-            </span>
+          {/* Offline badge */}
+          <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
+            <div className="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+            <span className="text-xs font-medium text-secondary">Offline</span>
           </div>
         </div>
       </header>
