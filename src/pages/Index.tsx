@@ -67,18 +67,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img src={logo} alt="MediCare ERP" className="h-14 w-auto" />
-              <p className="text-muted-foreground hidden sm:block">
-                Gestion médicale simplifiée et offline-first
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 rounded-full bg-secondary animate-pulse"></div>
-              <span className="text-sm font-medium text-muted-foreground">
+      <header className="border-b border-border bg-gradient-to-r from-card via-background to-card">
+        <div className="container mx-auto px-6 py-8">
+          <div className="relative flex items-center justify-center">
+            <img src={logo} alt="MediCare ERP" className="h-20 md:h-24 w-auto" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
+              <div className="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></div>
+              <span className="text-sm font-medium text-secondary">
                 Mode Offline
               </span>
             </div>
