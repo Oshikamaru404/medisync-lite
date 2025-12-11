@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, User, Building2, Bell, Lock, Palette } from "lucide-react";
+import { ArrowLeft, Building2, Bell, Lock, Palette, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,20 +9,80 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { useSettings } from "@/hooks/useSettings";
+import { toast } from "sonner";
 
 const Parametres = () => {
   const navigate = useNavigate();
   const { getSettingValue, updateSetting, isLoading } = useSettings();
   
+  // Cabinet & Doctor settings
   const [specialty, setSpecialty] = useState("");
   const [doctorName, setDoctorName] = useState("");
+  const [doctorFirstName, setDoctorFirstName] = useState("");
+  const [doctorEmail, setDoctorEmail] = useState("");
+  const [doctorPhone, setDoctorPhone] = useState("+212 ");
+  const [cabinetAddress, setCabinetAddress] = useState("");
+  const [cabinetZipCode, setCabinetZipCode] = useState("");
+  const [cabinetCity, setCabinetCity] = useState("");
+  const [cabinetPhone, setCabinetPhone] = useState("+212 ");
+  const [openTime, setOpenTime] = useState("08:00");
+  const [closeTime, setCloseTime] = useState("19:00");
 
   useEffect(() => {
     if (!isLoading) {
-      setSpecialty(getSettingValue("cabinet_specialty"));
-      setDoctorName(getSettingValue("doctor_name"));
+      setSpecialty(getSettingValue("cabinet_specialty") || "");
+      setDoctorName(getSettingValue("doctor_name") || "");
+      setDoctorFirstName(getSettingValue("doctor_first_name") || "");
+      setDoctorEmail(getSettingValue("doctor_email") || "");
+      setDoctorPhone(getSettingValue("doctor_phone") || "+212 ");
+      setCabinetAddress(getSettingValue("cabinet_address") || "");
+      setCabinetZipCode(getSettingValue("cabinet_zip_code") || "");
+      setCabinetCity(getSettingValue("cabinet_city") || "");
+      setCabinetPhone(getSettingValue("cabinet_phone") || "+212 ");
+      setOpenTime(getSettingValue("open_time") || "08:00");
+      setCloseTime(getSettingValue("close_time") || "19:00");
     }
   }, [isLoading, getSettingValue]);
+
+  const formatMoroccanPhone = (value: string) => {
+    // Keep +212 prefix and format the rest
+    let cleaned = value.replace(/[^\d+]/g, "");
+    if (!cleaned.startsWith("+212")) {
+      cleaned = "+212" + cleaned.replace("+", "");
+    }
+    // Format: +212 6XX XX XX XX
+    const digits = cleaned.slice(4);
+    if (digits.length <= 3) {
+      return `+212 ${digits}`;
+    } else if (digits.length <= 5) {
+      return `+212 ${digits.slice(0, 3)} ${digits.slice(3)}`;
+    } else if (digits.length <= 7) {
+      return `+212 ${digits.slice(0, 3)} ${digits.slice(3, 5)} ${digits.slice(5)}`;
+    } else {
+      return `+212 ${digits.slice(0, 3)} ${digits.slice(3, 5)} ${digits.slice(5, 7)} ${digits.slice(7, 9)}`;
+    }
+  };
+
+  const handleSaveAll = async () => {
+    const settings = [
+      { key: "cabinet_specialty", value: specialty },
+      { key: "doctor_name", value: doctorName },
+      { key: "doctor_first_name", value: doctorFirstName },
+      { key: "doctor_email", value: doctorEmail },
+      { key: "doctor_phone", value: doctorPhone },
+      { key: "cabinet_address", value: cabinetAddress },
+      { key: "cabinet_zip_code", value: cabinetZipCode },
+      { key: "cabinet_city", value: cabinetCity },
+      { key: "cabinet_phone", value: cabinetPhone },
+      { key: "open_time", value: openTime },
+      { key: "close_time", value: closeTime },
+    ];
+
+    for (const setting of settings) {
+      await updateSetting.mutateAsync(setting);
+    }
+    toast.success("Tous les paramètres ont été enregistrés");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -44,15 +104,11 @@ const Parametres = () => {
       </header>
 
       <main className="container mx-auto px-6 py-8 max-w-5xl">
-        <Tabs defaultValue="profile" className="space-y-6">
+        <Tabs defaultValue="cabinet" className="space-y-6">
           <TabsList>
-            <TabsTrigger value="profile" className="gap-2">
-              <User className="w-4 h-4" />
-              Profil
-            </TabsTrigger>
             <TabsTrigger value="cabinet" className="gap-2">
               <Building2 className="w-4 h-4" />
-              Cabinet
+              Cabinet & Praticien
             </TabsTrigger>
             <TabsTrigger value="notifications" className="gap-2">
               <Bell className="w-4 h-4" />
@@ -68,134 +124,161 @@ const Parametres = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="profile">
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-6">Informations du praticien</h3>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">Prénom</Label>
-                    <Input id="firstName" placeholder="Votre prénom" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Nom</Label>
-                    <Input id="lastName" placeholder="Votre nom" />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="specialty">Spécialité</Label>
-                  <Input id="specialty" placeholder="Ex: Médecine générale" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="rpps">N° RPPS</Label>
-                  <Input id="rpps" placeholder="Numéro RPPS" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="email@exemple.com" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Téléphone</Label>
-                  <Input id="phone" type="tel" placeholder="+33 6 12 34 56 78" />
-                </div>
-
-                <Separator />
-
-                <Button>Enregistrer les modifications</Button>
-              </div>
-            </Card>
-          </TabsContent>
-
           <TabsContent value="cabinet">
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-6">Informations du cabinet</h3>
-              <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-muted/50 border border-border">
-                  <p className="text-sm text-muted-foreground mb-1">Nom affiché :</p>
-                  <p className="font-semibold text-foreground">
-                    Cabinet {specialty || "[Spécialité]"} Dr {doctorName || "[Nom]"}
-                  </p>
-                </div>
+            <div className="space-y-6">
+              {/* Preview du nom */}
+              <Card className="p-4 bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
+                <p className="text-sm text-muted-foreground mb-1">Nom affiché sur le dashboard :</p>
+                <p className="text-xl font-semibold text-foreground">
+                  Cabinet {specialty || "[Spécialité]"} Dr {doctorName || "[Nom]"}
+                </p>
+              </Card>
 
-                <div className="grid grid-cols-2 gap-4">
+              {/* Informations du praticien */}
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold mb-6">Informations du praticien</h3>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="doctorFirstName">Prénom</Label>
+                      <Input 
+                        id="doctorFirstName" 
+                        placeholder="Votre prénom" 
+                        value={doctorFirstName}
+                        onChange={(e) => setDoctorFirstName(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="doctorName">Nom</Label>
+                      <Input 
+                        id="doctorName" 
+                        placeholder="Votre nom" 
+                        value={doctorName}
+                        onChange={(e) => setDoctorName(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="specialty">Spécialité</Label>
                     <Input 
                       id="specialty" 
-                      placeholder="Ex: Médecine Générale" 
+                      placeholder="Ex: Médecine Générale, Cardiologie..." 
                       value={specialty}
                       onChange={(e) => setSpecialty(e.target.value)}
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="doctorName">Nom du docteur</Label>
-                    <Input 
-                      id="doctorName" 
-                      placeholder="Ex: MARTIN" 
-                      value={doctorName}
-                      onChange={(e) => setDoctorName(e.target.value)}
-                    />
-                  </div>
-                </div>
 
-                <Button 
-                  onClick={() => {
-                    updateSetting.mutate({ key: "cabinet_specialty", value: specialty });
-                    updateSetting.mutate({ key: "doctor_name", value: doctorName });
-                  }}
-                  disabled={updateSetting.isPending}
-                >
-                  Enregistrer le nom du cabinet
-                </Button>
-
-                <Separator />
-
-                <div className="space-y-2">
-                  <Label htmlFor="address">Adresse</Label>
-                  <Input id="address" placeholder="Numéro et rue" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="zipCode">Code postal</Label>
-                    <Input id="zipCode" placeholder="75001" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="city">Ville</Label>
-                    <Input id="city" placeholder="Paris" />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="cabinetPhone">Téléphone cabinet</Label>
-                  <Input id="cabinetPhone" type="tel" placeholder="+33 1 23 45 67 89" />
-                </div>
-
-                <Separator />
-
-                <div className="space-y-4">
-                  <h4 className="font-medium">Horaires d'ouverture</h4>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="openTime">Ouverture</Label>
-                      <Input id="openTime" type="time" defaultValue="08:00" />
+                      <Label htmlFor="doctorEmail">Email</Label>
+                      <Input 
+                        id="doctorEmail" 
+                        type="email" 
+                        placeholder="email@exemple.com" 
+                        value={doctorEmail}
+                        onChange={(e) => setDoctorEmail(e.target.value)}
+                      />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="closeTime">Fermeture</Label>
-                      <Input id="closeTime" type="time" defaultValue="19:00" />
+                      <Label htmlFor="doctorPhone">Téléphone personnel</Label>
+                      <Input 
+                        id="doctorPhone" 
+                        type="tel" 
+                        placeholder="+212 6XX XX XX XX" 
+                        value={doctorPhone}
+                        onChange={(e) => setDoctorPhone(formatMoroccanPhone(e.target.value))}
+                      />
                     </div>
                   </div>
                 </div>
+              </Card>
 
-                <Separator />
+              {/* Informations du cabinet */}
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold mb-6">Informations du cabinet</h3>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="cabinetAddress">Adresse</Label>
+                    <Input 
+                      id="cabinetAddress" 
+                      placeholder="Numéro et rue" 
+                      value={cabinetAddress}
+                      onChange={(e) => setCabinetAddress(e.target.value)}
+                    />
+                  </div>
 
-                <Button>Enregistrer les modifications</Button>
-              </div>
-            </Card>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="cabinetZipCode">Code postal</Label>
+                      <Input 
+                        id="cabinetZipCode" 
+                        placeholder="20000" 
+                        value={cabinetZipCode}
+                        onChange={(e) => setCabinetZipCode(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="cabinetCity">Ville</Label>
+                      <Input 
+                        id="cabinetCity" 
+                        placeholder="Casablanca" 
+                        value={cabinetCity}
+                        onChange={(e) => setCabinetCity(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="cabinetPhone">Téléphone du cabinet</Label>
+                    <Input 
+                      id="cabinetPhone" 
+                      type="tel" 
+                      placeholder="+212 5XX XX XX XX" 
+                      value={cabinetPhone}
+                      onChange={(e) => setCabinetPhone(formatMoroccanPhone(e.target.value))}
+                    />
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Horaires d'ouverture</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="openTime">Ouverture</Label>
+                        <Input 
+                          id="openTime" 
+                          type="time" 
+                          value={openTime}
+                          onChange={(e) => setOpenTime(e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="closeTime">Fermeture</Label>
+                        <Input 
+                          id="closeTime" 
+                          type="time" 
+                          value={closeTime}
+                          onChange={(e) => setCloseTime(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Save button */}
+              <Button 
+                onClick={handleSaveAll}
+                disabled={updateSetting.isPending}
+                className="w-full gap-2"
+                size="lg"
+              >
+                <Save className="w-4 h-4" />
+                Enregistrer tous les paramètres
+              </Button>
+            </div>
           </TabsContent>
 
           <TabsContent value="notifications">

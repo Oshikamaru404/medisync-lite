@@ -39,7 +39,6 @@ export const useSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });
-      toast.success("Paramètre mis à jour");
     },
     onError: () => {
       toast.error("Erreur lors de la mise à jour");
