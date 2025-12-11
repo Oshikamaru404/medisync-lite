@@ -95,18 +95,23 @@ const Index = () => {
               </div>
             </div>
             {/* Central element - Cabinet name & DateTime */}
-            <div className="flex flex-col items-center text-center">
-              <h1 className="text-lg md:text-xl font-semibold text-foreground tracking-tight">
-                {settingsLoading ? "Chargement..." : cabinetName}
-              </h1>
-              <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                <span className="capitalize">
-                  {format(currentTime, "EEEE d MMMM yyyy", { locale: fr })}
-                </span>
-                <span className="text-border">•</span>
-                <span className="font-mono text-primary">
-                  {format(currentTime, "HH:mm:ss")}
-                </span>
+            <div className="relative group">
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 rounded-xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
+              <div className="relative bg-card/70 backdrop-blur-sm px-6 py-3 rounded-xl border border-border/40 shadow-lg">
+                <div className="flex flex-col items-center text-center">
+                  <h1 className="text-lg md:text-xl font-semibold text-foreground tracking-tight">
+                    {settingsLoading ? "Chargement..." : cabinetName}
+                  </h1>
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <span className="capitalize">
+                      {format(currentTime, "EEEE d MMMM yyyy", { locale: fr })}
+                    </span>
+                    <span className="text-border">•</span>
+                    <span className="font-mono text-primary">
+                      {format(currentTime, "HH:mm:ss")}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           
