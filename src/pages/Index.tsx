@@ -5,7 +5,6 @@ import {
   Users,
   Calculator,
   BarChart3,
-  RefreshCw,
   Settings,
   ListOrdered,
 } from "lucide-react";
@@ -61,13 +60,6 @@ const Index = () => {
       icon: BarChart3,
       colorScheme: "statistiques" as const,
       href: "/statistiques",
-    },
-    {
-      title: "Synchronisation",
-      description: "Sync cloud (optionnel)",
-      icon: RefreshCw,
-      colorScheme: "sync" as const,
-      href: "/synchronisation",
     },
     {
       title: "Paramètres",
