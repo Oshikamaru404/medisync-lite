@@ -10,7 +10,6 @@ import Agenda from "./pages/Agenda";
 import FileAttente from "./pages/FileAttente";
 import Comptabilite from "./pages/Comptabilite";
 import Statistiques from "./pages/Statistiques";
-import Synchronisation from "./pages/Synchronisation";
 import Parametres from "./pages/Parametres";
 import NotFound from "./pages/NotFound";
 
@@ -30,7 +29,6 @@ const App = () => (
           <Route path="/patients/:id" element={<PatientDetail />} />
           <Route path="/comptabilite" element={<Comptabilite />} />
           <Route path="/statistiques" element={<Statistiques />} />
-          <Route path="/synchronisation" element={<Synchronisation />} />
           <Route path="/parametres" element={<Parametres />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
