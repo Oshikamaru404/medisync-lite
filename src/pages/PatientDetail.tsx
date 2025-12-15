@@ -15,6 +15,7 @@ import { PatientIdentityTab } from "@/components/PatientIdentityTab";
 import { PatientIdentityCompact } from "@/components/PatientIdentityCompact";
 import { MedicalRecordAccordion } from "@/components/MedicalRecordAccordion";
 import { PatientHistoryTab } from "@/components/PatientHistoryTab";
+import { PrescriptionsList } from "@/components/PrescriptionsList";
 import { cn } from "@/lib/utils";
 import { differenceInYears, parseISO } from "date-fns";
 
@@ -163,7 +164,7 @@ const PatientDetail = () => {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         <Tabs defaultValue="medical" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-muted/30 p-1.5 h-auto gap-1.5">
+          <TabsList className="grid w-full grid-cols-4 bg-muted/30 p-1.5 h-auto gap-1.5">
             <TabsTrigger 
               value="medical"
               className="bg-emerald-100/60 text-emerald-700 hover:bg-emerald-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
@@ -173,12 +174,20 @@ const PatientDetail = () => {
               <span className="sm:hidden">Médical</span>
             </TabsTrigger>
             <TabsTrigger 
+              value="prescriptions"
+              className="bg-blue-100/60 text-blue-700 hover:bg-blue-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+            >
+              <Pill className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Ordonnances</span>
+              <span className="sm:hidden">Ordo.</span>
+            </TabsTrigger>
+            <TabsTrigger 
               value="documents"
               className="bg-violet-100/60 text-violet-700 hover:bg-violet-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
             >
               <Upload className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Documents Scannés</span>
-              <span className="sm:hidden">Documents</span>
+              <span className="hidden sm:inline">Documents</span>
+              <span className="sm:hidden">Docs</span>
             </TabsTrigger>
             <TabsTrigger 
               value="history"
@@ -186,7 +195,7 @@ const PatientDetail = () => {
             >
               <History className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Historique</span>
-              <span className="sm:hidden">Historique</span>
+              <span className="sm:hidden">Hist.</span>
             </TabsTrigger>
           </TabsList>
 
@@ -236,6 +245,16 @@ const PatientDetail = () => {
                   <PatientIdentityTab patient={patient} />
                 </Card>
               </div>
+            )}
+          </TabsContent>
+
+          {/* Prescriptions Tab */}
+          <TabsContent value="prescriptions" className="mt-6">
+            {id && patient && (
+              <PrescriptionsList
+                patientId={id}
+                patientName={`${patient.prenom} ${patient.nom}`}
+              />
             )}
           </TabsContent>
 

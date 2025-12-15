@@ -172,18 +172,30 @@ export type Database = {
       medications: {
         Row: {
           created_at: string | null
+          dci: string | null
+          dosage_defaut: string | null
+          forme: string | null
           id: string
           nom: string
+          unite: string | null
         }
         Insert: {
           created_at?: string | null
+          dci?: string | null
+          dosage_defaut?: string | null
+          forme?: string | null
           id?: string
           nom: string
+          unite?: string | null
         }
         Update: {
           created_at?: string | null
+          dci?: string | null
+          dosage_defaut?: string | null
+          forme?: string | null
           id?: string
           nom?: string
+          unite?: string | null
         }
         Relationships: []
       }
@@ -246,6 +258,89 @@ export type Database = {
           telephone_personne_contact?: string | null
         }
         Relationships: []
+      }
+      prescription_items: {
+        Row: {
+          dosage: string | null
+          duree: string | null
+          id: string
+          instructions: string | null
+          medication_id: string | null
+          nom_medicament: string
+          ordre: number
+          posologie: string
+          prescription_id: string
+        }
+        Insert: {
+          dosage?: string | null
+          duree?: string | null
+          id?: string
+          instructions?: string | null
+          medication_id?: string | null
+          nom_medicament: string
+          ordre?: number
+          posologie: string
+          prescription_id: string
+        }
+        Update: {
+          dosage?: string | null
+          duree?: string | null
+          id?: string
+          instructions?: string | null
+          medication_id?: string | null
+          nom_medicament?: string
+          ordre?: number
+          posologie?: string
+          prescription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescription_items_medication_id_fkey"
+            columns: ["medication_id"]
+            isOneToOne: false
+            referencedRelation: "medications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prescription_items_prescription_id_fkey"
+            columns: ["prescription_id"]
+            isOneToOne: false
+            referencedRelation: "prescriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prescriptions: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          notes: string | null
+          patient_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          id?: string
+          notes?: string | null
+          patient_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          notes?: string | null
+          patient_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescriptions_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       queue: {
         Row: {
