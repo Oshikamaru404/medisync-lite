@@ -31,6 +31,7 @@ interface PrescriptionRequest {
     doctor: string;
     specialty: string;
     specialtyArabic?: string;
+    specialtyIcon?: string;
     orderNumber?: string;
     address: string;
     city?: string;
@@ -91,6 +92,60 @@ serve(async (req) => {
       )
       .join("");
 
+    // Get the specialty logo SVG
+    const getSpecialtyLogoSvg = (iconName: string): string => {
+      const logos: Record<string, string> = {
+        ear: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M65 20C75 25 82 38 82 52C82 66 75 78 65 85C55 92 42 88 35 78C28 68 25 55 30 42C35 29 48 18 65 20Z" stroke="currentColor" stroke-width="4" fill="none"/>
+          <path d="M55 35C60 38 65 45 65 55C65 65 58 72 50 70C42 68 38 58 42 48C46 38 50 32 55 35Z" stroke="currentColor" stroke-width="3" fill="none"/>
+          <circle cx="50" cy="55" r="5" fill="currentColor"/>
+        </svg>`,
+        stethoscope: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 20V45C30 60 40 70 55 70C70 70 80 60 80 45V20" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <circle cx="55" cy="78" r="8" stroke="currentColor" stroke-width="3" fill="none"/>
+          <circle cx="30" cy="15" r="5" fill="currentColor"/>
+          <circle cx="80" cy="15" r="5" fill="currentColor"/>
+        </svg>`,
+        "heart-pulse": `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 85L15 50C5 40 5 25 20 15C35 5 50 20 50 20C50 20 65 5 80 15C95 25 95 40 85 50L50 85Z" stroke="currentColor" stroke-width="4" fill="none"/>
+          <path d="M20 50H35L40 35L50 65L60 45L65 50H80" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`,
+        eye: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="50" rx="40" ry="25" stroke="currentColor" stroke-width="4" fill="none"/>
+          <circle cx="50" cy="50" r="15" stroke="currentColor" stroke-width="3" fill="none"/>
+          <circle cx="50" cy="50" r="6" fill="currentColor"/>
+        </svg>`,
+        brain: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 15C35 15 25 25 25 40C25 45 27 50 30 55C25 58 20 65 20 72C20 82 28 88 38 88C42 88 46 87 50 85C54 87 58 88 62 88C72 88 80 82 80 72C80 65 75 58 70 55C73 50 75 45 75 40C75 25 65 15 50 15Z" stroke="currentColor" stroke-width="4" fill="none"/>
+          <path d="M50 25V85" stroke="currentColor" stroke-width="2"/>
+        </svg>`,
+        baby: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="40" r="25" stroke="currentColor" stroke-width="4" fill="none"/>
+          <circle cx="42" cy="38" r="3" fill="currentColor"/>
+          <circle cx="58" cy="38" r="3" fill="currentColor"/>
+          <path d="M44 48C46 52 54 52 56 48" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M35 65V80C35 85 42 88 50 88C58 88 65 85 65 80V65" stroke="currentColor" stroke-width="4" fill="none"/>
+        </svg>`,
+        heart: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 85L15 50C5 40 5 25 20 15C35 5 50 20 50 20C50 20 65 5 80 15C95 25 95 40 85 50L50 85Z" stroke="currentColor" stroke-width="4" fill="none"/>
+        </svg>`,
+        bone: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25 25C20 20 15 25 15 32C15 38 20 40 22 42L58 78C60 80 62 85 68 85C75 85 80 80 75 75" stroke="currentColor" stroke-width="4" fill="none"/>
+          <circle cx="20" cy="28" r="6" stroke="currentColor" stroke-width="3" fill="none"/>
+          <circle cx="28" cy="20" r="6" stroke="currentColor" stroke-width="3" fill="none"/>
+        </svg>`,
+        smile: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="35" stroke="currentColor" stroke-width="4" fill="none"/>
+          <circle cx="38" cy="42" r="4" fill="currentColor"/>
+          <circle cx="62" cy="42" r="4" fill="currentColor"/>
+          <path d="M35 60C40 70 60 70 65 60" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>`,
+      };
+      return logos[iconName] || logos.stethoscope;
+    };
+
+    const specialtyLogo = getSpecialtyLogoSvg(cabinet.specialtyIcon || "stethoscope");
+
     const html = `
       <!DOCTYPE html>
       <html>
@@ -128,6 +183,17 @@ serve(async (req) => {
           .header-left {
             text-align: left;
             flex: 1;
+          }
+          .header-center {
+            flex: 0 0 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .header-center svg {
+            width: 70px;
+            height: 70px;
+            color: #c05621;
           }
           .header-right {
             text-align: right;
@@ -311,6 +377,9 @@ serve(async (req) => {
             <div class="doctor-name">${cabinet.doctor}</div>
             <div class="specialty">${cabinet.specialty}</div>
             ${cabinet.orderNumber ? `<div class="order-number">N° d'ordre : ${cabinet.orderNumber}</div>` : ""}
+          </div>
+          <div class="header-center">
+            ${specialtyLogo}
           </div>
           <div class="header-right">
             ${cabinet.specialtyArabic ? `<div class="arabic-text">${cabinet.specialtyArabic}</div>` : ""}

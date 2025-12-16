@@ -8,16 +8,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSettings } from "@/hooks/useSettings";
 import { toast } from "sonner";
+import { MEDICAL_SPECIALTIES, getSpecialtyById, getSpecialtyLogo } from "@/data/specialties";
 
 const Parametres = () => {
   const navigate = useNavigate();
   const { settings, updateSetting, isLoading } = useSettings();
   
   // Cabinet & Doctor settings
+  const [specialtyId, setSpecialtyId] = useState("");
   const [specialty, setSpecialty] = useState("");
   const [specialtyArabic, setSpecialtyArabic] = useState("");
+  const [specialtyIcon, setSpecialtyIcon] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
   const [doctorName, setDoctorName] = useState("");
   const [doctorFirstName, setDoctorFirstName] = useState("");
@@ -54,8 +58,10 @@ const Parametres = () => {
     if (!isLoading && settings && !initialized) {
       const getValue = (key: string) => settings.find(s => s.key === key)?.value || "";
       
+      setSpecialtyId(getValue("cabinet_specialty_id"));
       setSpecialty(getValue("cabinet_specialty"));
       setSpecialtyArabic(getValue("cabinet_specialty_arabic"));
+      setSpecialtyIcon(getValue("cabinet_specialty_icon"));
       setOrderNumber(getValue("order_number"));
       setDoctorName(getValue("doctor_name"));
       setDoctorFirstName(getValue("doctor_first_name"));
@@ -92,8 +98,10 @@ const Parametres = () => {
 
   const handleSaveAll = async () => {
     const settings = [
+      { key: "cabinet_specialty_id", value: specialtyId },
       { key: "cabinet_specialty", value: specialty },
       { key: "cabinet_specialty_arabic", value: specialtyArabic },
+      { key: "cabinet_specialty_icon", value: specialtyIcon },
       { key: "order_number", value: orderNumber },
       { key: "doctor_name", value: doctorName },
       { key: "doctor_first_name", value: doctorFirstName },
@@ -192,27 +200,48 @@ const Parametres = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="specialty">Spécialité</Label>
-                      <Input 
-                        id="specialty" 
-                        placeholder="Ex: ORL, Cardiologie..." 
-                        value={specialty}
-                        onChange={(e) => setSpecialty(e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="specialtyArabic">Spécialité (Arabe)</Label>
-                      <Input 
-                        id="specialtyArabic" 
-                        placeholder="أخصائي في طب..." 
-                        value={specialtyArabic}
-                        onChange={(e) => setSpecialtyArabic(e.target.value)}
-                        dir="rtl"
-                      />
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="specialty">Spécialité</Label>
+                    <Select
+                      value={specialtyId}
+                      onValueChange={(value) => {
+                        const spec = getSpecialtyById(value);
+                        if (spec) {
+                          setSpecialtyId(value);
+                          setSpecialty(spec.nameFr);
+                          setSpecialtyArabic(spec.nameAr);
+                          setSpecialtyIcon(spec.icon);
+                        }
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionner une spécialité" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {MEDICAL_SPECIALTIES.map((spec) => (
+                          <SelectItem key={spec.id} value={spec.id}>
+                            {spec.nameFr}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
+
+                  {specialtyId && (
+                    <div className="grid grid-cols-2 gap-4 p-4 bg-muted/50 rounded-lg">
+                      <div className="space-y-2">
+                        <Label className="text-xs text-muted-foreground">Traduction arabe (auto)</Label>
+                        <p className="text-sm font-medium" dir="rtl">{specialtyArabic}</p>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-xs text-muted-foreground">Logo</Label>
+                        <div 
+                          className="w-16 h-16 text-primary"
+                          dangerouslySetInnerHTML={{ __html: getSpecialtyLogo(specialtyIcon) }}
+                        />
+                      </div>
+                    </div>
+                  )}
 
                   <div className="space-y-2">
                     <Label htmlFor="orderNumber">N° d'ordre (Conseil de l'Ordre)</Label>
