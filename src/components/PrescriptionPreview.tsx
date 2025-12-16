@@ -9,6 +9,7 @@ import { format, differenceInYears } from "date-fns";
 import { fr } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { getSpecialtyLogo } from "@/data/specialties";
 
 interface PrescriptionPreviewProps {
   prescriptionId: string;
@@ -29,11 +30,12 @@ export const PrescriptionPreview = ({
   const doctorName = getSettingValue("doctor_name") || "Dr. Nom";
   const specialty = getSettingValue("cabinet_specialty") || "Médecin Généraliste";
   const specialtyArabic = getSettingValue("cabinet_specialty_arabic") || "";
+  const specialtyIcon = getSettingValue("cabinet_specialty_icon") || "stethoscope";
   const orderNumber = getSettingValue("order_number") || "";
   const address = getSettingValue("cabinet_address") || "";
   const city = getSettingValue("cabinet_city") || "";
   const phone = getSettingValue("cabinet_phone") || "";
-  const email = getSettingValue("cabinet_email") || "";
+  const email = getSettingValue("cabinet_email") || getSettingValue("doctor_email") || "";
 
   const patientAge = patient?.date_naissance 
     ? differenceInYears(new Date(), new Date(patient.date_naissance))
@@ -65,6 +67,7 @@ export const PrescriptionPreview = ({
             doctor: doctorName,
             specialty,
             specialtyArabic,
+            specialtyIcon,
             orderNumber,
             address,
             city,
@@ -125,13 +128,20 @@ export const PrescriptionPreview = ({
         <div ref={printRef} className="p-8 print:p-4" style={{ color: "#1a365d" }}>
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
-            <div className="text-left">
+            <div className="text-left flex-1">
               <h1 className="text-xl font-bold" style={{ color: "#1a365d" }}>{doctorName}</h1>
               <p className="text-sm text-gray-700">{specialty}</p>
               {orderNumber && <p className="text-xs text-gray-500">N° d'ordre : {orderNumber}</p>}
             </div>
+            <div className="flex-shrink-0 mx-4">
+              <div 
+                className="w-20 h-20"
+                style={{ color: "#c05621" }}
+                dangerouslySetInnerHTML={{ __html: getSpecialtyLogo(specialtyIcon) }}
+              />
+            </div>
             {specialtyArabic && (
-              <div className="text-right" style={{ direction: "rtl" }}>
+              <div className="text-right flex-1" style={{ direction: "rtl" }}>
                 <p className="text-sm font-semibold" style={{ color: "#c05621" }}>{specialtyArabic}</p>
               </div>
             )}
