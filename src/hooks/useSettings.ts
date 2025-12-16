@@ -31,12 +31,25 @@ export const useSettings = () => {
 
   const updateSetting = useMutation({
     mutationFn: async ({ key, value }: { key: string; value: string }) => {
-      const { error } = await supabase
+      // Try to update first, if no rows affected, insert
+      const { data: existing } = await supabase
         .from("settings")
-        .update({ value })
-        .eq("key", key);
-      
-      if (error) throw error;
+        .select("id")
+        .eq("key", key)
+        .single();
+
+      if (existing) {
+        const { error } = await supabase
+          .from("settings")
+          .update({ value, updated_at: new Date().toISOString() })
+          .eq("key", key);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("settings")
+          .insert({ key, value });
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });

@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import { X, Printer, Download, Phone, MapPin, Mail } from "lucide-react";
+import { X, Printer, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { usePrescription } from "@/hooks/usePrescriptions";
 import { useSettings } from "@/hooks/useSettings";
 import { usePatient } from "@/hooks/usePatients";
-import { format } from "date-fns";
+import { format, differenceInYears } from "date-fns";
 import { fr } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -26,12 +26,18 @@ export const PrescriptionPreview = ({
   const { data: patient } = usePatient(prescription?.patient_id);
   const printRef = useRef<HTMLDivElement>(null);
 
-  const cabinetName = getSettingValue("cabinet_name") || "Cabinet Médical";
   const doctorName = getSettingValue("doctor_name") || "Dr. Nom";
   const specialty = getSettingValue("cabinet_specialty") || "Médecin Généraliste";
+  const specialtyArabic = getSettingValue("cabinet_specialty_arabic") || "";
+  const orderNumber = getSettingValue("order_number") || "";
   const address = getSettingValue("cabinet_address") || "";
+  const city = getSettingValue("cabinet_city") || "";
   const phone = getSettingValue("cabinet_phone") || "";
   const email = getSettingValue("cabinet_email") || "";
+
+  const patientAge = patient?.date_naissance 
+    ? differenceInYears(new Date(), new Date(patient.date_naissance))
+    : null;
 
   const handlePrint = () => {
     window.print();
@@ -55,10 +61,13 @@ export const PrescriptionPreview = ({
             },
           },
           cabinet: {
-            name: cabinetName,
+            name: `Cabinet ${specialty}`,
             doctor: doctorName,
             specialty,
+            specialtyArabic,
+            orderNumber,
             address,
+            city,
             phone,
             email,
           },
@@ -67,13 +76,14 @@ export const PrescriptionPreview = ({
 
       if (error) throw error;
 
-      // Download PDF
-      const link = document.createElement("a");
-      link.href = `data:application/pdf;base64,${data.pdf}`;
-      link.download = `ordonnance_${patientName.replace(/\s/g, "_")}_${format(new Date(prescription.date), "yyyy-MM-dd")}.pdf`;
-      link.click();
+      // Open HTML in new window for print/save
+      const printWindow = window.open("", "_blank");
+      if (printWindow) {
+        printWindow.document.write(data.html);
+        printWindow.document.close();
+      }
 
-      toast.success("PDF téléchargé avec succès");
+      toast.success("Ordonnance générée avec succès");
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error("Erreur lors de la génération du PDF");
@@ -103,7 +113,7 @@ export const PrescriptionPreview = ({
             </Button>
             <Button variant="outline" size="sm" onClick={handleDownloadPdf}>
               <Download className="w-4 h-4 mr-2" />
-              PDF
+              Ouvrir PDF
             </Button>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="w-4 h-4" />
@@ -111,108 +121,93 @@ export const PrescriptionPreview = ({
           </div>
         </div>
 
-        {/* Printable Content */}
-        <div ref={printRef} className="p-8 print:p-4">
+        {/* Printable Content - Moroccan Style */}
+        <div ref={printRef} className="p-8 print:p-4" style={{ color: "#1a365d" }}>
           {/* Header */}
-          <div className="border-b-2 border-primary pb-6 mb-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <h1 className="text-2xl font-bold text-primary">{cabinetName}</h1>
-                <p className="text-lg font-medium">{doctorName}</p>
-                <p className="text-muted-foreground">{specialty}</p>
-              </div>
-              <div className="text-right text-sm text-muted-foreground">
-                {address && (
-                  <div className="flex items-center justify-end gap-1">
-                    <MapPin className="w-3 h-3" />
-                    {address}
-                  </div>
-                )}
-                {phone && (
-                  <div className="flex items-center justify-end gap-1">
-                    <Phone className="w-3 h-3" />
-                    {phone}
-                  </div>
-                )}
-                {email && (
-                  <div className="flex items-center justify-end gap-1">
-                    <Mail className="w-3 h-3" />
-                    {email}
-                  </div>
-                )}
-              </div>
+          <div className="flex justify-between items-start mb-6">
+            <div className="text-left">
+              <h1 className="text-xl font-bold" style={{ color: "#1a365d" }}>{doctorName}</h1>
+              <p className="text-sm text-gray-700">{specialty}</p>
+              {orderNumber && <p className="text-xs text-gray-500">N° d'ordre : {orderNumber}</p>}
             </div>
+            {specialtyArabic && (
+              <div className="text-right" style={{ direction: "rtl" }}>
+                <p className="text-sm font-semibold" style={{ color: "#c05621" }}>{specialtyArabic}</p>
+              </div>
+            )}
           </div>
 
-          {/* Patient Info & Date */}
-          <div className="flex justify-between items-start mb-8">
-            <div>
-              <p className="text-sm text-muted-foreground">Patient</p>
-              <p className="font-semibold text-lg">{patientName}</p>
-              {patient?.date_naissance && (
-                <p className="text-sm text-muted-foreground">
-                  Né(e) le {format(new Date(patient.date_naissance), "d MMMM yyyy", { locale: fr })}
-                </p>
-              )}
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">Date</p>
-              <p className="font-semibold">
-                {format(new Date(prescription.date), "d MMMM yyyy", { locale: fr })}
+          {/* Patient Info */}
+          <div className="mb-4">
+            <div className="flex justify-between items-baseline mb-1">
+              <p className="text-sm">
+                Nom & Prénom : <span className="font-bold">{patientName}</span>
+              </p>
+              <p className="text-sm text-gray-500">
+                {city ? `${city}, le : ` : "Le : "}
+                {format(new Date(prescription.date), "dd/MM/yyyy")}
               </p>
             </div>
+            {patientAge && <p className="text-sm">Age : {patientAge} ans</p>}
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center my-5">
+            <div className="flex-1 h-0.5 bg-[#1a365d]"></div>
+            <div className="w-2.5 h-2.5 bg-[#1a365d] transform rotate-45 mx-2"></div>
+            <div className="flex-1 h-0.5 bg-[#1a365d]"></div>
           </div>
 
           {/* Title */}
-          <div className="text-center mb-8">
-            <h2 className="text-xl font-bold tracking-wide uppercase text-primary">
-              ORDONNANCE MÉDICALE
-            </h2>
-          </div>
+          <h2 className="text-center text-2xl font-bold tracking-widest uppercase mb-8" style={{ color: "#1a365d" }}>
+            ORDONNANCE
+          </h2>
 
           {/* Medications */}
-          <div className="space-y-6 mb-8">
+          <div className="space-y-6 mb-8 min-h-[200px]">
             {prescription.items?.map((item, index) => (
-              <div key={item.id || index} className="border-l-4 border-primary pl-4 py-2">
-                <div className="flex items-baseline gap-2">
-                  <span className="font-bold text-lg">{index + 1}.</span>
-                  <span className="font-bold text-lg">{item.nom_medicament}</span>
-                  {item.dosage && (
-                    <span className="text-muted-foreground">({item.dosage})</span>
-                  )}
+              <div key={item.id || index} className="flex justify-between items-start pl-8">
+                <div className="flex-1">
+                  <div className="text-sm uppercase" style={{ color: "#1a365d" }}>
+                    <span className="font-bold mr-4 inline-block min-w-[25px]">{index + 1}.</span>
+                    {item.nom_medicament.toUpperCase()}
+                    {item.dosage && ` ${item.dosage}`}
+                  </div>
+                  <p className="text-sm font-bold ml-10 mt-1" style={{ color: "#1a365d" }}>
+                    {item.posologie}
+                  </p>
                 </div>
-                <div className="ml-6 mt-1 space-y-1">
-                  <p className="text-foreground">{item.posologie}</p>
-                  {item.duree && (
-                    <p className="text-muted-foreground">Durée : {item.duree}</p>
-                  )}
-                  {item.instructions && (
-                    <p className="text-muted-foreground italic">{item.instructions}</p>
-                  )}
-                </div>
+                {item.duree && (
+                  <span className="text-sm font-semibold whitespace-nowrap" style={{ color: "#1a365d" }}>
+                    QSP {item.duree}
+                  </span>
+                )}
               </div>
             ))}
           </div>
 
           {/* Notes */}
           {prescription.notes && (
-            <div className="bg-muted/30 rounded-lg p-4 mb-8">
-              <p className="text-sm font-medium mb-1">Recommandations :</p>
-              <p className="text-muted-foreground">{prescription.notes}</p>
+            <div className="bg-gray-50 rounded p-4 mb-6 border-l-4 border-[#1a365d]">
+              <p className="text-sm font-semibold mb-1" style={{ color: "#1a365d" }}>Recommandations :</p>
+              <p className="text-sm text-gray-600">{prescription.notes}</p>
             </div>
           )}
 
-          {/* Signature */}
-          <div className="flex justify-end mt-12">
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-16">Signature et cachet</p>
-              <p className="font-medium">{doctorName}</p>
-            </div>
-          </div>
-
           {/* Footer */}
-          <div className="border-t pt-4 mt-8 text-center text-xs text-muted-foreground">
-            <p>Cette ordonnance est valable 3 mois à compter de sa date d'émission</p>
+          <div className="mt-16 pt-4 border-t border-[#1a365d]">
+            <div className="flex items-center mb-3">
+              <div className="w-2 h-2 border-2 border-[#1a365d] rounded-full"></div>
+              <div className="flex-1 h-px bg-[#1a365d] mx-1"></div>
+              <div className="w-2 h-2 border-2 border-[#1a365d] rounded-full"></div>
+            </div>
+            <p className="text-center text-xs mb-3" style={{ direction: "rtl", color: "#c05621" }}>
+              لا تتركوا الأدوية في متناول الأطفال
+            </p>
+            <div className="flex justify-between items-center text-xs text-gray-500">
+              {email && <span>✉ {email}</span>}
+              {phone && <span>📞 {phone}</span>}
+            </div>
           </div>
         </div>
       </Card>

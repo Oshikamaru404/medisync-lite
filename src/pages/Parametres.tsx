@@ -17,6 +17,8 @@ const Parametres = () => {
   
   // Cabinet & Doctor settings
   const [specialty, setSpecialty] = useState("");
+  const [specialtyArabic, setSpecialtyArabic] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
   const [doctorName, setDoctorName] = useState("");
   const [doctorFirstName, setDoctorFirstName] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
@@ -53,6 +55,8 @@ const Parametres = () => {
       const getValue = (key: string) => settings.find(s => s.key === key)?.value || "";
       
       setSpecialty(getValue("cabinet_specialty"));
+      setSpecialtyArabic(getValue("cabinet_specialty_arabic"));
+      setOrderNumber(getValue("order_number"));
       setDoctorName(getValue("doctor_name"));
       setDoctorFirstName(getValue("doctor_first_name"));
       setDoctorEmail(getValue("doctor_email"));
@@ -89,6 +93,8 @@ const Parametres = () => {
   const handleSaveAll = async () => {
     const settings = [
       { key: "cabinet_specialty", value: specialty },
+      { key: "cabinet_specialty_arabic", value: specialtyArabic },
+      { key: "order_number", value: orderNumber },
       { key: "doctor_name", value: doctorName },
       { key: "doctor_first_name", value: doctorFirstName },
       { key: "doctor_email", value: doctorEmail },
@@ -186,13 +192,35 @@ const Parametres = () => {
                     </div>
                   </div>
 
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="specialty">Spécialité</Label>
+                      <Input 
+                        id="specialty" 
+                        placeholder="Ex: ORL, Cardiologie..." 
+                        value={specialty}
+                        onChange={(e) => setSpecialty(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="specialtyArabic">Spécialité (Arabe)</Label>
+                      <Input 
+                        id="specialtyArabic" 
+                        placeholder="أخصائي في طب..." 
+                        value={specialtyArabic}
+                        onChange={(e) => setSpecialtyArabic(e.target.value)}
+                        dir="rtl"
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="specialty">Spécialité</Label>
+                    <Label htmlFor="orderNumber">N° d'ordre (Conseil de l'Ordre)</Label>
                     <Input 
-                      id="specialty" 
-                      placeholder="Ex: Médecine Générale, Cardiologie..." 
-                      value={specialty}
-                      onChange={(e) => setSpecialty(e.target.value)}
+                      id="orderNumber" 
+                      placeholder="Ex: 48/0802" 
+                      value={orderNumber}
+                      onChange={(e) => setOrderNumber(e.target.value)}
                     />
                   </div>
 

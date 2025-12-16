@@ -30,14 +30,16 @@ interface PrescriptionRequest {
     name: string;
     doctor: string;
     specialty: string;
+    specialtyArabic?: string;
+    orderNumber?: string;
     address: string;
+    city?: string;
     phone: string;
     email: string;
   };
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -47,41 +49,48 @@ serve(async (req) => {
 
     console.log("Generating PDF for prescription:", prescription.id);
 
-    // Format date
     const formatDate = (dateStr: string) => {
       const date = new Date(dateStr);
       return date.toLocaleDateString("fr-FR", {
-        day: "numeric",
-        month: "long",
+        day: "2-digit",
+        month: "2-digit",
         year: "numeric",
       });
     };
 
-    // Calculate birth info
-    const birthInfo = prescription.patient.date_naissance
-      ? `Né(e) le ${formatDate(prescription.patient.date_naissance)}`
-      : "";
+    const calculateAge = (birthDate: string | null) => {
+      if (!birthDate) return null;
+      const birth = new Date(birthDate);
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const monthDiff = today.getMonth() - birth.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+      }
+      return age;
+    };
 
-    // Build medications HTML
+    const patientAge = calculateAge(prescription.patient.date_naissance);
+
     const medicationsHtml = prescription.items
       .map(
         (item, index) => `
-        <div style="margin-bottom: 20px; padding-left: 20px; border-left: 3px solid #2563eb;">
-          <div style="font-size: 16px;">
-            <strong>${index + 1}. ${item.nom_medicament}</strong>
-            ${item.dosage ? `<span style="color: #6b7280;"> (${item.dosage})</span>` : ""}
+        <div class="medication-row">
+          <div class="medication-left">
+            <div class="medication-name">
+              <span class="medication-number">${index + 1}.</span>
+              ${item.nom_medicament.toUpperCase()}${item.dosage ? ` ${item.dosage}` : ""}
+            </div>
+            <div class="medication-posology">${item.posologie}</div>
           </div>
-          <div style="margin-left: 20px; margin-top: 5px;">
-            <div>${item.posologie}</div>
-            ${item.duree ? `<div style="color: #6b7280;">Durée : ${item.duree}</div>` : ""}
-            ${item.instructions ? `<div style="color: #6b7280; font-style: italic;">${item.instructions}</div>` : ""}
+          <div class="medication-duration">
+            ${item.duree ? `QSP ${item.duree}` : ""}
           </div>
         </div>
       `
       )
       .join("");
 
-    // Build complete HTML
     const html = `
       <!DOCTYPE html>
       <html>
@@ -90,148 +99,271 @@ serve(async (req) => {
         <style>
           @page {
             size: A4;
-            margin: 20mm;
+            margin: 15mm;
+          }
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
           }
           body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.5;
-            color: #1f2937;
-            max-width: 800px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            color: #1a365d;
+            max-width: 210mm;
+            min-height: 297mm;
             margin: 0 auto;
-            padding: 20px;
+            padding: 20px 30px;
+            position: relative;
+            background: #fff;
           }
+          
           .header {
-            border-bottom: 2px solid #2563eb;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
           }
-          .cabinet-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2563eb;
+          .header-left {
+            text-align: left;
+            flex: 1;
+          }
+          .header-right {
+            text-align: right;
+            flex: 1;
+            direction: rtl;
           }
           .doctor-name {
             font-size: 18px;
-            font-weight: 500;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 3px;
           }
           .specialty {
-            color: #6b7280;
+            font-size: 13px;
+            color: #2d3748;
+            margin-bottom: 2px;
           }
-          .contact {
-            text-align: right;
+          .order-number {
             font-size: 12px;
-            color: #6b7280;
+            color: #4a5568;
           }
-          .patient-info {
+          .arabic-text {
+            font-size: 14px;
+            color: #c05621;
+            font-weight: 600;
+            line-height: 1.6;
+          }
+          
+          .patient-section {
+            margin-bottom: 15px;
+          }
+          .patient-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
-          }
-          .title {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #2563eb;
-            margin-bottom: 30px;
-          }
-          .medications {
-            margin-bottom: 30px;
-          }
-          .notes {
-            background-color: #f3f4f6;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-          }
-          .notes-title {
-            font-weight: 500;
+            align-items: baseline;
             margin-bottom: 5px;
           }
-          .signature {
-            text-align: right;
-            margin-top: 60px;
+          .patient-name {
+            font-size: 14px;
           }
-          .signature-label {
-            color: #6b7280;
-            font-size: 12px;
-            margin-bottom: 80px;
+          .patient-name strong {
+            font-weight: 700;
           }
+          .patient-date {
+            font-size: 13px;
+            color: #4a5568;
+          }
+          
+          .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+          }
+          .divider-line {
+            flex: 1;
+            height: 2px;
+            background: #1a365d;
+          }
+          .divider-diamond {
+            width: 10px;
+            height: 10px;
+            background: #1a365d;
+            transform: rotate(45deg);
+            margin: 0 10px;
+          }
+          
+          .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a365d;
+            letter-spacing: 3px;
+            margin: 25px 0 35px 0;
+            text-transform: uppercase;
+          }
+          
+          .medications {
+            margin-bottom: 40px;
+            min-height: 300px;
+          }
+          .medication-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-left: 30px;
+          }
+          .medication-left {
+            flex: 1;
+          }
+          .medication-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a365d;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+          }
+          .medication-number {
+            font-weight: 700;
+            margin-right: 15px;
+            display: inline-block;
+            min-width: 25px;
+          }
+          .medication-posology {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a365d;
+            margin-left: 40px;
+          }
+          .medication-duration {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a365d;
+            white-space: nowrap;
+          }
+          
+          .notes {
+            background-color: #f7fafc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 3px solid #1a365d;
+          }
+          .notes-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #1a365d;
+          }
+          .notes-content {
+            color: #4a5568;
+            font-size: 13px;
+          }
+          
           .footer {
-            border-top: 1px solid #e5e7eb;
-            padding-top: 15px;
-            margin-top: 40px;
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            right: 30px;
+          }
+          .footer-divider {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+          }
+          .footer-line {
+            flex: 1;
+            height: 1px;
+            background: #1a365d;
+          }
+          .footer-circle {
+            width: 8px;
+            height: 8px;
+            border: 2px solid #1a365d;
+            border-radius: 50%;
+            margin: 0 5px;
+          }
+          .footer-warning {
             text-align: center;
             font-size: 11px;
-            color: #9ca3af;
+            color: #c05621;
+            margin-bottom: 10px;
+            direction: rtl;
+          }
+          .footer-contact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #4a5568;
+          }
+          .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
           }
         </style>
       </head>
       <body>
         <div class="header">
-          <div>
-            <div class="cabinet-name">${cabinet.name}</div>
+          <div class="header-left">
             <div class="doctor-name">${cabinet.doctor}</div>
             <div class="specialty">${cabinet.specialty}</div>
+            ${cabinet.orderNumber ? `<div class="order-number">N° d'ordre : ${cabinet.orderNumber}</div>` : ""}
           </div>
-          <div class="contact">
-            ${cabinet.address ? `<div>📍 ${cabinet.address}</div>` : ""}
-            ${cabinet.phone ? `<div>📞 ${cabinet.phone}</div>` : ""}
-            ${cabinet.email ? `<div>✉️ ${cabinet.email}</div>` : ""}
-          </div>
-        </div>
-
-        <div class="patient-info">
-          <div>
-            <div style="font-size: 12px; color: #6b7280;">Patient</div>
-            <div style="font-size: 18px; font-weight: 600;">
-              ${prescription.patient.prenom} ${prescription.patient.nom}
-            </div>
-            ${birthInfo ? `<div style="font-size: 12px; color: #6b7280;">${birthInfo}</div>` : ""}
-          </div>
-          <div style="text-align: right;">
-            <div style="font-size: 12px; color: #6b7280;">Date</div>
-            <div style="font-weight: 600;">${formatDate(prescription.date)}</div>
+          <div class="header-right">
+            ${cabinet.specialtyArabic ? `<div class="arabic-text">${cabinet.specialtyArabic}</div>` : ""}
           </div>
         </div>
 
-        <div class="title">ORDONNANCE MÉDICALE</div>
+        <div class="patient-section">
+          <div class="patient-row">
+            <div class="patient-name">Nom & Prénom : <strong>${prescription.patient.prenom} ${prescription.patient.nom}</strong></div>
+            <div class="patient-date">${cabinet.city ? `${cabinet.city}, le : ` : "Le : "}${formatDate(prescription.date)}</div>
+          </div>
+          ${patientAge ? `<div class="patient-name">Age : ${patientAge} ans</div>` : ""}
+        </div>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <div class="divider-diamond"></div>
+          <div class="divider-line"></div>
+        </div>
+
+        <div class="title">ORDONNANCE</div>
 
         <div class="medications">
           ${medicationsHtml}
         </div>
 
-        ${
-          prescription.notes
-            ? `
+        ${prescription.notes ? `
         <div class="notes">
           <div class="notes-title">Recommandations :</div>
-          <div style="color: #6b7280;">${prescription.notes}</div>
+          <div class="notes-content">${prescription.notes}</div>
         </div>
-        `
-            : ""
-        }
-
-        <div class="signature">
-          <div class="signature-label">Signature et cachet</div>
-          <div style="font-weight: 500;">${cabinet.doctor}</div>
-        </div>
+        ` : ""}
 
         <div class="footer">
-          Cette ordonnance est valable 3 mois à compter de sa date d'émission
+          <div class="footer-divider">
+            <div class="footer-circle"></div>
+            <div class="footer-line"></div>
+            <div class="footer-circle"></div>
+          </div>
+          <div class="footer-warning">لا تتركوا الأدوية في متناول الأطفال</div>
+          <div class="footer-contact">
+            <div class="contact-item">
+              ${cabinet.email ? `✉ ${cabinet.email}` : ""}
+            </div>
+            <div class="contact-item">
+              ${cabinet.phone ? `📞 ${cabinet.phone}` : ""}
+            </div>
+          </div>
         </div>
       </body>
       </html>
     `;
 
-    // Use a simple HTML to PDF approach - return HTML for now
-    // In production, you could use a service like Puppeteer, jsPDF, or an external API
-    
-    // For now, return HTML that can be converted to PDF client-side or printed
-    // We'll encode the HTML as base64 for download
     const encoder = new TextEncoder();
     const htmlBytes = encoder.encode(html);
     const base64Html = btoa(String.fromCharCode(...htmlBytes));
@@ -241,7 +373,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         html: html,
-        pdf: base64Html, // This is actually HTML encoded, client can use it for print
+        pdf: base64Html,
         success: true 
       }),
       {
