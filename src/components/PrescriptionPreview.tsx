@@ -27,7 +27,8 @@ export const PrescriptionPreview = ({
   const { data: patient } = usePatient(prescription?.patient_id);
   const printRef = useRef<HTMLDivElement>(null);
 
-  const doctorName = getSettingValue("doctor_name") || "Dr. Nom";
+  const doctorName = getSettingValue("doctor_name") || "Nom";
+  const doctorNameArabic = getSettingValue("doctor_name_arabic") || "";
   const specialty = getSettingValue("cabinet_specialty") || "Médecin Généraliste";
   const specialtyArabic = getSettingValue("cabinet_specialty_arabic") || "";
   const specialtyIcon = getSettingValue("cabinet_specialty_icon") || "stethoscope";
@@ -65,6 +66,7 @@ export const PrescriptionPreview = ({
           cabinet: {
             name: `Cabinet ${specialty}`,
             doctor: doctorName,
+            doctorArabic: doctorNameArabic,
             specialty,
             specialtyArabic,
             specialtyIcon,
@@ -140,11 +142,14 @@ export const PrescriptionPreview = ({
                 dangerouslySetInnerHTML={{ __html: getSpecialtyLogo(specialtyIcon) }}
               />
             </div>
-            {specialtyArabic && (
-              <div className="text-right flex-1" style={{ direction: "rtl" }}>
+            <div className="text-right flex-1" style={{ direction: "rtl" }}>
+              {doctorNameArabic && (
+                <p className="text-lg font-bold" style={{ color: "#1a365d" }}>الدكتور {doctorNameArabic}</p>
+              )}
+              {specialtyArabic && (
                 <p className="text-sm font-semibold" style={{ color: "#c05621" }}>{specialtyArabic}</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Patient Info */}

@@ -29,6 +29,7 @@ interface PrescriptionRequest {
   cabinet: {
     name: string;
     doctor: string;
+    doctorArabic?: string;
     specialty: string;
     specialtyArabic?: string;
     specialtyIcon?: string;
@@ -485,6 +486,7 @@ serve(async (req) => {
             ${specialtyLogo}
           </div>
           <div class="header-right">
+            ${cabinet.doctorArabic ? `<div class="doctor-name">الدكتور ${cabinet.doctorArabic}</div>` : ""}
             ${cabinet.specialtyArabic ? `<div class="arabic-text">${cabinet.specialtyArabic}</div>` : ""}
           </div>
         </div>
