@@ -32,6 +32,7 @@ export const PrescriptionPreview = ({
   const specialty = getSettingValue("cabinet_specialty") || "Médecin Généraliste";
   const specialtyArabic = getSettingValue("cabinet_specialty_arabic") || "";
   const specialtyIcon = getSettingValue("cabinet_specialty_icon") || "stethoscope";
+  const customLogo = getSettingValue("custom_logo") || "";
   const orderNumber = getSettingValue("order_number") || "";
   const address = getSettingValue("cabinet_address") || "";
   const city = getSettingValue("cabinet_city") || "";
@@ -70,6 +71,7 @@ export const PrescriptionPreview = ({
             specialty,
             specialtyArabic,
             specialtyIcon,
+            customLogo,
             orderNumber,
             address,
             city,
@@ -130,19 +132,23 @@ export const PrescriptionPreview = ({
         <div ref={printRef} className="p-8 print:p-4" style={{ color: "#1a365d" }}>
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
-            <div className="text-left flex-1">
+            <div className="text-center flex-1">
               <h1 className="text-xl font-bold" style={{ color: "#1a365d" }}>Dr {doctorName}</h1>
-              <p className="text-sm text-gray-700">{specialty}</p>
+              <p className="text-sm font-semibold" style={{ color: "#c05621" }}>{specialty}</p>
               {orderNumber && <p className="text-xs text-gray-500">N° d'ordre : {orderNumber}</p>}
             </div>
             <div className="flex-shrink-0 mx-4">
-              <div 
-                className="w-20 h-20"
-                style={{ color: "#c05621" }}
-                dangerouslySetInnerHTML={{ __html: getSpecialtyLogo(specialtyIcon) }}
-              />
+              {customLogo ? (
+                <img src={customLogo} alt="Logo" className="w-20 h-20 object-contain" />
+              ) : (
+                <div 
+                  className="w-20 h-20"
+                  style={{ color: "#c05621" }}
+                  dangerouslySetInnerHTML={{ __html: getSpecialtyLogo(specialtyIcon) }}
+                />
+              )}
             </div>
-            <div className="text-right flex-1" style={{ direction: "rtl" }}>
+            <div className="text-center flex-1" style={{ direction: "rtl" }}>
               {doctorNameArabic && (
                 <p className="text-lg font-bold" style={{ color: "#1a365d" }}>الدكتور {doctorNameArabic}</p>
               )}
