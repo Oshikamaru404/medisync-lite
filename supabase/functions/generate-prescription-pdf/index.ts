@@ -33,6 +33,7 @@ interface PrescriptionRequest {
     specialty: string;
     specialtyArabic?: string;
     specialtyIcon?: string;
+    customLogo?: string;
     orderNumber?: string;
     address: string;
     city?: string;
@@ -248,7 +249,9 @@ serve(async (req) => {
       return logos[iconName] || logos.stethoscope;
     };
 
-    const specialtyLogo = getSpecialtyLogoSvg(cabinet.specialtyIcon || "stethoscope");
+    const specialtyLogo = cabinet.customLogo 
+      ? `<img src="${cabinet.customLogo}" alt="Logo" style="width: 70px; height: 70px; object-fit: contain;" />`
+      : getSpecialtyLogoSvg(cabinet.specialtyIcon || "stethoscope");
 
     const html = `
       <!DOCTYPE html>
@@ -285,7 +288,7 @@ serve(async (req) => {
             padding-bottom: 10px;
           }
           .header-left {
-            text-align: left;
+            text-align: center;
             flex: 1;
           }
           .header-center {
@@ -294,13 +297,13 @@ serve(async (req) => {
             justify-content: center;
             align-items: center;
           }
-          .header-center svg {
+          .header-center svg, .header-center img {
             width: 70px;
             height: 70px;
             color: #c05621;
           }
           .header-right {
-            text-align: right;
+            text-align: center;
             flex: 1;
             direction: rtl;
           }
@@ -312,7 +315,8 @@ serve(async (req) => {
           }
           .specialty {
             font-size: 13px;
-            color: #2d3748;
+            color: #c05621;
+            font-weight: 600;
             margin-bottom: 2px;
           }
           .order-number {

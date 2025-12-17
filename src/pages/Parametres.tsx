@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { ArrowLeft, Building2, Bell, Lock, Palette, Save, Cloud, CloudOff, RefreshCw, CheckCircle, AlertCircle, Database } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { ArrowLeft, Building2, Bell, Lock, Palette, Save, Cloud, CloudOff, RefreshCw, CheckCircle, AlertCircle, Database, Upload, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useSettings } from "@/hooks/useSettings";
 import { toast } from "sonner";
 import { MEDICAL_SPECIALTIES, getSpecialtyById, getSpecialtyLogo } from "@/data/specialties";
+import { supabase } from "@/integrations/supabase/client";
 
 const Parametres = () => {
   const navigate = useNavigate();
@@ -34,6 +35,9 @@ const Parametres = () => {
   const [cabinetPhone, setCabinetPhone] = useState("+212 ");
   const [openTime, setOpenTime] = useState("08:00");
   const [closeTime, setCloseTime] = useState("19:00");
+  const [customLogo, setCustomLogo] = useState("");
+  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
+  const logoInputRef = useRef<HTMLInputElement>(null);
   const [initialized, setInitialized] = useState(false);
 
   // Sync settings
@@ -75,6 +79,7 @@ const Parametres = () => {
       setCabinetPhone(getValue("cabinet_phone") || "+212 ");
       setOpenTime(getValue("open_time") || "08:00");
       setCloseTime(getValue("close_time") || "19:00");
+      setCustomLogo(getValue("custom_logo"));
       setInitialized(true);
     }
   }, [isLoading, settings, initialized]);
@@ -116,12 +121,62 @@ const Parametres = () => {
       { key: "cabinet_phone", value: cabinetPhone },
       { key: "open_time", value: openTime },
       { key: "close_time", value: closeTime },
+      { key: "custom_logo", value: customLogo },
     ];
 
     for (const setting of settings) {
       await updateSetting.mutateAsync(setting);
     }
     toast.success("Tous les paramètres ont été enregistrés");
+  };
+
+  const handleLogoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error("Veuillez sélectionner une image");
+      return;
+    }
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("L'image ne doit pas dépasser 2 Mo");
+      return;
+    }
+
+    setIsUploadingLogo(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `logo-${Date.now()}.${fileExt}`;
+      const filePath = `logos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('patient-documents')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('patient-documents')
+        .getPublicUrl(filePath);
+
+      setCustomLogo(publicUrl);
+      toast.success("Logo uploadé avec succès");
+    } catch (error) {
+      console.error("Error uploading logo:", error);
+      toast.error("Erreur lors de l'upload du logo");
+    } finally {
+      setIsUploadingLogo(false);
+    }
+  };
+
+  const handleRemoveLogo = () => {
+    setCustomLogo("");
+    if (logoInputRef.current) {
+      logoInputRef.current.value = "";
+    }
   };
 
   return (
@@ -249,7 +304,7 @@ const Parametres = () => {
                         <p className="text-sm font-medium" dir="rtl">{specialtyArabic}</p>
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-xs text-muted-foreground">Logo</Label>
+                        <Label className="text-xs text-muted-foreground">Logo par défaut</Label>
                         <div 
                           className="w-16 h-16 text-primary"
                           dangerouslySetInnerHTML={{ __html: getSpecialtyLogo(specialtyIcon) }}
@@ -257,6 +312,57 @@ const Parametres = () => {
                       </div>
                     </div>
                   )}
+
+                  {/* Custom Logo Upload */}
+                  <div className="space-y-2">
+                    <Label>Logo personnalisé (optionnel)</Label>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Uploadez votre propre logo pour remplacer l'icône par défaut
+                    </p>
+                    <div className="flex items-center gap-4">
+                      {customLogo ? (
+                        <div className="relative">
+                          <img 
+                            src={customLogo} 
+                            alt="Logo personnalisé" 
+                            className="w-20 h-20 object-contain border rounded-lg"
+                          />
+                          <Button
+                            variant="destructive"
+                            size="icon"
+                            className="absolute -top-2 -right-2 h-6 w-6"
+                            onClick={handleRemoveLogo}
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div 
+                          className="w-20 h-20 border-2 border-dashed border-muted-foreground/30 rounded-lg flex items-center justify-center cursor-pointer hover:border-primary/50 transition-colors"
+                          onClick={() => logoInputRef.current?.click()}
+                        >
+                          <Upload className="h-6 w-6 text-muted-foreground" />
+                        </div>
+                      )}
+                      <input
+                        ref={logoInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoUpload}
+                        className="hidden"
+                      />
+                      {!customLogo && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => logoInputRef.current?.click()}
+                          disabled={isUploadingLogo}
+                        >
+                          {isUploadingLogo ? "Upload en cours..." : "Choisir un fichier"}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="orderNumber">N° d'ordre (Conseil de l'Ordre)</Label>
