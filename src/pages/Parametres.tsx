@@ -24,6 +24,7 @@ const Parametres = () => {
   const [specialtyIcon, setSpecialtyIcon] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
   const [doctorName, setDoctorName] = useState("");
+  const [doctorNameArabic, setDoctorNameArabic] = useState("");
   const [doctorFirstName, setDoctorFirstName] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
   const [doctorPhone, setDoctorPhone] = useState("+212 ");
@@ -64,6 +65,7 @@ const Parametres = () => {
       setSpecialtyIcon(getValue("cabinet_specialty_icon"));
       setOrderNumber(getValue("order_number"));
       setDoctorName(getValue("doctor_name"));
+      setDoctorNameArabic(getValue("doctor_name_arabic"));
       setDoctorFirstName(getValue("doctor_first_name"));
       setDoctorEmail(getValue("doctor_email"));
       setDoctorPhone(getValue("doctor_phone") || "+212 ");
@@ -104,6 +106,7 @@ const Parametres = () => {
       { key: "cabinet_specialty_icon", value: specialtyIcon },
       { key: "order_number", value: orderNumber },
       { key: "doctor_name", value: doctorName },
+      { key: "doctor_name_arabic", value: doctorNameArabic },
       { key: "doctor_first_name", value: doctorFirstName },
       { key: "doctor_email", value: doctorEmail },
       { key: "doctor_phone", value: doctorPhone },
@@ -198,6 +201,18 @@ const Parametres = () => {
                         onChange={(e) => setDoctorName(e.target.value)}
                       />
                     </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="doctorNameArabic">Nom en arabe (pour l'ordonnance)</Label>
+                    <Input 
+                      id="doctorNameArabic" 
+                      placeholder="الاسم بالعربية" 
+                      value={doctorNameArabic}
+                      onChange={(e) => setDoctorNameArabic(e.target.value)}
+                      dir="rtl"
+                      className="text-right"
+                    />
                   </div>
 
                   <div className="space-y-2">
