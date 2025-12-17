@@ -85,60 +85,163 @@ serve(async (req) => {
             <div class="medication-posology">${item.posologie}</div>
           </div>
           <div class="medication-duration">
-            ${item.duree ? `QSP ${item.duree}` : ""}
+            ${item.duree ? `Pendant ${item.duree}` : ""}
           </div>
         </div>
       `
       )
       .join("");
 
-    // Get the specialty logo SVG
+    // Get the specialty logo SVG - Professional medical logos
     const getSpecialtyLogoSvg = (iconName: string): string => {
       const logos: Record<string, string> = {
-        ear: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M65 20C75 25 82 38 82 52C82 66 75 78 65 85C55 92 42 88 35 78C28 68 25 55 30 42C35 29 48 18 65 20Z" stroke="currentColor" stroke-width="4" fill="none"/>
-          <path d="M55 35C60 38 65 45 65 55C65 65 58 72 50 70C42 68 38 58 42 48C46 38 50 32 55 35Z" stroke="currentColor" stroke-width="3" fill="none"/>
-          <circle cx="50" cy="55" r="5" fill="currentColor"/>
-        </svg>`,
         stethoscope: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M30 20V45C30 60 40 70 55 70C70 70 80 60 80 45V20" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <circle cx="55" cy="78" r="8" stroke="currentColor" stroke-width="3" fill="none"/>
-          <circle cx="30" cy="15" r="5" fill="currentColor"/>
-          <circle cx="80" cy="15" r="5" fill="currentColor"/>
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M32 28V52C32 62 40 70 50 70C60 70 68 62 68 52V28" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="50" cy="76" r="6" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <circle cx="32" cy="24" r="4" fill="currentColor"/>
+          <circle cx="68" cy="24" r="4" fill="currentColor"/>
         </svg>`,
-        "heart-pulse": `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M50 85L15 50C5 40 5 25 20 15C35 5 50 20 50 20C50 20 65 5 80 15C95 25 95 40 85 50L50 85Z" stroke="currentColor" stroke-width="4" fill="none"/>
-          <path d="M20 50H35L40 35L50 65L60 45L65 50H80" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        orl: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M60 30C68 34 73 43 73 53C73 63 68 72 60 76C52 80 43 77 38 70C33 63 31 54 35 45C39 36 48 28 60 30Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M55 40C59 42 62 47 62 53C62 59 57 64 52 63C47 62 44 56 47 49C50 42 53 38 55 40Z" stroke="currentColor" stroke-width="2" fill="none"/>
+          <circle cx="52" cy="53" r="4" fill="currentColor"/>
+          <path d="M26 45C22 50 22 56 26 61" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M32 42C27 48 27 58 32 64" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
         </svg>`,
-        eye: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="50" cy="50" rx="40" ry="25" stroke="currentColor" stroke-width="4" fill="none"/>
-          <circle cx="50" cy="50" r="15" stroke="currentColor" stroke-width="3" fill="none"/>
-          <circle cx="50" cy="50" r="6" fill="currentColor"/>
+        cardiology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M50 75L22 47C14 39 14 27 26 20C38 13 50 26 50 26C50 26 62 13 74 20C86 27 86 39 78 47L50 75Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M25 50H38L43 38L50 62L57 44L62 50H75" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>`,
-        brain: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M50 15C35 15 25 25 25 40C25 45 27 50 30 55C25 58 20 65 20 72C20 82 28 88 38 88C42 88 46 87 50 85C54 87 58 88 62 88C72 88 80 82 80 72C80 65 75 58 70 55C73 50 75 45 75 40C75 25 65 15 50 15Z" stroke="currentColor" stroke-width="4" fill="none"/>
-          <path d="M50 25V85" stroke="currentColor" stroke-width="2"/>
+        ophthalmology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <ellipse cx="50" cy="50" rx="32" ry="20" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <circle cx="50" cy="50" r="12" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <circle cx="50" cy="50" r="5" fill="currentColor"/>
         </svg>`,
-        baby: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="40" r="25" stroke="currentColor" stroke-width="4" fill="none"/>
-          <circle cx="42" cy="38" r="3" fill="currentColor"/>
-          <circle cx="58" cy="38" r="3" fill="currentColor"/>
-          <path d="M44 48C46 52 54 52 56 48" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M35 65V80C35 85 42 88 50 88C58 88 65 85 65 80V65" stroke="currentColor" stroke-width="4" fill="none"/>
+        neurology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M50 20C38 20 30 28 30 40C30 45 32 49 35 53C31 56 27 62 27 68C27 76 33 81 41 81C44 81 47 80 50 78C53 80 56 81 59 81C67 81 73 76 73 68C73 62 69 56 65 53C68 49 70 45 70 40C70 28 62 20 50 20Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M50 28V78" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M38 40C42 42 46 42 50 40C54 42 58 42 62 40" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M38 55C42 57 46 57 50 55C54 57 58 57 62 55" stroke="currentColor" stroke-width="1.5" fill="none"/>
         </svg>`,
-        heart: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M50 85L15 50C5 40 5 25 20 15C35 5 50 20 50 20C50 20 65 5 80 15C95 25 95 40 85 50L50 85Z" stroke="currentColor" stroke-width="4" fill="none"/>
+        pediatrics: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <circle cx="50" cy="42" r="18" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <circle cx="44" cy="40" r="2.5" fill="currentColor"/>
+          <circle cx="56" cy="40" r="2.5" fill="currentColor"/>
+          <path d="M46 48C48 51 52 51 54 48" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M38 60V72C38 76 43 79 50 79C57 79 62 76 62 72V60" stroke="currentColor" stroke-width="2.5" fill="none"/>
         </svg>`,
-        bone: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M25 25C20 20 15 25 15 32C15 38 20 40 22 42L58 78C60 80 62 85 68 85C75 85 80 80 75 75" stroke="currentColor" stroke-width="4" fill="none"/>
-          <circle cx="20" cy="28" r="6" stroke="currentColor" stroke-width="3" fill="none"/>
-          <circle cx="28" cy="20" r="6" stroke="currentColor" stroke-width="3" fill="none"/>
+        gynecology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <circle cx="50" cy="38" r="16" stroke="currentColor" stroke-width="3" fill="none"/>
+          <path d="M50 54V75" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M40 65H60" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
         </svg>`,
-        smile: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="35" stroke="currentColor" stroke-width="4" fill="none"/>
-          <circle cx="38" cy="42" r="4" fill="currentColor"/>
-          <circle cx="62" cy="42" r="4" fill="currentColor"/>
-          <path d="M35 60C40 70 60 70 65 60" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+        dermatology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M25 40C30 35 40 38 50 35C60 32 70 38 75 40" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M25 50C30 45 40 48 50 45C60 42 70 48 75 50" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M25 60C30 55 40 58 50 55C60 52 70 58 75 60" stroke="currentColor" stroke-width="2" fill="none"/>
+          <circle cx="60" cy="65" r="10" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M67 72L75 80" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+        orthopedics: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M35 30C31 28 28 31 30 35C32 39 35 40 36 43L50 67L64 43C65 40 68 39 70 35C72 31 69 28 65 30C61 32 60 36 58 38L50 50L42 38C40 36 39 32 35 30Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M50 67L36 77C34 79 31 78 30 75C29 72 31 70 34 70L46 68" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M50 67L64 77C66 79 69 78 70 75C71 72 69 70 66 70L54 68" stroke="currentColor" stroke-width="2.5" fill="none"/>
+        </svg>`,
+        gastroenterology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M35 35C35 30 40 25 50 25C60 25 70 30 70 40C70 50 65 55 60 58C55 61 50 62 50 68C50 74 55 78 50 78C45 78 40 74 40 68C40 62 35 58 32 52C29 46 30 40 35 35Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M45 40C50 42 55 42 60 40" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M42 50C47 52 53 52 58 50" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>`,
+        pulmonology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M50 25V50" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M50 35L40 40C30 45 25 55 28 65C31 75 40 78 45 75C50 72 50 65 50 60" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M50 35L60 40C70 45 75 55 72 65C69 75 60 78 55 75C50 72 50 65 50 60" stroke="currentColor" stroke-width="2.5" fill="none"/>
+        </svg>`,
+        urology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M30 40C25 35 25 50 30 55C35 60 38 55 38 50C38 45 35 45 30 40Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M70 40C75 35 75 50 70 55C65 60 62 55 62 50C62 45 65 45 70 40Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M34 55L40 70L50 75" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M66 55L60 70L50 75" stroke="currentColor" stroke-width="2" fill="none"/>
+          <ellipse cx="50" cy="75" rx="8" ry="5" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>`,
+        psychiatry: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M55 25C70 28 75 40 75 50C75 60 70 70 60 75L55 75L55 80L45 80L45 75C35 72 30 62 30 50C30 38 38 25 55 25Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M40 45C42 42 45 42 48 45C51 48 54 48 57 45C60 42 63 42 65 45" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M40 55C42 52 45 52 48 55C51 58 54 58 57 55C60 52 63 52 65 55" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>`,
+        endocrinology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M50 30L50 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M35 45C35 40 42 38 50 38C58 38 65 40 65 45C65 55 58 60 50 60C42 60 35 55 35 45Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <circle cx="42" cy="48" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+          <circle cx="58" cy="48" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M30 70C35 65 40 70 45 65C50 60 55 65 60 60C65 55 70 60 75 55" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>`,
+        dentistry: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M35 35C35 28 42 25 50 25C58 25 65 28 65 35C65 45 60 48 58 55C56 62 58 75 55 75C52 75 50 65 50 65C50 65 48 75 45 75C42 75 44 62 42 55C40 48 35 45 35 35Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M42 35C45 38 48 38 50 35C52 38 55 38 58 35" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>`,
+        surgery: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M30 70L55 35" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M55 35L65 28L70 33L60 40L55 35Z" fill="currentColor"/>
+          <path d="M60 60L75 45" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M70 60L75 45" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="58" cy="62" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+          <circle cx="72" cy="62" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>`,
+        nephrology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M35 35C28 32 25 40 25 50C25 60 28 68 35 65C42 62 45 55 45 50C45 45 42 38 35 35Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M65 35C72 32 75 40 75 50C75 60 72 68 65 65C58 62 55 55 55 50C55 45 58 38 65 35Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M32 45C35 47 38 47 40 45" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M32 55C35 53 38 53 40 55" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M60 45C63 47 66 47 68 45" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M60 55C63 53 66 53 68 55" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>`,
+        rheumatology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <ellipse cx="50" cy="50" rx="20" ry="12" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M25 50L30 50" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          <path d="M70 50L75 50" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="30" cy="50" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+          <circle cx="70" cy="50" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M50 30L45 35M50 30L55 35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M50 70L45 65M50 70L55 65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>`,
+        radiology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <rect x="28" y="28" width="44" height="44" rx="3" stroke="currentColor" stroke-width="2" fill="none"/>
+          <ellipse cx="50" cy="38" rx="8" ry="6" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M50 44V55" stroke="currentColor" stroke-width="3"/>
+          <path d="M42 48L50 52L58 48" stroke="currentColor" stroke-width="2"/>
+          <path d="M45 55L50 62L55 55" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M45 62L45 68" stroke="currentColor" stroke-width="2"/>
+          <path d="M55 62L55 68" stroke="currentColor" stroke-width="2"/>
+        </svg>`,
+        anesthesiology: `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+          <rect x="35" y="40" width="35" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M70 43V49" stroke="currentColor" stroke-width="2"/>
+          <path d="M75 46L82 46" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M28 46L35 46" stroke="currentColor" stroke-width="2"/>
+          <rect x="38" y="42" width="15" height="8" fill="currentColor" opacity="0.3"/>
+          <path d="M35 60C35 65 42 72 50 72C58 72 65 65 65 60" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <ellipse cx="50" cy="60" rx="12" ry="6" stroke="currentColor" stroke-width="2" fill="none"/>
         </svg>`,
       };
       return logos[iconName] || logos.stethoscope;
@@ -374,7 +477,7 @@ serve(async (req) => {
       <body>
         <div class="header">
           <div class="header-left">
-            <div class="doctor-name">${cabinet.doctor}</div>
+            <div class="doctor-name">Dr ${cabinet.doctor}</div>
             <div class="specialty">${cabinet.specialty}</div>
             ${cabinet.orderNumber ? `<div class="order-number">N° d'ordre : ${cabinet.orderNumber}</div>` : ""}
           </div>

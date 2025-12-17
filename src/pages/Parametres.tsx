@@ -208,7 +208,7 @@ const Parametres = () => {
                         const spec = getSpecialtyById(value);
                         if (spec) {
                           setSpecialtyId(value);
-                          setSpecialty(spec.nameFr);
+                          setSpecialty(spec.nameFrLong);
                           setSpecialtyArabic(spec.nameAr);
                           setSpecialtyIcon(spec.icon);
                         }
