@@ -129,7 +129,7 @@ export const PrescriptionPreview = ({
           {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div className="text-left flex-1">
-              <h1 className="text-xl font-bold" style={{ color: "#1a365d" }}>{doctorName}</h1>
+              <h1 className="text-xl font-bold" style={{ color: "#1a365d" }}>Dr {doctorName}</h1>
               <p className="text-sm text-gray-700">{specialty}</p>
               {orderNumber && <p className="text-xs text-gray-500">N° d'ordre : {orderNumber}</p>}
             </div>
@@ -189,7 +189,7 @@ export const PrescriptionPreview = ({
                 </div>
                 {item.duree && (
                   <span className="text-sm font-semibold whitespace-nowrap" style={{ color: "#1a365d" }}>
-                    QSP {item.duree}
+                    Pendant {item.duree}
                   </span>
                 )}
               </div>
