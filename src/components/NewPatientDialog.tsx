@@ -38,7 +38,11 @@ const NewPatientDialog = ({ open, onOpenChange }: NewPatientDialogProps) => {
       email: formData.email || null,
       adresse: formData.adresse || null,
       mutuelle: formData.mutuelle || null,
+      numero_mutuelle: null,
       personne_contact: formData.personne_contact || null,
+      lien_personne_contact: null,
+      telephone_personne_contact: null,
+      sexe: null,
       poids: null,
       taille: null,
     });

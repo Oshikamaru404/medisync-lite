@@ -1,4 +1,4 @@
-import { ArrowLeft, Plus, Euro, TrendingUp, FileText, Calendar } from "lucide-react";
+import { ArrowLeft, Plus, Banknote, TrendingUp, FileText, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -76,12 +76,12 @@ const Comptabilite = () => {
           <Card className="p-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-lg bg-tile-comptabilite/10 flex items-center justify-center">
-                <Euro className="w-6 h-6 text-tile-comptabilite" />
+                <Banknote className="w-6 h-6 text-tile-comptabilite" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Ce mois</p>
                 <p className="text-2xl font-bold text-foreground">
-                  {stats.totalMonth.toLocaleString()}€
+                  {stats.totalMonth.toLocaleString()} DH
                 </p>
               </div>
             </div>
@@ -95,7 +95,7 @@ const Comptabilite = () => {
               <div>
                 <p className="text-sm text-muted-foreground">Cette année</p>
                 <p className="text-2xl font-bold text-foreground">
-                  {stats.totalYear.toLocaleString()}€
+                  {stats.totalYear.toLocaleString()} DH
                 </p>
               </div>
             </div>
@@ -109,7 +109,7 @@ const Comptabilite = () => {
               <div>
                 <p className="text-sm text-muted-foreground">En attente</p>
                 <p className="text-2xl font-bold text-foreground">
-                  {stats.pending.toLocaleString()}€
+                  {stats.pending.toLocaleString()} DH
                 </p>
               </div>
             </div>
@@ -169,7 +169,7 @@ const Comptabilite = () => {
                           {format(new Date(invoice.date), "d MMMM yyyy", { locale: fr })}
                         </TableCell>
                         <TableCell className="font-semibold">
-                          {invoice.montant.toFixed(2)}€
+                          {invoice.montant.toFixed(2)} DH
                         </TableCell>
                         <TableCell>{getStatusBadge(invoice.statut)}</TableCell>
                         <TableCell className="text-right">

@@ -120,7 +120,11 @@ export const AppointmentDialog = ({
           email: null,
           adresse: null,
           mutuelle: null,
+          numero_mutuelle: null,
           personne_contact: null,
+          lien_personne_contact: null,
+          telephone_personne_contact: null,
+          sexe: null,
           poids: null,
           taille: null,
         });
