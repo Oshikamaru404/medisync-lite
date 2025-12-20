@@ -12,7 +12,11 @@ export type Patient = {
   email: string | null;
   adresse: string | null;
   mutuelle: string | null;
+  numero_mutuelle: string | null;
   personne_contact: string | null;
+  lien_personne_contact: string | null;
+  telephone_personne_contact: string | null;
+  sexe: string | null;
   created_at: string;
   poids: number | null;
   taille: number | null;
