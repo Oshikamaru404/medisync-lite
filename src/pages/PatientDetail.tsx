@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, FileText, Upload, Search, Pill, TestTube, Scan, ClipboardList, Award, Mail, MoreHorizontal, X, Eye, History } from "lucide-react";
+import { ArrowLeft, FileText, Upload, Search, Pill, TestTube, Scan, ClipboardList, Award, Mail, MoreHorizontal, X, Eye, History, FileBadge } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,8 @@ import { PatientIdentityCompact } from "@/components/PatientIdentityCompact";
 import { MedicalRecordAccordion } from "@/components/MedicalRecordAccordion";
 import { PatientHistoryTab } from "@/components/PatientHistoryTab";
 import { PrescriptionsList } from "@/components/PrescriptionsList";
+import { CertificatesList } from "@/components/CertificatesList";
+import { CertificateDialog } from "@/components/CertificateDialog";
 import { cn } from "@/lib/utils";
 import { differenceInYears, parseISO } from "date-fns";
 
@@ -164,14 +166,14 @@ const PatientDetail = () => {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         <Tabs defaultValue="medical" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-muted/30 p-1.5 h-auto gap-1.5">
+          <TabsList className="grid w-full grid-cols-5 bg-muted/30 p-1.5 h-auto gap-1.5">
             <TabsTrigger 
               value="medical"
               className="bg-emerald-100/60 text-emerald-700 hover:bg-emerald-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
             >
               <FileText className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Dossier Médical</span>
-              <span className="sm:hidden">Médical</span>
+              <span className="hidden sm:inline">Dossier</span>
+              <span className="sm:hidden">Méd.</span>
             </TabsTrigger>
             <TabsTrigger 
               value="prescriptions"
@@ -180,6 +182,14 @@ const PatientDetail = () => {
               <Pill className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Ordonnances</span>
               <span className="sm:hidden">Ordo.</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="certificates"
+              className="bg-yellow-100/60 text-yellow-700 hover:bg-yellow-200/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-amber-400 data-[state=active]:text-white data-[state=active]:shadow-md py-3 rounded-lg transition-all"
+            >
+              <FileBadge className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Certificats</span>
+              <span className="sm:hidden">Cert.</span>
             </TabsTrigger>
             <TabsTrigger 
               value="documents"
