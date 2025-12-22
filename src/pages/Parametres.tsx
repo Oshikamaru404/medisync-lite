@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowLeft, Building2, Bell, Lock, Palette, Save, Cloud, CloudOff, RefreshCw, CheckCircle, AlertCircle, Database, Upload, X } from "lucide-react";
+import { ArrowLeft, Building2, Bell, Lock, Palette, Save, Cloud, CloudOff, RefreshCw, CheckCircle, AlertCircle, Database, Upload, X, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,6 +13,7 @@ import { useSettings } from "@/hooks/useSettings";
 import { toast } from "sonner";
 import { MEDICAL_SPECIALTIES, getSpecialtyById, getSpecialtyLogo } from "@/data/specialties";
 import { supabase } from "@/integrations/supabase/client";
+import { UserManagement } from "@/components/auth/UserManagement";
 
 const Parametres = () => {
   const navigate = useNavigate();
@@ -200,10 +201,14 @@ const Parametres = () => {
 
       <main className="container mx-auto px-6 py-8 max-w-5xl">
         <Tabs defaultValue="cabinet" className="space-y-6">
-          <TabsList>
+          <TabsList className="flex-wrap h-auto">
             <TabsTrigger value="cabinet" className="gap-2">
               <Building2 className="w-4 h-4" />
               Cabinet & Praticien
+            </TabsTrigger>
+            <TabsTrigger value="users" className="gap-2">
+              <Users className="w-4 h-4" />
+              Utilisateurs
             </TabsTrigger>
             <TabsTrigger value="notifications" className="gap-2">
               <Bell className="w-4 h-4" />
@@ -222,6 +227,13 @@ const Parametres = () => {
               Synchronisation
             </TabsTrigger>
           </TabsList>
+
+          {/* Users Tab */}
+          <TabsContent value="users">
+            <Card className="p-6">
+              <UserManagement />
+            </Card>
+          </TabsContent>
 
           <TabsContent value="cabinet">
             <div className="space-y-6">
