@@ -12,6 +12,7 @@ import logo from "@/assets/logo.svg";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useSettings } from "@/hooks/useSettings";
+import { UserMenu } from "@/components/auth/UserMenu";
 
 const Index = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -107,11 +108,8 @@ const Index = () => {
               </div>
             </div>
           
-            {/* Offline badge - right aligned */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
-              <div className="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
-              <span className="text-xs font-medium text-secondary">Offline</span>
-            </div>
+            {/* User Menu - right aligned */}
+            <UserMenu />
           </div>
         </div>
       </header>

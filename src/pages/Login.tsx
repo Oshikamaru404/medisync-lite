@@ -119,20 +119,20 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-lg">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex flex-col items-center justify-center p-4 overflow-auto">
+      <div className="w-full max-w-md">
         {/* Logo/Header */}
-        <div className="flex justify-center mb-6">
-          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-            <Stethoscope className="w-10 h-10 text-primary" />
+        <div className="flex justify-center mb-4">
+          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+            <Stethoscope className="w-7 h-7 text-primary" />
           </div>
         </div>
 
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-foreground mb-2">
+        <div className="text-center mb-4">
+          <h1 className="text-xl font-bold text-foreground mb-1">
             Cabinet Médical
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             {selectedUser 
               ? `Connectez-vous en tant que ${selectedUser.prenom}`
               : 'Sélectionnez votre profil'
@@ -141,7 +141,7 @@ export default function Login() {
         </div>
 
         {/* Card Container */}
-        <div className="bg-card rounded-2xl shadow-lg border border-border/50 p-8">
+        <div className="bg-card rounded-xl shadow-lg border border-border/50 p-5">
           {!selectedUser ? (
             <UserSelector
               users={users}
@@ -149,16 +149,16 @@ export default function Login() {
               isLoading={isLoadingUsers}
             />
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Selected User Info */}
-              <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
+              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
                     {selectedUser.prenom.charAt(0)}{selectedUser.nom.charAt(0)}
                   </div>
                   <div>
-                    <p className="font-semibold">{selectedUser.prenom} {selectedUser.nom}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-medium text-sm">{selectedUser.prenom} {selectedUser.nom}</p>
+                    <p className="text-xs text-muted-foreground">
                       {roleLabels[selectedUser.role]}
                     </p>
                   </div>
@@ -177,8 +177,8 @@ export default function Login() {
               </div>
 
               {/* PIN Pad */}
-              <div className="pt-4">
-                <p className="text-center text-muted-foreground mb-6">
+              <div className="pt-2">
+                <p className="text-center text-sm text-muted-foreground mb-4">
                   Entrez votre PIN
                 </p>
                 <PinPad
