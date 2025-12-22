@@ -55,6 +55,7 @@ const PatientDetail = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<string>("all");
+  const [isCertificateDialogOpen, setIsCertificateDialogOpen] = useState(false);
 
   // Load medical data when available
   useEffect(() => {
@@ -265,6 +266,27 @@ const PatientDetail = () => {
                 patientId={id}
                 patientName={`${patient.prenom} ${patient.nom}`}
               />
+            )}
+          </TabsContent>
+
+          {/* Certificates Tab */}
+          <TabsContent value="certificates" className="mt-6 space-y-4">
+            <div className="flex justify-end">
+              <Button onClick={() => setIsCertificateDialogOpen(true)} className="gap-2">
+                <FileBadge className="w-4 h-4" />
+                Nouveau certificat
+              </Button>
+            </div>
+            {id && patient && (
+              <>
+                <CertificatesList patientId={id} />
+                <CertificateDialog
+                  open={isCertificateDialogOpen}
+                  onOpenChange={setIsCertificateDialogOpen}
+                  patientId={id}
+                  patientName={`${patient.prenom} ${patient.nom}`}
+                />
+              </>
             )}
           </TabsContent>
 
