@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Delete, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -35,39 +35,69 @@ export function PinPad({
     }
   }, [error]);
 
-  const handleDigit = (digit: string) => {
+  const handleDigit = useCallback((digit: string) => {
     if (pin.length < maxLength && !isLoading) {
-      const newPin = pin + digit;
-      setPin(newPin);
+      setPin(prev => prev + digit);
     }
-  };
+  }, [pin.length, maxLength, isLoading]);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (!isLoading) {
-      setPin(pin.slice(0, -1));
+      setPin(prev => prev.slice(0, -1));
     }
-  };
+  }, [isLoading]);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     if (pin.length >= minLength && !isLoading) {
       onComplete(pin);
     }
-  };
+  }, [pin, minLength, isLoading, onComplete]);
+
+  // Keyboard support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isLoading) return;
+
+      // Check if the key is a digit
+      if (/^[0-9]$/.test(e.key)) {
+        e.preventDefault();
+        handleDigit(e.key);
+      }
+      // Backspace to delete
+      else if (e.key === 'Backspace') {
+        e.preventDefault();
+        handleDelete();
+      }
+      // Enter to submit
+      else if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSubmit();
+      }
+      // Escape to cancel
+      else if (e.key === 'Escape' && onCancel) {
+        e.preventDefault();
+        onCancel();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleDigit, handleDelete, handleSubmit, isLoading, onCancel]);
 
   const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', ''];
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center gap-4">
       {/* PIN Display */}
       <div className={cn(
-        "flex gap-3 transition-transform",
+        "flex gap-2 transition-transform",
         shake && "animate-shake"
       )}>
         {Array.from({ length: maxLength }).map((_, i) => (
           <div
             key={i}
             className={cn(
-              "w-4 h-4 rounded-full border-2 transition-all duration-200",
+              "w-3 h-3 rounded-full border-2 transition-all duration-200",
               i < pin.length 
                 ? "bg-primary border-primary" 
                 : "border-muted-foreground/40",
@@ -79,20 +109,20 @@ export function PinPad({
 
       {/* Error Message */}
       {error && (
-        <p className="text-sm text-destructive text-center max-w-[280px]">
+        <p className="text-sm text-destructive text-center max-w-[260px]">
           {error}
         </p>
       )}
 
       {/* Keypad */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2">
         {digits.map((digit, i) => (
-          <div key={i} className="w-20 h-16 flex items-center justify-center">
+          <div key={i} className="w-16 h-12 flex items-center justify-center">
             {digit !== '' ? (
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-full text-2xl font-semibold hover:bg-primary/10 active:scale-95 transition-transform"
+                className="w-full h-full text-xl font-semibold hover:bg-primary/10 active:scale-95 transition-transform"
                 onClick={() => handleDigit(digit)}
                 disabled={isLoading}
               >
@@ -102,8 +132,8 @@ export function PinPad({
               showCancel && onCancel ? (
                 <Button
                   variant="ghost"
-                  size="lg"
-                  className="w-full h-full text-muted-foreground"
+                  size="sm"
+                  className="w-full h-full text-xs text-muted-foreground"
                   onClick={onCancel}
                   disabled={isLoading}
                 >
@@ -118,7 +148,7 @@ export function PinPad({
                 onClick={handleDelete}
                 disabled={isLoading || pin.length === 0}
               >
-                <Delete className="w-6 h-6" />
+                <Delete className="w-5 h-5" />
               </Button>
             )}
           </div>
@@ -127,20 +157,25 @@ export function PinPad({
 
       {/* Submit Button */}
       <Button
-        size="lg"
-        className="w-full max-w-[280px] h-12 text-lg gap-2"
+        size="default"
+        className="w-full max-w-[220px] h-10 gap-2"
         onClick={handleSubmit}
         disabled={pin.length < minLength || isLoading}
       >
         {isLoading ? (
-          <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
         ) : (
           <>
-            <Check className="w-5 h-5" />
+            <Check className="w-4 h-4" />
             Valider
           </>
         )}
       </Button>
+
+      {/* Keyboard hint */}
+      <p className="text-xs text-muted-foreground">
+        Utilisez le clavier ou le pavé numérique
+      </p>
     </div>
   );
 }
