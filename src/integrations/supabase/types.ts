@@ -58,6 +58,56 @@ export type Database = {
           },
         ]
       }
+      certificates: {
+        Row: {
+          contenu: string | null
+          created_at: string
+          date: string
+          date_debut: string | null
+          date_fin: string | null
+          duree_jours: number | null
+          id: string
+          motif: string | null
+          notes: string | null
+          patient_id: string
+          type: string
+        }
+        Insert: {
+          contenu?: string | null
+          created_at?: string
+          date?: string
+          date_debut?: string | null
+          date_fin?: string | null
+          duree_jours?: number | null
+          id?: string
+          motif?: string | null
+          notes?: string | null
+          patient_id: string
+          type: string
+        }
+        Update: {
+          contenu?: string | null
+          created_at?: string
+          date?: string
+          date_debut?: string | null
+          date_fin?: string | null
+          duree_jours?: number | null
+          id?: string
+          motif?: string | null
+          notes?: string | null
+          patient_id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           created_at: string | null
