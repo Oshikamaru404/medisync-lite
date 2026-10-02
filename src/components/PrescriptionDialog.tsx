@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, X, Pill, Search, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,8 +20,8 @@ import {
 } from "@/components/ui/select";
 import {
   Popover,
+  PopoverAnchor,
   PopoverContent,
-  PopoverTrigger,
 } from "@/components/ui/popover";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -74,16 +74,26 @@ export const PrescriptionDialog = ({
   const [items, setItems] = useState<Omit<PrescriptionItem, "id" | "prescription_id">[]>([]);
   const [notes, setNotes] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [medicationPopoverOpen, setMedicationPopoverOpen] = useState(false);
 
-  const { data: medications = [] } = useMedications();
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery.trim());
+    }, 250);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [searchQuery]);
+
+  const {
+    data: medications = [],
+    isFetching: medicationsLoading,
+    isError: medicationsError,
+  } = useMedications(debouncedSearchQuery);
   const createPrescription = useCreatePrescription();
 
-  const filteredMedications = medications.filter(
-    (m) =>
-      m.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (m.dci && m.dci.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const normalizedSearch = debouncedSearchQuery.toLocaleLowerCase();
+  const filteredMedications = medications;
 
   const addMedication = (medication: typeof medications[0]) => {
     const newItem: Omit<PrescriptionItem, "id" | "prescription_id"> = {
@@ -160,20 +170,20 @@ export const PrescriptionDialog = ({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden flex flex-col bg-white p-0 text-slate-900 shadow-lg">
+        <DialogHeader className="border-b px-6 py-5">
+          <DialogTitle className="flex items-center gap-2 text-xl font-semibold text-slate-900">
             <Pill className="w-5 h-5 text-blue-600" />
             Nouvelle ordonnance pour {patientName}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex-1 overflow-auto space-y-6 py-4">
+        <div className="flex-1 overflow-auto space-y-6 p-6">
           {/* Medication Search */}
           <div className="space-y-2">
             <Label>Ajouter un médicament</Label>
             <Popover open={medicationPopoverOpen} onOpenChange={setMedicationPopoverOpen}>
-              <PopoverTrigger asChild>
+              <PopoverAnchor asChild>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
@@ -184,34 +194,64 @@ export const PrescriptionDialog = ({
                       setMedicationPopoverOpen(true);
                     }}
                     onFocus={() => setMedicationPopoverOpen(true)}
-                    className="pl-10"
+                    className="h-11 pl-10"
                   />
                 </div>
-              </PopoverTrigger>
-              <PopoverContent className="w-[400px] p-0" align="start">
-                <ScrollArea className="h-[300px]">
-                  {filteredMedications.length > 0 ? (
-                    <div className="p-2 space-y-1">
-                      {filteredMedications.slice(0, 20).map((med) => (
+              </PopoverAnchor>
+              <PopoverContent
+                portalled={false}
+                className="w-[min(50rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] p-0"
+                align="start"
+                onOpenAutoFocus={(event) => event.preventDefault()}
+              >
+                <ScrollArea className="h-[min(350px,calc(100dvh-12rem))]">
+                  {normalizedSearch.length < 2 ? (
+                    <div className="p-4 text-center text-sm text-muted-foreground">
+                      Saisissez au moins 2 caractères pour rechercher
+                    </div>
+                  ) : medicationsLoading ? (
+                    <div className="p-4 text-center text-sm text-muted-foreground" role="status">
+                      Recherche en cours…
+                    </div>
+                  ) : medicationsError ? (
+                    <div className="p-4 text-center text-sm text-destructive" role="status">
+                      La recherche est momentanément indisponible
+                    </div>
+                  ) : filteredMedications.length > 0 ? (
+                    <div className="grid gap-2 p-2 md:grid-cols-2">
+                      {filteredMedications.map((med) => (
                         <button
                           key={med.id}
+                          type="button"
                           onClick={() => addMedication(med)}
-                          className="w-full text-left px-3 py-2 hover:bg-muted rounded-md transition-colors"
+                          className="w-full rounded-lg border border-transparent bg-background px-3 py-3 text-left transition-all hover:border-border hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         >
-                          <div className="font-medium">{med.nom}</div>
-                          <div className="text-sm text-muted-foreground flex gap-2">
-                            {med.dci && <span>{med.dci}</span>}
-                            {med.forme && <span>• {med.forme}</span>}
+                          <div className="flex min-w-0 items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <div className="truncate font-medium">{med.nom}</div>
+                              {med.dci && (
+                                <div className="mt-1 line-clamp-2 break-words text-sm text-muted-foreground">
+                                  {med.dci}
+                                </div>
+                              )}
+                            </div>
                             {med.dosage_defaut && (
-                              <span>• {med.dosage_defaut} {med.unite}</span>
+                              <Badge variant="secondary" className="shrink-0">
+                                {[med.dosage_defaut, med.unite].filter(Boolean).join(" ")}
+                              </Badge>
                             )}
                           </div>
+                          {med.forme && (
+                            <div className="mt-1.5 break-words text-xs text-muted-foreground">
+                              {med.forme}
+                            </div>
+                          )}
                         </button>
                       ))}
                     </div>
-                  ) : searchQuery ? (
+                  ) : (
                     <div className="p-4 text-center">
-                      <p className="text-muted-foreground text-sm mb-3">
+                      <p className="mb-3 text-sm text-muted-foreground">
                         Aucun médicament trouvé
                       </p>
                       <Button
@@ -219,13 +259,8 @@ export const PrescriptionDialog = ({
                         size="sm"
                         onClick={addCustomMedication}
                       >
-                        <Plus className="w-4 h-4 mr-2" />
                         Ajouter "{searchQuery}"
                       </Button>
-                    </div>
-                  ) : (
-                    <div className="p-4 text-center text-muted-foreground text-sm">
-                      Tapez pour rechercher un médicament
                     </div>
                   )}
                 </ScrollArea>
@@ -263,7 +298,7 @@ export const PrescriptionDialog = ({
                         </Button>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                         <div className="space-y-1">
                           <Label className="text-xs">Posologie</Label>
                           <Select
@@ -333,7 +368,7 @@ export const PrescriptionDialog = ({
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 pt-4 border-t">
+        <div className="flex justify-end gap-3 border-t px-6 py-4">
           <Button variant="outline" onClick={() => setOpen(false)}>
             Annuler
           </Button>

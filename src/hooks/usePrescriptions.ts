@@ -32,18 +32,43 @@ export interface Prescription {
   items?: PrescriptionItem[];
 }
 
-export const useMedications = () => {
+export const useMedications = (searchQuery: string) => {
   return useQuery({
-    queryKey: ["medications"],
+    queryKey: ["medications", searchQuery.toLocaleLowerCase()],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("medications")
-        .select("*")
-        .order("nom");
+      const searchTerm = searchQuery.trim().replace(/[\\%_]/g, "\\$&");
+      if (searchTerm.length < 2) return [];
 
-      if (error) throw error;
-      return data as Medication[];
+      const columns = "id, nom, dci, forme, dosage_defaut, unite";
+      const pattern = `%${searchTerm}%`;
+      const [nameResult, dciResult] = await Promise.all([
+        supabase
+          .from("medications")
+          .select(columns)
+          .ilike("nom", pattern)
+          .order("nom")
+          .limit(20),
+        supabase
+          .from("medications")
+          .select(columns)
+          .ilike("dci", pattern)
+          .order("nom")
+          .limit(20),
+      ]);
+
+      if (nameResult.error) throw nameResult.error;
+      if (dciResult.error) throw dciResult.error;
+
+      const uniqueMedications = new Map<string, Medication>();
+      for (const medication of [...(nameResult.data || []), ...(dciResult.data || [])]) {
+        uniqueMedications.set(medication.id, medication as Medication);
+      }
+
+      return [...uniqueMedications.values()]
+        .sort((first, second) => first.nom.localeCompare(second.nom))
+        .slice(0, 20);
     },
+    enabled: searchQuery.trim().length >= 2,
   });
 };
 
