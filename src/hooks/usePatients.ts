@@ -44,6 +44,21 @@ export const usePatients = () => {
   });
 };
 
+export const usePatientDirectory = () => {
+  return useQuery({
+    queryKey: ['patient-directory'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('patients')
+        .select('id, nom, prenom, telephone, cin')
+        .order('nom', { ascending: true });
+
+      if (error) throw error;
+      return data;
+    },
+  });
+};
+
 export const usePatient = (id: string | undefined) => {
   return useQuery({
     queryKey: ['patient', id],
@@ -78,6 +93,7 @@ export const useCreatePatient = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['patients'] });
+      queryClient.invalidateQueries({ queryKey: ['patient-directory'] });
       toast({
         title: 'Patient ajouté',
         description: 'Le patient a été créé avec succès.',

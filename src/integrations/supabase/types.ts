@@ -182,6 +182,69 @@ export type Database = {
           },
         ]
       }
+      consultations: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          diagnostic: string | null
+          examen_clinique: string | null
+          histoire: string | null
+          id: string
+          motif: string | null
+          patient_id: string
+          plan: string | null
+          queue_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          diagnostic?: string | null
+          examen_clinique?: string | null
+          histoire?: string | null
+          id?: string
+          motif?: string | null
+          patient_id: string
+          plan?: string | null
+          queue_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          diagnostic?: string | null
+          examen_clinique?: string | null
+          histoire?: string | null
+          id?: string
+          motif?: string | null
+          patient_id?: string
+          plan?: string | null
+          queue_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultations_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "consultations_queue_id_fkey"
+            columns: ["queue_id"]
+            isOneToOne: true
+            referencedRelation: "queue"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           created_at: string | null
@@ -549,6 +612,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      complete_consultation: {
+        Args: { _consultation_id: string }
+        Returns: string
+      }
       cleanup_expired_sessions: { Args: never; Returns: undefined }
       generate_invoice_number: { Args: never; Returns: string }
       get_user_role: {

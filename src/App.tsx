@@ -10,6 +10,7 @@ import Patients from "./pages/Patients";
 import PatientDetail from "./pages/PatientDetail";
 import Agenda from "./pages/Agenda";
 import FileAttente from "./pages/FileAttente";
+import Consultation from "./pages/Consultation";
 import Comptabilite from "./pages/Comptabilite";
 import Statistiques from "./pages/Statistiques";
 import Parametres from "./pages/Parametres";
@@ -30,9 +31,10 @@ const App = () => (
             <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
             <Route path="/agenda" element={<ProtectedRoute><Agenda /></ProtectedRoute>} />
             <Route path="/file-attente" element={<ProtectedRoute><FileAttente /></ProtectedRoute>} />
-            <Route path="/patients" element={<ProtectedRoute><Patients /></ProtectedRoute>} />
-            <Route path="/patients/:id" element={<ProtectedRoute><PatientDetail /></ProtectedRoute>} />
-            <Route path="/comptabilite" element={<ProtectedRoute requiredRoles={['medecin', 'secretaire']}><Comptabilite /></ProtectedRoute>} />
+            <Route path="/consultations/:queueId" element={<ProtectedRoute requiredRoles={['medecin']}><Consultation /></ProtectedRoute>} />
+            <Route path="/patients" element={<ProtectedRoute requiredRoles={['medecin']}><Patients /></ProtectedRoute>} />
+            <Route path="/patients/:id" element={<ProtectedRoute requiredRoles={['medecin']}><PatientDetail /></ProtectedRoute>} />
+            <Route path="/comptabilite" element={<ProtectedRoute requiredRoles={['medecin', 'secretaire', 'assistant']}><Comptabilite /></ProtectedRoute>} />
             <Route path="/statistiques" element={<ProtectedRoute requiredRoles={['medecin']}><Statistiques /></ProtectedRoute>} />
             <Route path="/parametres" element={<ProtectedRoute requiredRoles={['medecin']}><Parametres /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />

@@ -13,10 +13,14 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useSettings } from "@/hooks/useSettings";
 import { UserMenu } from "@/components/auth/UserMenu";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const { cabinetName, isLoading: settingsLoading } = useSettings();
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -24,6 +28,14 @@ const Index = () => {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (currentUser && currentUser.role !== "medecin") {
+      navigate("/file-attente", { replace: true });
+    }
+  }, [currentUser, navigate]);
+
+  if (currentUser && currentUser.role !== "medecin") return null;
 
   // Dashboard principal avec 6 modules
   const tiles = [

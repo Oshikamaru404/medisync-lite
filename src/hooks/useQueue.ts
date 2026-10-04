@@ -4,6 +4,10 @@ import { toast } from '@/hooks/use-toast';
 import { useEffect } from 'react';
 
 export type QueueStatus = 'waiting' | 'in_consultation' | 'completed' | 'cancelled';
+export type QueueDisplayStatus = QueueStatus | 'called';
+
+export const getQueueDisplayStatus = (entry: QueueEntry): QueueDisplayStatus =>
+  entry.status === 'waiting' && entry.called_at ? 'called' : entry.status;
 
 export type QueueEntry = {
   id: string;
@@ -21,6 +25,10 @@ export type QueueEntry = {
     nom: string;
     prenom: string;
     telephone: string | null;
+    date_naissance?: string | null;
+    sexe?: string | null;
+    poids?: number | null;
+    taille?: number | null;
   };
   invoices?: {
     id: string;
@@ -29,6 +37,24 @@ export type QueueEntry = {
     statut: string;
   } | null;
 };
+
+export const useQueueEntry = (queueId: string | undefined) =>
+  useQuery({
+    queryKey: ['queue-entry', queueId],
+    queryFn: async () => {
+      if (!queueId) return null;
+
+      const { data, error } = await supabase
+        .from('queue')
+        .select('*, patients(id, nom, prenom, telephone, date_naissance, sexe, poids, taille)')
+        .eq('id', queueId)
+        .maybeSingle();
+
+      if (error) throw error;
+      return data as QueueEntry | null;
+    },
+    enabled: !!queueId,
+  });
 
 export const useQueue = (date?: string) => {
   const queryClient = useQueryClient();
@@ -155,7 +181,7 @@ export const useUpdateQueueStatus = () => {
       
       const messages: Record<QueueStatus, string> = {
         waiting: 'Patient remis en attente',
-        in_consultation: 'Patient appelé en consultation - Facture créée',
+        in_consultation: 'Consultation démarrée - Facture créée',
         completed: 'Consultation terminée',
         cancelled: 'Patient retiré de la file',
       };
@@ -169,6 +195,40 @@ export const useUpdateQueueStatus = () => {
       toast({
         title: 'Erreur',
         description: `Impossible de mettre à jour: ${error.message}`,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
+export const useCallQueueEntry = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data, error } = await supabase
+        .from('queue')
+        .update({ called_at: new Date().toISOString() })
+        .eq('id', id)
+        .eq('status', 'waiting')
+        .is('called_at', null)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['queue'] });
+      toast({
+        title: 'Patient appelé',
+        description: 'Le médecin peut maintenant ouvrir son dossier depuis la file.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Appel impossible',
+        description: `La file n'a pas pu être mise à jour : ${error.message}`,
         variant: 'destructive',
       });
     },

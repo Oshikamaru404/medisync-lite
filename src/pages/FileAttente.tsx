@@ -1,22 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Plus, Clock, UserCheck, CheckCircle, XCircle, CreditCard, Phone, Search } from "lucide-react";
+import { ArrowLeft, Plus, Clock, UserCheck, CheckCircle, XCircle, CreditCard, Phone, Search, Stethoscope, BellRing, CalendarDays, UserRoundPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useQueue, useAddToQueue, useUpdateQueueStatus, useUpdateInvoiceStatus, QueueEntry, QueueStatus } from "@/hooks/useQueue";
-import { usePatients } from "@/hooks/usePatients";
+import { useQueue, useAddToQueue, useCallQueueEntry, useUpdateQueueStatus, useUpdateInvoiceStatus, getQueueDisplayStatus, QueueEntry, QueueStatus, QueueDisplayStatus } from "@/hooks/useQueue";
+import { usePatientDirectory } from "@/hooks/usePatients";
+import NewPatientDialog from "@/components/NewPatientDialog";
+import { UserMenu } from "@/components/auth/UserMenu";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
-const STATUS_CONFIG: Record<QueueStatus, { label: string; icon: typeof Clock; color: string; badgeClass: string }> = {
+const STATUS_CONFIG: Record<QueueDisplayStatus, { label: string; icon: typeof Clock; color: string; badgeClass: string }> = {
   waiting: { label: "En attente", icon: Clock, color: "text-amber-600", badgeClass: "bg-amber-100 text-amber-700" },
+  called: { label: "Appelé", icon: BellRing, color: "text-violet-600", badgeClass: "bg-violet-100 text-violet-700" },
   in_consultation: { label: "En consultation", icon: UserCheck, color: "text-blue-600", badgeClass: "bg-blue-100 text-blue-700" },
   completed: { label: "Terminé", icon: CheckCircle, color: "text-green-600", badgeClass: "bg-green-100 text-green-700" },
   cancelled: { label: "Annulé", icon: XCircle, color: "text-red-600", badgeClass: "bg-red-100 text-red-700" },
@@ -29,54 +33,86 @@ const FileAttente = () => {
   const [motif, setMotif] = useState("");
   const [montant, setMontant] = useState("0");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isNewPatientOpen, setIsNewPatientOpen] = useState(false);
+  const { currentUser } = useAuth();
 
   const { data: queue = [], isLoading } = useQueue();
-  const { data: patients = [] } = usePatients();
+  const { data: patients = [] } = usePatientDirectory();
   const addToQueue = useAddToQueue();
+  const callQueueEntry = useCallQueueEntry();
   const updateStatus = useUpdateQueueStatus();
   const updateInvoice = useUpdateInvoiceStatus();
 
   const filteredPatients = patients.filter(p => 
-    `${p.nom} ${p.prenom}`.toLowerCase().includes(searchQuery.toLowerCase())
+    `${p.nom} ${p.prenom} ${p.telephone || ""} ${p.cin || ""}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
   );
 
-  const waitingCount = queue.filter(q => q.status === 'waiting').length;
+  const waitingCount = queue.filter(q => getQueueDisplayStatus(q) === 'waiting').length;
+  const calledCount = queue.filter(q => getQueueDisplayStatus(q) === 'called').length;
   const inConsultationCount = queue.filter(q => q.status === 'in_consultation').length;
   const completedCount = queue.filter(q => q.status === 'completed').length;
+  const nextPatient = queue
+    .filter((entry) => getQueueDisplayStatus(entry) === "waiting")
+    .sort((first, second) => first.numero_ordre - second.numero_ordre)[0];
 
   const handleAddToQueue = async () => {
     if (!selectedPatientId) return;
-    
-    await addToQueue.mutateAsync({
-      patient_id: selectedPatientId,
-      motif: motif || undefined,
-      montant_consultation: parseFloat(montant) || 0,
-    });
-    
-    setIsAddDialogOpen(false);
-    setSelectedPatientId("");
-    setMotif("");
-    setMontant("0");
-    setSearchQuery("");
+
+    try {
+      await addToQueue.mutateAsync({
+        patient_id: selectedPatientId,
+        motif: motif || undefined,
+        montant_consultation: parseFloat(montant) || 0,
+      });
+
+      setIsAddDialogOpen(false);
+      setSelectedPatientId("");
+      setMotif("");
+      setMontant("0");
+      setSearchQuery("");
+    } catch {
+      // The mutation displays the error toast and keeps the form available for retry.
+    }
   };
 
-  const handleStatusChange = (entry: QueueEntry, newStatus: QueueStatus) => {
-    updateStatus.mutate({ id: entry.id, status: newStatus });
+  const handleStatusChange = async (entry: QueueEntry, newStatus: QueueStatus) => {
+    try {
+      await updateStatus.mutateAsync({ id: entry.id, status: newStatus });
+      if (newStatus === "in_consultation" && currentUser?.role === "medecin") {
+        navigate(`/consultations/${entry.id}`);
+      }
+    } catch {
+      // The mutation displays the error toast.
+    }
   };
+
+  const handleCallPatient = async (entry: QueueEntry) => {
+    try {
+      await callQueueEntry.mutateAsync(entry.id);
+    } catch {
+      // The mutation displays the error toast and keeps the patient in the queue.
+    }
+  };
+
+  const openConsultation = (entry: QueueEntry) => navigate(`/consultations/${entry.id}`);
 
   const handleMarkAsPaid = (invoiceId: string) => {
     updateInvoice.mutate({ invoiceId, statut: 'paid' });
   };
 
   const renderQueueCard = (entry: QueueEntry) => {
-    const config = STATUS_CONFIG[entry.status];
+    const displayStatus = getQueueDisplayStatus(entry);
+    const config = STATUS_CONFIG[displayStatus];
     const StatusIcon = config.icon;
     const patient = entry.patients;
 
     return (
-      <Card key={entry.id} className="relative overflow-hidden">
+      <Card key={entry.id} className="relative overflow-hidden border-slate-200 bg-white transition-shadow hover:shadow-md">
         <div className={cn("absolute left-0 top-0 bottom-0 w-1", 
-          entry.status === 'waiting' && "bg-amber-500",
+          displayStatus === 'waiting' && "bg-amber-500",
+          displayStatus === 'called' && "bg-violet-500",
           entry.status === 'in_consultation' && "bg-blue-500",
           entry.status === 'completed' && "bg-green-500",
           entry.status === 'cancelled' && "bg-red-500"
@@ -132,27 +168,35 @@ const FileAttente = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              {entry.status === 'waiting' && (
+              {displayStatus === 'waiting' && (
                 <Button 
                   size="sm" 
-                  onClick={() => handleStatusChange(entry, 'in_consultation')}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  onClick={() => handleCallPatient(entry)}
+                  className="bg-violet-600 hover:bg-violet-700"
+                  disabled={callQueueEntry.isPending}
                 >
-                  <UserCheck className="w-4 h-4 mr-1" />
+                  <BellRing className="w-4 h-4 mr-1" />
                   Appeler
                 </Button>
+              )}
+
+              {displayStatus === "called" && currentUser?.role === "medecin" && (
+                <Button size="sm" onClick={() => handleStatusChange(entry, "in_consultation")}>
+                  <Stethoscope className="mr-1 h-4 w-4" />Démarrer
+                </Button>
+              )}
+
+              {displayStatus === "called" && currentUser?.role !== "medecin" && (
+                <Badge className={STATUS_CONFIG.called.badgeClass}>En attente du médecin</Badge>
               )}
               
               {entry.status === 'in_consultation' && (
                 <>
-                  <Button 
-                    size="sm" 
-                    onClick={() => handleStatusChange(entry, 'completed')}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    <CheckCircle className="w-4 h-4 mr-1" />
-                    Terminer
-                  </Button>
+                  {currentUser?.role === "medecin" && (
+                    <Button size="sm" variant="outline" onClick={() => openConsultation(entry)}>
+                      <Stethoscope className="mr-1 h-4 w-4" />Ouvrir le dossier
+                    </Button>
+                  )}
                   {entry.invoices && entry.invoices.statut !== 'paid' && (
                     <Button 
                       size="sm" 
@@ -177,7 +221,7 @@ const FileAttente = () => {
                 </Button>
               )}
 
-              {entry.status === 'waiting' && (
+              {(displayStatus === 'waiting' || displayStatus === 'called') && (
                 <Button 
                   size="sm" 
                   variant="ghost"
@@ -188,6 +232,7 @@ const FileAttente = () => {
                   Annuler
                 </Button>
               )}
+
             </div>
           </div>
         </CardContent>
@@ -205,13 +250,31 @@ const FileAttente = () => {
               <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
                 <ArrowLeft className="w-5 h-5" />
               </Button>
-              <div>
+              <div className="flex items-center gap-3">
+                <div className="hidden h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 sm:flex">
+                  <UserCheck className="h-5 w-5" />
+                </div>
+                <div>
                 <h1 className="text-xl font-bold">File d'attente</h1>
                 <p className="text-sm text-muted-foreground">
-                  {format(new Date(), "EEEE d MMMM yyyy", { locale: fr })}
+                  Accueil · {format(new Date(), "EEEE d MMMM yyyy", { locale: fr })}
                 </p>
+                </div>
               </div>
             </div>
+
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              <UserMenu />
+
+              <Button variant="outline" onClick={() => navigate("/agenda")}>
+                <CalendarDays className="mr-2 h-4 w-4" />Agenda
+              </Button>
+
+              {nextPatient && (
+                <Button onClick={() => handleCallPatient(nextPatient)} disabled={callQueueEntry.isPending}>
+                  <BellRing className="mr-2 h-4 w-4" />Appeler suivant
+                </Button>
+              )}
 
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
@@ -223,6 +286,7 @@ const FileAttente = () => {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Ajouter un patient à la file</DialogTitle>
+                  <DialogDescription>Retrouvez un patient existant ou créez son dossier avant de l’ajouter à la file.</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 mt-4">
                   <div className="space-y-2">
@@ -232,7 +296,10 @@ const FileAttente = () => {
                       <Input
                         placeholder="Rechercher un patient..."
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          setSelectedPatientId("");
+                        }}
                         className="pl-10"
                       />
                     </div>
@@ -255,10 +322,14 @@ const FileAttente = () => {
                           </button>
                         ))}
                         {filteredPatients.length === 0 && (
-                          <p className="px-3 py-2 text-sm text-muted-foreground">Aucun patient trouvé</p>
+                          <p className="p-3 text-sm text-muted-foreground">Aucun patient trouvé</p>
                         )}
                       </div>
                     )}
+                    <Button type="button" variant="outline" className="w-full" onClick={() => setIsNewPatientOpen(true)}>
+                      <UserRoundPlus className="mr-2 h-4 w-4" />
+                      {searchQuery.trim() ? "Créer un nouveau dossier" : "Nouveau patient"}
+                    </Button>
                   </div>
 
                   <div className="space-y-2">
@@ -290,28 +361,60 @@ const FileAttente = () => {
                 </div>
               </DialogContent>
             </Dialog>
+            </div>
           </div>
         </div>
       </header>
 
+      <NewPatientDialog
+        open={isNewPatientOpen}
+        onOpenChange={setIsNewPatientOpen}
+        onCreated={async (patientId, patientName) => {
+          setSelectedPatientId(patientId);
+          setSearchQuery(patientName);
+          setIsAddDialogOpen(true);
+          try {
+            await addToQueue.mutateAsync({
+              patient_id: patientId,
+              motif: motif || undefined,
+              montant_consultation: parseFloat(montant) || 0,
+            });
+            setIsAddDialogOpen(false);
+            setSelectedPatientId("");
+            setMotif("");
+            setMontant("0");
+            setSearchQuery("");
+          } catch {
+            // The patient remains selected in the queue dialog so reception can retry.
+          }
+        }}
+      />
+
       {/* Stats */}
       <div className="container mx-auto px-4 py-4">
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <Card>
+        <div className="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
+          <Card className="border-amber-200 bg-amber-50/70">
             <CardContent className="p-4 text-center">
               <Clock className="w-6 h-6 mx-auto text-amber-600 mb-2" />
               <p className="text-2xl font-bold">{waitingCount}</p>
               <p className="text-sm text-muted-foreground">En attente</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-violet-200 bg-violet-50/70">
+            <CardContent className="p-4 text-center">
+              <BellRing className="mx-auto mb-2 h-6 w-6 text-violet-600" />
+              <p className="text-2xl font-bold">{calledCount}</p>
+              <p className="text-sm text-muted-foreground">Appelés</p>
+            </CardContent>
+          </Card>
+          <Card className="border-blue-200 bg-blue-50/70">
             <CardContent className="p-4 text-center">
               <UserCheck className="w-6 h-6 mx-auto text-blue-600 mb-2" />
               <p className="text-2xl font-bold">{inConsultationCount}</p>
               <p className="text-sm text-muted-foreground">En consultation</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-emerald-200 bg-emerald-50/70">
             <CardContent className="p-4 text-center">
               <CheckCircle className="w-6 h-6 mx-auto text-green-600 mb-2" />
               <p className="text-2xl font-bold">{completedCount}</p>
@@ -340,13 +443,22 @@ const FileAttente = () => {
         ) : (
           <div className="space-y-3">
             {/* Waiting */}
-            {queue.filter(q => q.status === 'waiting').length > 0 && (
+            {queue.filter(q => getQueueDisplayStatus(q) === 'waiting').length > 0 && (
               <div className="space-y-3">
                 <h2 className="font-semibold text-muted-foreground flex items-center gap-2">
                   <Clock className="w-4 h-4" />
-                  En attente ({queue.filter(q => q.status === 'waiting').length})
+                  En attente ({waitingCount})
                 </h2>
-                {queue.filter(q => q.status === 'waiting').map(renderQueueCard)}
+                {queue.filter(q => getQueueDisplayStatus(q) === 'waiting').map(renderQueueCard)}
+              </div>
+            )}
+
+            {queue.filter(q => getQueueDisplayStatus(q) === "called").length > 0 && (
+              <div className="space-y-3 mt-6">
+                <h2 className="flex items-center gap-2 font-semibold text-muted-foreground">
+                  <BellRing className="h-4 w-4" />Appelés ({calledCount})
+                </h2>
+                {queue.filter(q => getQueueDisplayStatus(q) === "called").map(renderQueueCard)}
               </div>
             )}
 
@@ -369,6 +481,15 @@ const FileAttente = () => {
                   Terminés ({queue.filter(q => q.status === 'completed').length})
                 </h2>
                 {queue.filter(q => q.status === 'completed').map(renderQueueCard)}
+              </div>
+            )}
+
+            {queue.filter(q => q.status === "cancelled").length > 0 && (
+              <div className="space-y-3 mt-6">
+                <h2 className="flex items-center gap-2 font-semibold text-muted-foreground">
+                  <XCircle className="h-4 w-4" />Annulés ({queue.filter(q => q.status === "cancelled").length})
+                </h2>
+                {queue.filter(q => q.status === "cancelled").map(renderQueueCard)}
               </div>
             )}
           </div>

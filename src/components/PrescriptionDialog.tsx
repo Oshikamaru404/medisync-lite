@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, X, Pill, Search, GripVertical } from "lucide-react";
+import { Plus, X, Pill, Search, GripVertical, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,8 +31,35 @@ import { useMedications, useCreatePrescription, PrescriptionItem } from "@/hooks
 interface PrescriptionDialogProps {
   patientId: string;
   patientName: string;
+  patientAllergies?: string | null;
   children?: React.ReactNode;
 }
+
+const normalizeClinicalTerm = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
+const findMedicationAllergyMatch = (
+  medication: { nom: string; dci: string | null },
+  allergies: string,
+) => {
+  const medicationTerms = normalizeClinicalTerm(`${medication.nom} ${medication.dci || ""}`);
+  const allergyTerms = allergies
+    .split(/[\n;•,]+/)
+    .map((allergy) =>
+      normalizeClinicalTerm(allergy)
+        .replace(/^(allergies?|allergique|allergic)(\s+(a|au|aux|to))?\s*/, "")
+        .replace(/^(a la|a l|au|aux)\s+/, "")
+        .trim(),
+    )
+    .filter((allergy) => allergy.length >= 4);
+
+  return allergyTerms.find((allergy) => medicationTerms.includes(allergy)) || null;
+};
 
 const POSOLOGIES = [
   "1 comprimé matin",
@@ -68,6 +95,7 @@ const DUREES = [
 export const PrescriptionDialog = ({
   patientId,
   patientName,
+  patientAllergies = "",
   children,
 }: PrescriptionDialogProps) => {
   const [open, setOpen] = useState(false);
@@ -182,6 +210,16 @@ export const PrescriptionDialog = ({
           {/* Medication Search */}
           <div className="space-y-2">
             <Label>Ajouter un médicament</Label>
+            {patientAllergies.trim() && (
+              <div className="flex gap-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900" role="note">
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                <div>
+                  <p className="font-semibold">Allergies déclarées</p>
+                  <p className="mt-0.5 whitespace-pre-wrap">{patientAllergies}</p>
+                  <p className="mt-1 text-xs">Les correspondances affichées sont textuelles et doivent être vérifiées par le médecin.</p>
+                </div>
+              </div>
+            )}
             <Popover open={medicationPopoverOpen} onOpenChange={setMedicationPopoverOpen}>
               <PopoverAnchor asChild>
                 <div className="relative">
@@ -220,12 +258,15 @@ export const PrescriptionDialog = ({
                   ) : filteredMedications.length > 0 ? (
                     <div className="grid gap-2 p-2 md:grid-cols-2">
                       {filteredMedications.map((med) => (
-                        <button
-                          key={med.id}
-                          type="button"
-                          onClick={() => addMedication(med)}
-                          className="w-full rounded-lg border border-transparent bg-background px-3 py-3 text-left transition-all hover:border-border hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        >
+                        (() => {
+                          const allergyMatch = findMedicationAllergyMatch(med, patientAllergies);
+                          return (
+                            <button
+                              key={med.id}
+                              type="button"
+                              onClick={() => addMedication(med)}
+                              className="w-full rounded-lg border border-transparent bg-background px-3 py-3 text-left transition-all hover:border-border hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            >
                           <div className="flex min-w-0 items-start justify-between gap-3">
                             <div className="min-w-0">
                               <div className="truncate font-medium">{med.nom}</div>
@@ -246,7 +287,15 @@ export const PrescriptionDialog = ({
                               {med.forme}
                             </div>
                           )}
-                        </button>
+                              {allergyMatch && (
+                                <div className="mt-2 flex items-start gap-1.5 text-xs font-medium text-amber-800" role="alert">
+                                  <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                                  Correspondance possible avec « {allergyMatch} » : vérification médicale requise
+                                </div>
+                              )}
+                            </button>
+                          );
+                        })()
                       ))}
                     </div>
                   ) : (
@@ -282,6 +331,11 @@ export const PrescriptionDialog = ({
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="font-medium">{item.nom_medicament}</div>
+                          {findMedicationAllergyMatch({ nom: item.nom_medicament, dci: null }, patientAllergies) && (
+                            <p className="mt-1 flex items-center gap-1 text-xs font-medium text-amber-800" role="alert">
+                              <AlertTriangle className="h-3.5 w-3.5" />Correspondance avec une allergie déclarée
+                            </p>
+                          )}
                           {item.dosage && (
                             <Badge variant="secondary" className="mt-1">
                               {item.dosage}
