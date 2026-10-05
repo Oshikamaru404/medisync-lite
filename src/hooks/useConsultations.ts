@@ -114,3 +114,35 @@ export const useCompleteConsultation = () => {
     },
   });
 };
+
+export const useSaveConsultationPricing = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (pricing: {
+      queueId: string;
+      grossAmount: number;
+      discountType: "none" | "percentage" | "fixed";
+      discountValue: number;
+    }) => {
+      const { data, error } = await supabase.rpc("save_consultation_pricing", {
+        _queue_id: pricing.queueId,
+        _gross_amount: pricing.grossAmount,
+        _discount_type: pricing.discountType,
+        _discount_value: pricing.discountValue,
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["queue"] });
+      queryClient.invalidateQueries({ queryKey: ["queue-entry"] });
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      toast.success("Tarif et réduction enregistrés sur la facture");
+    },
+    onError: (error) => {
+      console.error("Error saving consultation pricing:", error);
+      toast.error("Impossible d'enregistrer le tarif de consultation");
+    },
+  });
+};

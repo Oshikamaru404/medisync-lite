@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useCreateCertificate, CERTIFICATE_TYPES, CertificateInsert } from "@/hooks/useCertificates";
+import { useCreateCertificate, CERTIFICATE_TYPES, Certificate, CertificateInsert } from "@/hooks/useCertificates";
 import { format, addDays } from "date-fns";
 
 interface CertificateDialogProps {
@@ -13,6 +13,7 @@ interface CertificateDialogProps {
   onOpenChange: (open: boolean) => void;
   patientId: string;
   patientName: string;
+  onCreated?: (certificate: Certificate) => void;
 }
 
 export const CertificateDialog = ({
@@ -20,6 +21,7 @@ export const CertificateDialog = ({
   onOpenChange,
   patientId,
   patientName,
+  onCreated,
 }: CertificateDialogProps) => {
   const createCertificate = useCreateCertificate();
   
@@ -58,8 +60,9 @@ export const CertificateDialog = ({
       notes: formData.notes || null,
     };
 
-    await createCertificate.mutateAsync(certificateData);
+    const certificate = await createCertificate.mutateAsync(certificateData);
     onOpenChange(false);
+    onCreated?.(certificate);
     
     // Reset form
     setFormData({

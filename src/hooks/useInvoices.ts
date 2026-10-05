@@ -8,6 +8,9 @@ export type Invoice = {
   numero: string;
   date: string;
   montant: number;
+  montant_brut?: number;
+  reduction_type?: "none" | "percentage" | "fixed";
+  reduction_valeur?: number;
   statut: 'paid' | 'pending' | 'cancelled';
   created_at: string;
   patient?: {

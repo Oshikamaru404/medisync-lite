@@ -35,6 +35,9 @@ export type QueueEntry = {
     numero: string;
     montant: number;
     statut: string;
+    montant_brut?: number;
+    reduction_type?: string;
+    reduction_valeur?: number;
   } | null;
 };
 
@@ -46,7 +49,7 @@ export const useQueueEntry = (queueId: string | undefined) =>
 
       const { data, error } = await supabase
         .from('queue')
-        .select('*, patients(id, nom, prenom, telephone, date_naissance, sexe, poids, taille)')
+        .select('*, patients(id, nom, prenom, telephone, date_naissance, sexe, poids, taille), invoices(id, numero, montant, statut, montant_brut, reduction_type, reduction_valeur)')
         .eq('id', queueId)
         .maybeSingle();
 

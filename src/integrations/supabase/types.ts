@@ -182,6 +182,40 @@ export type Database = {
           },
         ]
       }
+      clinical_terms: {
+        Row: {
+          category_id: string | null
+          code: string
+          created_at: string
+          label: string
+          search_text: string
+          source: string
+          source_release: string | null
+          synonyms: string[]
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string | null
+          code: string
+          created_at?: string
+          label: string
+          source?: string
+          source_release?: string | null
+          synonyms?: string[]
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string | null
+          code?: string
+          created_at?: string
+          label?: string
+          source?: string
+          source_release?: string | null
+          synonyms?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       consultations: {
         Row: {
           completed_at: string | null
@@ -286,8 +320,11 @@ export type Database = {
           date: string
           id: string
           montant: number
+          montant_brut: number
           numero: string
           patient_id: string
+          reduction_type: string
+          reduction_valeur: number
           statut: string | null
         }
         Insert: {
@@ -295,8 +332,11 @@ export type Database = {
           date: string
           id?: string
           montant: number
+          montant_brut?: number
           numero: string
           patient_id: string
+          reduction_type?: string
+          reduction_valeur?: number
           statut?: string | null
         }
         Update: {
@@ -304,8 +344,11 @@ export type Database = {
           date?: string
           id?: string
           montant?: number
+          montant_brut?: number
           numero?: string
           patient_id?: string
+          reduction_type?: string
+          reduction_valeur?: number
           statut?: string | null
         }
         Relationships: [
@@ -618,6 +661,15 @@ export type Database = {
       }
       cleanup_expired_sessions: { Args: never; Returns: undefined }
       generate_invoice_number: { Args: never; Returns: string }
+      save_consultation_pricing: {
+        Args: {
+          _discount_type: string
+          _discount_value: number
+          _gross_amount: number
+          _queue_id: string
+        }
+        Returns: string
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]

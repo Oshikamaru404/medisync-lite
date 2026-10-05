@@ -169,7 +169,14 @@ const Comptabilite = () => {
                           {format(new Date(invoice.date), "d MMMM yyyy", { locale: fr })}
                         </TableCell>
                         <TableCell className="font-semibold">
-                          {invoice.montant.toFixed(2)} DH
+                          <div>{invoice.montant.toFixed(2)} DH</div>
+                          {(invoice.reduction_valeur || 0) > 0 && (
+                            <div className="mt-1 text-xs font-normal text-muted-foreground">
+                              Tarif {Number(invoice.montant_brut || 0).toFixed(2)} DH · Réduction {invoice.reduction_type === "percentage"
+                                ? `${invoice.reduction_valeur}%`
+                                : `${Number(invoice.reduction_valeur).toFixed(2)} DH`}
+                            </div>
+                          )}
                         </TableCell>
                         <TableCell>{getStatusBadge(invoice.statut)}</TableCell>
                         <TableCell className="text-right">

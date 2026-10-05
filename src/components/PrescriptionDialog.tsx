@@ -32,6 +32,12 @@ interface PrescriptionDialogProps {
   patientId: string;
   patientName: string;
   patientAllergies?: string | null;
+  patientContext?: {
+    antecedents?: string | null;
+    allergies?: string | null;
+    traitements?: string | null;
+  };
+  onCreated?: (prescriptionId: string) => void;
   children?: React.ReactNode;
 }
 
@@ -96,6 +102,8 @@ export const PrescriptionDialog = ({
   patientId,
   patientName,
   patientAllergies = "",
+  patientContext,
+  onCreated,
   children,
 }: PrescriptionDialogProps) => {
   const [open, setOpen] = useState(false);
@@ -170,10 +178,11 @@ export const PrescriptionDialog = ({
     createPrescription.mutate(
       { patientId, items, notes: notes || undefined },
       {
-        onSuccess: () => {
+        onSuccess: (prescription) => {
           setOpen(false);
           setItems([]);
           setNotes("");
+          onCreated?.(prescription.id);
         },
       }
     );
@@ -198,7 +207,7 @@ export const PrescriptionDialog = ({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden flex flex-col bg-white p-0 text-slate-900 shadow-lg">
+      <DialogContent className="flex max-h-[90vh] max-w-6xl flex-col overflow-hidden bg-white p-0 text-slate-900 shadow-lg">
         <DialogHeader className="border-b px-6 py-5">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold text-slate-900">
             <Pill className="w-5 h-5 text-blue-600" />
@@ -206,20 +215,12 @@ export const PrescriptionDialog = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex-1 overflow-auto space-y-6 p-6">
+        <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
+          <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_280px]">
+          <div className="min-w-0 space-y-5">
           {/* Medication Search */}
           <div className="space-y-2">
             <Label>Ajouter un médicament</Label>
-            {patientAllergies.trim() && (
-              <div className="flex gap-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900" role="note">
-                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-                <div>
-                  <p className="font-semibold">Allergies déclarées</p>
-                  <p className="mt-0.5 whitespace-pre-wrap">{patientAllergies}</p>
-                  <p className="mt-1 text-xs">Les correspondances affichées sont textuelles et doivent être vérifiées par le médecin.</p>
-                </div>
-              </div>
-            )}
             <Popover open={medicationPopoverOpen} onOpenChange={setMedicationPopoverOpen}>
               <PopoverAnchor asChild>
                 <div className="relative">
@@ -238,21 +239,21 @@ export const PrescriptionDialog = ({
               </PopoverAnchor>
               <PopoverContent
                 portalled={false}
-                className="w-[min(50rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] p-0"
+                className="w-[min(42rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] p-0"
                 align="start"
                 onOpenAutoFocus={(event) => event.preventDefault()}
               >
-                <ScrollArea className="h-[min(350px,calc(100dvh-12rem))]">
+                <ScrollArea className={normalizedSearch.length < 2 || medicationsLoading || medicationsError || filteredMedications.length === 0 ? "h-auto max-h-24" : "h-[min(350px,calc(100dvh-12rem))]"}>
                   {normalizedSearch.length < 2 ? (
-                    <div className="p-4 text-center text-sm text-muted-foreground">
+                    <div className="p-3 text-center text-sm text-muted-foreground">
                       Saisissez au moins 2 caractères pour rechercher
                     </div>
                   ) : medicationsLoading ? (
-                    <div className="p-4 text-center text-sm text-muted-foreground" role="status">
+                    <div className="p-3 text-center text-sm text-muted-foreground" role="status">
                       Recherche en cours…
                     </div>
                   ) : medicationsError ? (
-                    <div className="p-4 text-center text-sm text-destructive" role="status">
+                    <div className="p-3 text-center text-sm text-destructive" role="status">
                       La recherche est momentanément indisponible
                     </div>
                   ) : filteredMedications.length > 0 ? (
@@ -408,6 +409,19 @@ export const PrescriptionDialog = ({
               ))}
             </div>
           )}
+          {items.length === 0 && (
+            <Card className="border-dashed border-slate-300 bg-slate-50/70 shadow-none">
+              <div className="flex items-center gap-3 p-4">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
+                  <Pill className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-slate-800">Aucun médicament ajouté</p>
+                  <p className="mt-0.5 text-xs text-slate-600">Recherchez un nom ou une DCI ci-dessus pour commencer l’ordonnance.</p>
+                </div>
+              </div>
+            </Card>
+          )}
 
           {/* Notes */}
           <div className="space-y-2">
@@ -418,6 +432,39 @@ export const PrescriptionDialog = ({
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
             />
+          </div>
+          </div>
+
+          <aside className="space-y-3 xl:sticky xl:top-0" aria-label="Rappel du dossier patient">
+            <Card className="overflow-hidden border-slate-200 shadow-sm">
+              <div className="border-b bg-slate-50 px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Rappel du dossier patient</p>
+                <p className="mt-1 truncate text-sm font-semibold text-slate-900">{patientName}</p>
+              </div>
+              <div className="space-y-3 p-4">
+                <div className={`rounded-lg border p-3 ${patientAllergies.trim() ? "border-amber-300 bg-amber-50" : "border-slate-200 bg-slate-50"}`}>
+                  <div className={`flex items-center gap-2 text-sm font-semibold ${patientAllergies.trim() ? "text-amber-900" : "text-slate-700"}`}>
+                    {patientAllergies.trim() && <AlertTriangle className="h-4 w-4 shrink-0" />}
+                    Allergies
+                  </div>
+                  <p className={`mt-1 whitespace-pre-wrap text-sm ${patientAllergies.trim() ? "text-amber-900" : "text-slate-600"}`}>
+                    {patientAllergies.trim() || "Aucune allergie enregistrée — à confirmer avec le patient."}
+                  </p>
+                  {patientAllergies.trim() && (
+                    <p className="mt-2 text-xs text-amber-800">Les correspondances affichées sont textuelles et doivent être vérifiées par le médecin.</p>
+                  )}
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Antécédents</p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{patientContext?.antecedents?.trim() || "Non renseignés"}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Traitements en cours</p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{patientContext?.traitements?.trim() || "Non renseignés"}</p>
+                </div>
+              </div>
+            </Card>
+          </aside>
           </div>
         </div>
 

@@ -112,7 +112,7 @@ export const CertificatePreview = ({ certificate, scale = 1 }: CertificatePrevie
 
   return (
     <div 
-      className="bg-white text-black p-8 shadow-lg border"
+      className="relative bg-white text-black p-8 shadow-lg border"
       style={{ 
         width: 210 * scale * 3.78, // A4 width in mm * scale * mm to px
         minHeight: 297 * scale * 3.78 * 0.7, // A4 height * scale * 70%

@@ -109,7 +109,7 @@ export const PrescriptionPreview = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-3xl max-h-[90vh] overflow-auto bg-white">
+      <Card className="prescription-print-card w-full max-w-3xl max-h-[90vh] overflow-auto bg-white">
         {/* Toolbar */}
         <div className="sticky top-0 bg-white border-b p-4 flex justify-between items-center print:hidden">
           <h2 className="font-semibold">Aperçu de l'ordonnance</h2>
@@ -236,24 +236,19 @@ export const PrescriptionPreview = ({
       {/* Print Styles */}
       <style>{`
         @media print {
-          body * {
-            visibility: hidden;
-          }
-          .fixed {
+          @page { size: A4; margin: 12mm; }
+          body * { visibility: hidden !important; }
+          .prescription-print-card,
+          .prescription-print-card * { visibility: visible !important; }
+          .prescription-print-card {
             position: absolute !important;
-          }
-          [class*="Card"] {
+            inset: 0 auto auto 0 !important;
+            width: 100% !important;
+            max-width: none !important;
+            max-height: none !important;
+            overflow: visible !important;
+            border: 0 !important;
             box-shadow: none !important;
-            border: none !important;
-          }
-          [class*="Card"] * {
-            visibility: visible;
-          }
-          [class*="Card"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
           }
         }
       `}</style>
