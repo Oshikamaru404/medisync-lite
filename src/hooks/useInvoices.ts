@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -11,7 +12,8 @@ export type Invoice = {
   montant_brut?: number;
   reduction_type?: "none" | "percentage" | "fixed";
   reduction_valeur?: number;
-  statut: 'paid' | 'pending' | 'cancelled';
+  statut: 'paid' | 'pending' | 'cancelled' | 'no_charge';
+  consigne_reglement?: "due_at_reception" | "deferred" | "free" | null;
   created_at: string;
   patient?: {
     nom: string;
@@ -37,6 +39,42 @@ export const useInvoices = () => {
   });
 };
 
+export const useReceptionPaymentSummary = (enabled: boolean) => {
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ["invoice-action-summary"],
+    enabled,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("invoices")
+        .select("id")
+        .eq("statut", "pending")
+        .eq("consigne_reglement", "due_at_reception");
+
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  useEffect(() => {
+    if (!enabled) return;
+    const channel = supabase
+      .channel("invoice-action-summary-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "invoices" },
+        () => queryClient.invalidateQueries({ queryKey: ["invoice-action-summary"] }),
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [enabled, queryClient]);
+
+  return query;
+};
+
 export const useCreateInvoice = () => {
   const queryClient = useQueryClient();
 
@@ -53,6 +91,7 @@ export const useCreateInvoice = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ['queue-encashment-summary'] });
       toast({
         title: 'Facture créée',
         description: 'La facture a été créée avec succès.',
@@ -85,6 +124,7 @@ export const useUpdateInvoice = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ['queue-encashment-summary'] });
       toast({
         title: 'Facture modifiée',
         description: 'Les modifications ont été enregistrées.',
@@ -114,6 +154,7 @@ export const useDeleteInvoice = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ['queue-encashment-summary'] });
       toast({
         title: 'Facture supprimée',
         description: 'La facture a été supprimée.',

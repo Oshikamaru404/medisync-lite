@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getSessionInactivityTimeoutMs } from '@/lib/sessionSecurity';
 
 export type AppRole = 'medecin' | 'secretaire' | 'assistant';
 
@@ -12,6 +14,7 @@ export interface AppUser {
 
 interface AuthContextType {
   currentUser: AppUser | null;
+  sessionToken: string | null;
   isAuthenticated: boolean;
   isLocked: boolean;
   isLoading: boolean;
@@ -27,14 +30,39 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const SESSION_TOKEN_KEY = 'medical_erp_session';
-const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<AppUser | null>(null);
+  const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [isLocked, setIsLocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [needsSetup, setNeedsSetup] = useState(false);
   const [lastActivity, setLastActivity] = useState(Date.now());
+  const {
+    data: inactivityTimeoutSetting,
+    error: inactivityTimeoutError,
+  } = useQuery({
+    queryKey: ['session-inactivity-timeout'],
+    enabled: Boolean(currentUser),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'session_inactivity_timeout_minutes')
+        .maybeSingle();
+
+      if (error) throw error;
+      return data?.value || '';
+    },
+  });
+  const inactivityTimeoutMs = getSessionInactivityTimeoutMs(
+    inactivityTimeoutSetting || '',
+  );
+
+  useEffect(() => {
+    if (inactivityTimeoutError) {
+      console.error('Unable to load the cabinet inactivity timeout; using the secure default.', inactivityTimeoutError);
+    }
+  }, [inactivityTimeoutError]);
 
   // Check if any users exist (for initial setup)
   const checkNeedsSetup = useCallback(async () => {
@@ -61,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const sessionToken = localStorage.getItem(SESSION_TOKEN_KEY);
     
     if (!sessionToken) {
+      setSessionToken(null);
       setIsLoading(false);
       const setup = await checkNeedsSetup();
       setNeedsSetup(setup);
@@ -83,15 +112,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (data.valid && data.user) {
         setCurrentUser(data.user);
+        setSessionToken(sessionToken);
         setIsLocked(false);
       } else {
         localStorage.removeItem(SESSION_TOKEN_KEY);
+        setSessionToken(null);
         const setup = await checkNeedsSetup();
         setNeedsSetup(setup);
       }
     } catch (error) {
       console.error('Session verification error:', error);
       localStorage.removeItem(SESSION_TOKEN_KEY);
+      setSessionToken(null);
     } finally {
       setIsLoading(false);
     }
@@ -106,14 +138,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!currentUser || isLocked) return;
 
     const checkInactivity = () => {
-      if (Date.now() - lastActivity > INACTIVITY_TIMEOUT) {
+      if (Date.now() - lastActivity > inactivityTimeoutMs) {
         setIsLocked(true);
       }
     };
 
     const interval = setInterval(checkInactivity, 1000);
     return () => clearInterval(interval);
-  }, [currentUser, isLocked, lastActivity]);
+  }, [currentUser, inactivityTimeoutMs, isLocked, lastActivity]);
 
   // Track user activity
   useEffect(() => {
@@ -147,6 +179,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (data.success && data.sessionToken && data.user) {
         localStorage.setItem(SESSION_TOKEN_KEY, data.sessionToken);
         setCurrentUser(data.user);
+        setSessionToken(data.sessionToken);
         setIsLocked(false);
         setLastActivity(Date.now());
         setNeedsSetup(false);
@@ -175,6 +208,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     localStorage.removeItem(SESSION_TOKEN_KEY);
     setCurrentUser(null);
+    setSessionToken(null);
     setIsLocked(false);
   };
 
@@ -208,6 +242,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value: AuthContextType = {
     currentUser,
+    sessionToken,
     isAuthenticated: !!currentUser,
     isLocked,
     isLoading,

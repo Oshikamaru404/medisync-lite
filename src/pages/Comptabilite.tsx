@@ -1,4 +1,4 @@
-import { ArrowLeft, Plus, Banknote, TrendingUp, FileText, Calendar } from "lucide-react";
+import { Plus, Banknote, TrendingUp, FileText, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useInvoices } from "@/hooks/useInvoices";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { formatPatientName } from "@/lib/utils";
 
 const Comptabilite = () => {
   const navigate = useNavigate();
@@ -39,7 +40,16 @@ const Comptabilite = () => {
     invoiceCount: invoices.length,
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string, settlementInstruction: string | null | undefined) => {
+    if (status === "no_charge" || settlementInstruction === "free") {
+      return <Badge variant="secondary">Gratuite</Badge>;
+    }
+    if (status === "pending" && settlementInstruction === "deferred") {
+      return <Badge className="bg-tile-comptabilite">Différé · crédit patient</Badge>;
+    }
+    if (status === "pending") {
+      return <Badge className="bg-tile-comptabilite">À encaisser</Badge>;
+    }
     return status === "paid" ? (
       <Badge className="bg-tile-statistiques">Payée</Badge>
     ) : (
@@ -53,9 +63,6 @@ const Comptabilite = () => {
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-foreground">Comptabilité</h1>
               <p className="text-sm text-muted-foreground">
@@ -163,7 +170,7 @@ const Comptabilite = () => {
                       <TableRow key={invoice.id} className="cursor-pointer hover:bg-muted/50">
                         <TableCell className="font-medium">{invoice.numero}</TableCell>
                         <TableCell>
-                          {invoice.patient?.prenom} {invoice.patient?.nom}
+                          {formatPatientName(invoice.patient?.nom, invoice.patient?.prenom)}
                         </TableCell>
                         <TableCell>
                           {format(new Date(invoice.date), "d MMMM yyyy", { locale: fr })}
@@ -178,7 +185,7 @@ const Comptabilite = () => {
                             </div>
                           )}
                         </TableCell>
-                        <TableCell>{getStatusBadge(invoice.statut)}</TableCell>
+                        <TableCell>{getStatusBadge(invoice.statut, invoice.consigne_reglement)}</TableCell>
                         <TableCell className="text-right">
                           <Button variant="ghost" size="sm">
                             Détails

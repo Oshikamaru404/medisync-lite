@@ -34,7 +34,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { PinPad } from '@/components/auth/PinPad';
-import { Plus, Edit, Key, UserX, UserCheck, Shield, Loader2 } from 'lucide-react';
+import { Plus, Edit, Key, UserX, UserCheck, Shield, Loader2, AlertCircle, RefreshCw, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
@@ -82,7 +82,7 @@ export function UserManagement() {
   const [pinError, setPinError] = useState<string>();
 
   // Fetch users
-  const { data: users = [], isLoading } = useQuery({
+  const { data: users = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['app-users'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -277,41 +277,61 @@ export function UserManagement() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      <div className="flex min-h-40 items-center justify-center gap-3 text-sm text-slate-500">
+        <Loader2 className="h-5 w-5 animate-spin text-teal-700" />
+        Chargement de l’équipe…
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 className="text-lg font-semibold">Gestion des utilisateurs</h3>
-          <p className="text-sm text-muted-foreground">
-            Ajoutez et gérez les utilisateurs de l'application
-          </p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-teal-800">Accès au cabinet</p>
+          <h2 className="mt-1 text-lg font-semibold text-slate-950">Équipe & utilisateurs</h2>
+          <p className="mt-1 text-sm text-slate-500">Gérez les comptes, les rôles et les codes PIN de connexion.</p>
         </div>
         <Button onClick={() => {
           resetForm();
           setIsAddDialogOpen(true);
-        }} className="gap-2">
+        }} className="gap-2 rounded-xl bg-[#155b48] hover:bg-[#104a3b]">
           <Plus className="w-4 h-4" />
           Ajouter un utilisateur
         </Button>
       </div>
 
-      {/* Users List */}
+      {isError ? (
+        <div role="alert" className="flex flex-col items-start gap-3 rounded-xl border border-rose-200 bg-rose-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-700" />
+            <div>
+              <p className="text-sm font-semibold text-rose-900">Impossible de charger les utilisateurs</p>
+              <p className="mt-1 text-xs leading-5 text-rose-800">Vérifiez la connexion au service de données puis réessayez.</p>
+            </div>
+          </div>
+          <Button variant="outline" onClick={() => void refetch()} className="gap-2 border-rose-300 bg-white text-rose-900 hover:bg-rose-100">
+            <RefreshCw className="h-4 w-4" />
+            Réessayer
+          </Button>
+        </div>
+      ) : users.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
+          <Users className="mx-auto h-8 w-8 text-slate-400" />
+          <p className="mt-3 text-sm font-semibold text-slate-800">Aucun compte d’équipe</p>
+          <p className="mt-1 text-xs text-slate-500">Ajoutez les personnes autorisées à accéder à ce cabinet.</p>
+        </div>
+      ) : (
       <div className="space-y-3">
         {users.map((user) => (
           <Card 
             key={user.id} 
             className={cn(
-              "p-4 flex items-center justify-between",
+              "flex flex-wrap items-center justify-between gap-3 rounded-2xl border-slate-200 p-3 sm:p-4",
               !user.is_active && "opacity-60"
             )}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
               {/* Avatar */}
               <div className={cn(
                 "w-12 h-12 rounded-full flex items-center justify-center text-white font-bold",
@@ -322,7 +342,7 @@ export function UserManagement() {
               </div>
 
               {/* Info */}
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <h4 className="font-semibold">{user.prenom} {user.nom}</h4>
                   {!user.is_active && (
@@ -332,7 +352,7 @@ export function UserManagement() {
                     <Badge variant="outline" className="text-xs">Vous</Badge>
                   )}
                 </div>
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground sm:text-sm">
                   <span>{roleLabels[user.role]}</span>
                   {user.last_login && (
                     <span>• Dernière connexion: {new Date(user.last_login).toLocaleDateString('fr-FR')}</span>
@@ -342,7 +362,7 @@ export function UserManagement() {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-2">
+            <div className="ml-auto flex shrink-0 items-center gap-1">
               <Button
                 variant="ghost"
                 size="icon"
@@ -377,6 +397,7 @@ export function UserManagement() {
           </Card>
         ))}
       </div>
+      )}
 
       {/* Add User Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={(open) => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { FileText, Download, Trash2, Eye, Loader2, FileBadge } from "lucide-react";
+import { FileText, Download, Trash2, Eye, Loader2, FileBadge, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +18,7 @@ interface CertificatesListProps {
 }
 
 export const CertificatesList = ({ patientId }: CertificatesListProps) => {
-  const { data: certificates = [], isLoading } = useCertificates(patientId);
+  const { data: certificates = [], isLoading, isError, refetch } = useCertificates(patientId);
   const deleteCertificate = useDeleteCertificate();
   const { getSettingValue } = useSettings();
   const [previewCertificate, setPreviewCertificate] = useState<Certificate | null>(null);
@@ -88,13 +88,29 @@ export const CertificatesList = ({ patientId }: CertificatesListProps) => {
     );
   }
 
+  if (isError) {
+    return (
+      <Card className="flex flex-col gap-3 rounded-2xl border-rose-200 bg-rose-50/60 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-rose-950">Certificats indisponibles</h3>
+          <p className="mt-1 text-xs text-rose-800">Les certificats de ce patient n’ont pas pu être chargés.</p>
+        </div>
+        <Button type="button" variant="outline" size="sm" className="shrink-0 border-rose-200 bg-white text-rose-900" onClick={() => void refetch()}>
+          <RefreshCw className="mr-2 h-3.5 w-3.5" />Réessayer
+        </Button>
+      </Card>
+    );
+  }
+
   if (certificates.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-8 text-center">
-          <FileBadge className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-          <h3 className="text-lg font-semibold mb-2">Aucun certificat</h3>
-          <p className="text-muted-foreground">
+      <Card className="rounded-2xl border-slate-200 bg-white shadow-sm">
+        <CardContent className="p-8 text-center sm:p-12">
+          <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-50 text-teal-800">
+            <FileBadge className="h-6 w-6" />
+          </span>
+          <h3 className="mb-2 text-lg font-semibold text-slate-900">Aucun certificat</h3>
+          <p className="text-sm text-slate-500">
             Créez un certificat médical pour ce patient.
           </p>
         </CardContent>
@@ -109,12 +125,12 @@ export const CertificatesList = ({ patientId }: CertificatesListProps) => {
           const certType = CERTIFICATE_TYPES[certificate.type as keyof typeof CERTIFICATE_TYPES];
           
           return (
-            <Card key={certificate.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
+            <Card key={certificate.id} className="rounded-2xl border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+              <CardContent className="p-4 sm:p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <FileText className="w-5 h-5 text-primary" />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-800">
+                      <FileText className="h-5 w-5" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">

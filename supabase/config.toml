@@ -12,5 +12,11 @@ verify_jwt = false
 [functions.auth-pin]
 verify_jwt = false
 
+[functions.patient-documents]
+verify_jwt = false
+
+[functions.prescription-share]
+verify_jwt = false
+
 [functions.icd11-search]
 verify_jwt = false

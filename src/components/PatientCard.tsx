@@ -1,9 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Phone, Shield, Calendar, Baby, UserCheck, Clock, AlertTriangle } from "lucide-react";
-import { differenceInYears, parseISO, format } from "date-fns";
+import { AlertTriangle, ChevronRight, Phone, Shield, CreditCard, Hash } from "lucide-react";
+import { differenceInYears, format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { cn } from "@/lib/utils";
+import { cn, formatPersonName, formatPhoneNumber } from "@/lib/utils";
 
 interface Patient {
   id: string;
@@ -13,6 +13,7 @@ interface Patient {
   email?: string | null;
   telephone?: string | null;
   mutuelle?: string | null;
+  numero_mutuelle?: string | null;
   date_naissance?: string | null;
   sexe?: string | null;
   created_at: string;
@@ -22,6 +23,9 @@ interface Patient {
 interface PatientCardProps {
   patient: Patient;
   onClick: () => void;
+  view?: "grid" | "list";
+  lastConsultationDate?: string | null;
+  consultationDatesUnavailable?: boolean;
 }
 
 const calculateAge = (dateNaissance: string | null | undefined): number | null => {
@@ -33,174 +37,238 @@ const calculateAge = (dateNaissance: string | null | undefined): number | null =
   }
 };
 
-const getAgeCategory = (age: number | null): "child" | "adult" | "senior" | null => {
-  if (age === null) return null;
-  if (age < 18) return "child";
-  if (age >= 65) return "senior";
-  return "adult";
-};
-
-const hasAllergies = (patient: Patient): boolean => {
-  if (!patient.medical_records) return false;
-  const allergies = patient.medical_records.allergies;
-  return !!allergies && allergies.trim().length > 0;
-};
-
-const getGenderGradient = (sexe: string | null | undefined) => {
-  switch (sexe) {
-    case "M":
-      return {
-        gradient: "from-blue-50 via-blue-100/50 to-sky-50",
-        border: "border-blue-200/60",
-        accent: "bg-gradient-to-br from-blue-500 to-sky-400",
-        iconBg: "bg-gradient-to-br from-blue-100 to-sky-100",
-        iconColor: "text-blue-600",
-        badgeClass: "bg-gradient-to-r from-blue-500 to-sky-400 text-white border-0",
-      };
-    case "F":
-      return {
-        gradient: "from-pink-50 via-rose-100/50 to-fuchsia-50",
-        border: "border-pink-200/60",
-        accent: "bg-gradient-to-br from-pink-500 to-rose-400",
-        iconBg: "bg-gradient-to-br from-pink-100 to-rose-100",
-        iconColor: "text-pink-600",
-        badgeClass: "bg-gradient-to-r from-pink-500 to-rose-400 text-white border-0",
-      };
-    case "Autre":
-      return {
-        gradient: "from-violet-50 via-purple-100/50 to-indigo-50",
-        border: "border-violet-200/60",
-        accent: "bg-gradient-to-br from-violet-500 to-purple-400",
-        iconBg: "bg-gradient-to-br from-violet-100 to-purple-100",
-        iconColor: "text-violet-600",
-        badgeClass: "bg-gradient-to-r from-violet-500 to-purple-400 text-white border-0",
-      };
-    default:
-      return {
-        gradient: "from-slate-50 via-gray-100/50 to-zinc-50",
-        border: "border-slate-200/60",
-        accent: "bg-gradient-to-br from-slate-500 to-gray-400",
-        iconBg: "bg-gradient-to-br from-slate-100 to-gray-100",
-        iconColor: "text-slate-600",
-        badgeClass: "bg-muted text-muted-foreground",
-      };
-  }
-};
-
-const getAgeBadgeStyles = (category: "child" | "adult" | "senior" | null) => {
-  switch (category) {
-    case "child":
-      return "bg-gradient-to-r from-amber-400 to-orange-400 text-white border-0";
-    case "senior":
-      return "bg-gradient-to-r from-emerald-500 to-teal-400 text-white border-0";
-    case "adult":
-      return "bg-gradient-to-r from-slate-500 to-gray-400 text-white border-0";
-    default:
-      return "bg-muted text-muted-foreground";
-  }
-};
-
-export const PatientCard = ({ patient, onClick }: PatientCardProps) => {
+export const PatientCard = ({
+  patient,
+  onClick,
+  view = "grid",
+  lastConsultationDate,
+  consultationDatesUnavailable = false,
+}: PatientCardProps) => {
   const age = calculateAge(patient.date_naissance);
-  const ageCategory = getAgeCategory(age);
-  const styles = getGenderGradient(patient.sexe);
-  const patientHasAllergies = hasAllergies(patient);
+  const allergies = patient.medical_records?.allergies?.trim();
+  const sexStyle = patient.sexe === "F"
+    ? {
+        accent: "border-l-rose-400",
+        avatar: "bg-rose-50 text-rose-700",
+        badge: "border-rose-200 bg-rose-50 text-rose-800",
+        tint: "from-rose-50/80 via-white to-white",
+        initials: "bg-gradient-to-br from-rose-100 to-pink-50 text-rose-800",
+        accentLine: "from-rose-400/80 via-pink-200 to-transparent",
+      }
+    : patient.sexe === "M"
+      ? {
+          accent: "border-l-sky-500",
+          avatar: "bg-sky-50 text-sky-800",
+          badge: "border-sky-200 bg-sky-50 text-sky-800",
+          tint: "from-sky-50/80 via-white to-white",
+          initials: "bg-gradient-to-br from-sky-100 to-cyan-50 text-sky-800",
+          accentLine: "from-sky-500/80 via-cyan-200 to-transparent",
+        }
+      : {
+          accent: "border-l-slate-400",
+          avatar: "bg-slate-100 text-slate-600",
+          badge: "border-slate-200 bg-slate-100 text-slate-600",
+          tint: "from-slate-100/80 via-white to-white",
+          initials: "bg-gradient-to-br from-slate-200 to-slate-50 text-slate-700",
+          accentLine: "from-slate-400/80 via-slate-200 to-transparent",
+        };
+  const sexLabel = patient.sexe === "F"
+    ? "Femme"
+    : patient.sexe === "M"
+      ? "Homme"
+      : "Non renseigné";
+
+  const formattedFirstName = formatPersonName(patient.prenom);
+  const formattedLastName = formatPersonName(patient.nom);
+  const formattedName = `${formattedLastName} ${formattedFirstName}`.trim();
+  const identifierLabel = patient.cin ? "CIN" : "Dossier";
+  const identifierValue = patient.cin || patient.id.slice(0, 8).toUpperCase();
+  const initials = `${formattedFirstName.charAt(0)}${formattedLastName.charAt(0)}`.toLocaleUpperCase("fr");
 
   return (
     <Card
+      role="button"
+      tabIndex={0}
+      aria-label={`Ouvrir le dossier de ${formattedName}`}
       className={cn(
-        "relative overflow-hidden cursor-pointer transition-all duration-300",
-        "hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]",
-        "border-2",
-        styles.border,
+        "group relative cursor-pointer overflow-hidden border border-l-4 border-slate-200 bg-gradient-to-br shadow-sm transition-all duration-200",
+        view === "grid" ? "rounded-2xl" : "rounded-xl",
+        sexStyle.accent,
+        view === "grid" ? sexStyle.tint : "bg-white",
+        view === "grid" ? "hover:-translate-y-1 hover:shadow-lg" : "hover:border-teal-300 hover:shadow-sm",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2",
       )}
       onClick={onClick}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onClick();
+        }
+      }}
     >
-      {/* Background gradient */}
-      <div className={cn("absolute inset-0 bg-gradient-to-br opacity-80", styles.gradient)} />
+      {view === "list" ? (
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_20px] items-center gap-2 p-3 sm:grid-cols-[minmax(0,1fr)_100px_56px_20px] sm:gap-3 sm:px-4 md:grid-cols-[minmax(0,1.2fr)_100px_56px_minmax(120px,1fr)_20px] xl:grid-cols-[minmax(0,1.2fr)_100px_56px_minmax(140px,1fr)_minmax(100px,0.8fr)_minmax(130px,1fr)_minmax(110px,0.8fr)_20px]">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold", sexStyle.initials)}>
+              {initials}
+            </div>
+            <div className="min-w-0">
+              <h3 className="truncate text-sm font-semibold text-slate-900">{formattedName}</h3>
+              <p className="mt-1 flex min-w-0 items-center gap-1 text-xs font-semibold text-indigo-800">
+                {patient.cin ? <CreditCard className="h-3 w-3 shrink-0" aria-hidden="true" /> : <Hash className="h-3 w-3 shrink-0" aria-hidden="true" />}
+                <span className="shrink-0">{identifierLabel} :</span>
+                <span className="truncate font-mono tabular-nums">{identifierValue}</span>
+              </p>
+              {view === "list" && (
+                <p className="mt-1 hidden text-xs text-slate-600 md:block xl:hidden">
+                  Dernière consultation : {consultationDatesUnavailable ? "Indisponible" : lastConsultationDate ? format(parseISO(lastConsultationDate), "dd/MM/yyyy", { locale: fr }) : "Jamais"}
+                </p>
+              )}
+              <div className="mt-1 grid min-w-0 gap-1 md:hidden">
+                <p className="truncate text-xs font-semibold tabular-nums text-teal-900">
+                  {patient.telephone ? formatPhoneNumber(patient.telephone) : "Téléphone non renseigné"}
+                </p>
+                <p className="truncate text-xs font-medium text-violet-900">
+                  {patient.mutuelle
+                    ? `${patient.mutuelle}${patient.numero_mutuelle ? ` · N° ${patient.numero_mutuelle}` : ""}`
+                    : "Couverture non renseignée"}
+                </p>
+              </div>
+              <p className="mt-1 hidden truncate text-xs font-semibold text-violet-900 md:block xl:hidden">
+                {patient.mutuelle
+                  ? `Couverture : ${patient.mutuelle}${patient.numero_mutuelle ? ` · N° ${patient.numero_mutuelle}` : ""}`
+                  : "Couverture non renseignée"}
+              </p>
+            </div>
+          </div>
 
-      {/* Decorative accent */}
-      <div className={cn("absolute top-0 right-0 w-24 h-24 rounded-bl-[100px] opacity-20", styles.accent)} />
+          <div className="hidden min-w-0 sm:block">
+            <Badge className={cn("h-6 max-w-full gap-1 border px-2 text-[11px] font-medium", sexStyle.badge)}>
+              <span aria-hidden="true">{patient.sexe === "F" ? "♀" : patient.sexe === "M" ? "♂" : "•"}</span>
+              <span className="truncate">{sexLabel}</span>
+            </Badge>
+          </div>
 
-      {/* Allergy alert badge */}
-      {patientHasAllergies && (
-        <div className="absolute top-3 right-3 z-10">
-          <Badge className="bg-gradient-to-r from-red-500 to-red-500 text-white border-0 shadow-lg animate-none">
-            <AlertTriangle className="w-3 h-3" />
-            Allergies
-          </Badge>
+          <span className="hidden text-xs tabular-nums text-slate-600 sm:block">
+            {age !== null ? `${age} ans` : "—"}
+          </span>
+
+          <div className="hidden min-w-0 items-center gap-1.5 text-xs text-slate-600 md:flex">
+            {patient.telephone ? (
+              <>
+                <Phone className="h-4 w-4 shrink-0 text-teal-700" aria-hidden="true" />
+                <span className="truncate text-sm font-bold tabular-nums text-teal-900">{formatPhoneNumber(patient.telephone)}</span>
+              </>
+            ) : (
+              <span className="text-slate-400">—</span>
+            )}
+          </div>
+
+          <div className="hidden min-w-0 items-center gap-1.5 text-xs text-slate-600 xl:flex">
+            {patient.mutuelle ? (
+              <>
+                <Shield className="h-4 w-4 shrink-0 text-violet-700" aria-hidden="true" />
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold text-violet-950">{patient.mutuelle}</span>
+                  {patient.numero_mutuelle && <span className="block truncate text-[11px] tabular-nums text-violet-800">N° {patient.numero_mutuelle}</span>}
+                </span>
+              </>
+            ) : (
+              <span className="flex items-center gap-1.5 text-slate-400"><Shield className="h-4 w-4" aria-hidden="true" />Non renseignée</span>
+            )}
+          </div>
+
+          <div className="hidden min-w-0 xl:block">
+            {allergies ? (
+              <span
+                title={`Allergies : ${allergies}`}
+                className="flex min-w-0 items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-medium text-rose-800"
+              >
+                <AlertTriangle className="h-3 w-3 shrink-0" aria-hidden="true" />
+                <span className="truncate">{allergies}</span>
+              </span>
+            ) : (
+              <span className="text-xs text-slate-400">—</span>
+            )}
+          </div>
+
+          <div className="hidden min-w-0 xl:block">
+            <p className="text-xs text-slate-500">Dernière consultation</p>
+            <p className="mt-0.5 text-sm font-medium tabular-nums text-slate-700">
+              {consultationDatesUnavailable ? "Indisponible" : lastConsultationDate ? format(parseISO(lastConsultationDate), "dd/MM/yyyy", { locale: fr }) : "Jamais"}
+            </p>
+          </div>
+
+          <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-teal-700" aria-hidden="true" />
+        </div>
+      ) : (
+        <div className="relative space-y-3 p-4">
+          <div className={cn("pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r", sexStyle.accentLine)} />
+          <div className="flex items-center gap-2.5">
+            <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold shadow-sm ring-1 ring-white/80", sexStyle.initials)}>
+              {initials}
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="truncate text-sm font-semibold text-slate-900">{formattedName}</h3>
+              <div className="mt-1 inline-flex max-w-full items-center gap-1 rounded-md border border-indigo-200/80 bg-indigo-50/80 px-1.5 py-0.5 text-[11px] font-medium text-indigo-800">
+                {patient.cin ? <CreditCard className="h-3 w-3 shrink-0" aria-hidden="true" /> : <Hash className="h-3 w-3 shrink-0" aria-hidden="true" />}
+                <span className="shrink-0">{identifierLabel} :</span>
+                <span className="truncate font-mono tabular-nums">{identifierValue}</span>
+              </div>
+            </div>
+            <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-teal-700" aria-hidden="true" />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-1.5">
+            <Badge className={cn("h-6 gap-1 border px-2 text-[11px] font-medium", sexStyle.badge)}>
+              <span aria-hidden="true">{patient.sexe === "F" ? "♀" : patient.sexe === "M" ? "♂" : "•"}</span>
+              {sexLabel}
+            </Badge>
+            {age !== null && (
+              <Badge className="h-6 border border-slate-200 bg-white/80 px-2 text-[11px] font-normal text-slate-700 hover:bg-white">
+                {age} ans
+              </Badge>
+            )}
+          </div>
+
+          <div className="grid min-w-0 grid-cols-1 gap-1.5 border-t border-slate-200/70 pt-2 sm:grid-cols-2">
+            <div className="min-w-0 rounded-md border border-teal-100 bg-teal-50/60 px-2 py-1.5">
+              <div className="flex min-w-0 items-center gap-1.5">
+              <Phone className="h-3.5 w-3.5 shrink-0 text-teal-700" aria-hidden="true" />
+              <div className="min-w-0">
+                <p className="text-[10px] font-medium text-teal-800">Téléphone</p>
+                <p className="truncate text-xs font-bold tabular-nums tracking-wide text-teal-950">
+                  {patient.telephone ? formatPhoneNumber(patient.telephone) : "Non renseigné"}
+                </p>
+              </div>
+              </div>
+            </div>
+            <div className="min-w-0 rounded-md border border-violet-100 bg-violet-50/60 px-2 py-1.5">
+              <div className="flex min-w-0 items-center gap-1.5">
+              <Shield className="h-3.5 w-3.5 shrink-0 text-violet-700" aria-hidden="true" />
+              <div className="min-w-0">
+                <p className="text-[10px] font-medium text-violet-800">Couverture</p>
+                <p className="truncate text-xs font-semibold text-violet-950" title={patient.mutuelle || undefined}>
+                  {patient.mutuelle || "Non renseignée"}
+                </p>
+                {patient.numero_mutuelle && (
+                  <p className="truncate text-[10px] tabular-nums text-violet-800" title={`N° adhérent : ${patient.numero_mutuelle}`}>
+                    N° adhérent : {patient.numero_mutuelle}
+                  </p>
+                )}
+              </div>
+              </div>
+            </div>
+          </div>
+
+          {allergies && (
+            <div className="flex items-center gap-1.5 rounded-md border border-rose-200 bg-rose-50/90 px-2 py-1.5 text-[11px] font-medium text-rose-800">
+              <AlertTriangle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              <span className="truncate">Allergies : {allergies}</span>
+            </div>
+          )}
         </div>
       )}
-
-      <div className="relative p-5 space-y-4">
-        {/* Header with avatar and name */}
-        <div className="flex items-start gap-4">
-          <div
-            className={cn("w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-md", styles.iconBg)}
-          >
-            <User className={cn("w-7 h-7", styles.iconColor)} />
-          </div>
-
-          <div className="flex-1 min-w-0 pt-1">
-            <h3 className="text-lg font-bold text-foreground truncate">
-              {patient.prenom} {patient.nom}
-            </h3>
-            <Badge className="mt-1 bg-indigo-600 text-white border-indigo-700 font-mono font-bold text-xs shadow-sm">
-              {patient.cin ? `CIN: ${patient.cin}` : `ID: ${patient.id.slice(0, 8).toUpperCase()}`}
-            </Badge>
-          </div>
-        </div>
-
-        {/* Badges row */}
-        <div className="flex flex-wrap gap-2">
-          {patient.sexe && (
-            <Badge className={cn("text-xs font-medium shadow-sm", styles.badgeClass)}>
-              {patient.sexe === "M" ? "♂ Homme" : patient.sexe === "F" ? "♀ Femme" : "⚧ Autre"}
-            </Badge>
-          )}
-
-          {age !== null && (
-            <Badge className={cn("text-xs font-medium shadow-sm gap-1", getAgeBadgeStyles(ageCategory))}>
-              {ageCategory === "child" && <Baby className="w-3 h-3" />}
-              {ageCategory === "senior" && <Clock className="w-3 h-3" />}
-              {ageCategory === "adult" && <UserCheck className="w-3 h-3" />}
-              {age} ans
-            </Badge>
-          )}
-        </div>
-
-        {/* Info rows with modern styling */}
-        <div className="space-y-2.5 pt-1">
-          {patient.telephone && (
-            <div className="flex items-center gap-3 text-sm">
-              <div className="w-8 h-8 rounded-lg bg-background/80 flex items-center justify-center shadow-sm">
-                <Phone className="w-4 h-4 text-primary" />
-              </div>
-              <span className="text-foreground/80 truncate font-medium">{patient.telephone}</span>
-            </div>
-          )}
-
-          {patient.mutuelle && (
-            <div className="flex items-center gap-3 text-sm">
-              <div className="w-8 h-8 rounded-lg bg-background/80 flex items-center justify-center shadow-sm">
-                <Shield className="w-4 h-4 text-emerald-500" />
-              </div>
-              <span className="text-foreground/80 truncate font-medium">{patient.mutuelle}</span>
-            </div>
-          )}
-
-          {patient.date_naissance && (
-            <div className="flex items-center gap-3 text-sm">
-              <div className="w-8 h-8 rounded-lg bg-background/80 flex items-center justify-center shadow-sm">
-                <Calendar className="w-4 h-4 text-amber-500" />
-              </div>
-              <span className="text-foreground/80 font-medium">
-                {format(parseISO(patient.date_naissance), "dd MMM yyyy", { locale: fr })}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
     </Card>
   );
 };

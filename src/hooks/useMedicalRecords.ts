@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { isStructuredMedicationList, type StructuredMedication } from "@/lib/structuredMedications";
 
 export interface MedicalRecord {
   id: string;
@@ -8,6 +10,7 @@ export interface MedicalRecord {
   antecedents: string | null;
   allergies: string | null;
   traitements: string | null;
+  traitements_structures: StructuredMedication[];
   notes: string | null;
   created_at: string;
 }
@@ -25,6 +28,9 @@ export const useMedicalRecord = (patientId: string | undefined) => {
         .maybeSingle();
 
       if (error) throw error;
+      if (data && !isStructuredMedicationList(data.traitements_structures)) {
+        throw new Error("Les traitements structurés du dossier sont invalides.");
+      }
       return data as MedicalRecord | null;
     },
     enabled: !!patientId,
@@ -33,12 +39,24 @@ export const useMedicalRecord = (patientId: string | undefined) => {
 
 export const useCreateOrUpdateMedicalRecord = () => {
   const queryClient = useQueryClient();
+  const { sessionToken } = useAuth();
 
   return useMutation({
     mutationFn: async ({ patientId, data }: { 
       patientId: string; 
       data: Partial<Omit<MedicalRecord, "id" | "patient_id" | "created_at">> 
     }) => {
+      if (Object.prototype.hasOwnProperty.call(data, "traitements_structures")) {
+        if (!sessionToken) throw new Error("Votre session a expiré. Reconnectez-vous pour enregistrer les traitements.");
+        const { data: recordId, error } = await supabase.rpc("save_structured_patient_medications", {
+          _patient_id: patientId,
+          _medications: data.traitements_structures,
+          _actor_session_token: sessionToken,
+        });
+        if (error) throw error;
+        return { id: recordId, patient_id: patientId, ...data };
+      }
+
       // Check if record exists
       const { data: existing } = await supabase
         .from("medical_records")
@@ -79,7 +97,9 @@ export const useCreateOrUpdateMedicalRecord = () => {
     onError: (error) => {
       toast({
         title: "Erreur",
-        description: "Impossible de mettre à jour le dossier médical",
+        description: error instanceof Error && error.message
+          ? error.message
+          : "Impossible de mettre à jour le dossier médical",
         variant: "destructive",
       });
       console.error("Error updating medical record:", error);

@@ -3,6 +3,7 @@ import { fr } from "date-fns/locale";
 import { Certificate, CERTIFICATE_TYPES } from "@/hooks/useCertificates";
 import { useSettings } from "@/hooks/useSettings";
 import { MEDICAL_SPECIALTIES, SPECIALTY_LOGOS } from "@/data/specialties";
+import { formatPatientName } from "@/lib/utils";
 
 interface CertificatePreviewProps {
   certificate: Certificate;
@@ -24,7 +25,7 @@ export const CertificatePreview = ({ certificate, scale = 1 }: CertificatePrevie
   const specialtyIcon = SPECIALTY_LOGOS[specialtyData.icon] || SPECIALTY_LOGOS['stethoscope'];
 
   const patientName = certificate.patient 
-    ? `${certificate.patient.prenom} ${certificate.patient.nom}`.toUpperCase()
+    ? formatPatientName(certificate.patient.nom, certificate.patient.prenom)
     : "PATIENT";
   
   const patientBirthDate = certificate.patient?.date_naissance

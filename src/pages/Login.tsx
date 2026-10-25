@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { InitialSetup } from '@/components/auth/InitialSetup';
 import { UserSelector } from '@/components/auth/UserSelector';
 import { PinPad } from '@/components/auth/PinPad';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Stethoscope } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import logo from '@/assets/shifalyx-wordmark.png';
 
 interface AppUserBasic {
   id: string;
@@ -17,10 +18,20 @@ interface AppUserBasic {
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, needsSetup, login, isLoading: authLoading } = useAuth();
+  const from = (location.state as {
+    from?: { pathname?: unknown; search?: unknown; hash?: unknown };
+  } | null)?.from;
+  const redirectTo = typeof from?.pathname === 'string'
+    && from.pathname.startsWith('/')
+    && from.pathname !== '/login'
+    ? `${from.pathname}${typeof from.search === 'string' ? from.search : ''}${typeof from.hash === 'string' ? from.hash : ''}`
+    : '/';
   
   const [users, setUsers] = useState<AppUserBasic[]>([]);
   const [isLoadingUsers, setIsLoadingUsers] = useState(true);
+  const [usersLoadError, setUsersLoadError] = useState(false);
   const [selectedUser, setSelectedUser] = useState<AppUserBasic | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [error, setError] = useState<string>();
@@ -29,9 +40,9 @@ export default function Login() {
   // Redirect if already authenticated
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
-      navigate('/', { replace: true });
+      navigate(redirectTo, { replace: true });
     }
-  }, [isAuthenticated, authLoading, navigate]);
+  }, [isAuthenticated, authLoading, navigate, redirectTo]);
 
   // Check if setup is needed
   useEffect(() => {
@@ -41,33 +52,36 @@ export default function Login() {
     }
   }, [needsSetup, authLoading]);
 
-  // Load users
+  const loadUsers = useCallback(async () => {
+    setIsLoadingUsers(true);
+    setUsersLoadError(false);
+
+    try {
+      const { data, error } = await supabase
+        .from('app_users')
+        .select('id, nom, prenom, role')
+        .eq('is_active', true)
+        .order('prenom');
+
+      if (error) {
+        console.error('Error loading users:', error);
+        setUsersLoadError(true);
+        return;
+      }
+
+      setUsers(data || []);
+    } catch (err) {
+      console.error('Error loading users:', err);
+      setUsersLoadError(true);
+    } finally {
+      setIsLoadingUsers(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (authLoading || needsSetup) return;
-
-    async function loadUsers() {
-      try {
-        const { data, error } = await supabase
-          .from('app_users')
-          .select('id, nom, prenom, role')
-          .eq('is_active', true)
-          .order('prenom');
-
-        if (error) {
-          console.error('Error loading users:', error);
-          return;
-        }
-
-        setUsers(data || []);
-      } catch (err) {
-        console.error('Error loading users:', err);
-      } finally {
-        setIsLoadingUsers(false);
-      }
-    }
-
-    loadUsers();
-  }, [authLoading, needsSetup]);
+    void loadUsers();
+  }, [authLoading, needsSetup, loadUsers]);
 
   const handleUserSelect = (userId: string) => {
     const user = users.find(u => u.id === userId);
@@ -89,7 +103,7 @@ export default function Login() {
     if (!result.success) {
       setError(result.error);
     } else {
-      navigate('/', { replace: true });
+      navigate(redirectTo, { replace: true });
     }
   };
 
@@ -122,16 +136,15 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex flex-col items-center justify-center p-4 overflow-auto">
       <div className="w-full max-w-md">
         {/* Logo/Header */}
-        <div className="flex justify-center mb-4">
-          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-            <Stethoscope className="w-7 h-7 text-primary" />
-          </div>
+        <div className="mb-5 flex justify-center">
+          <img
+            src={logo}
+            alt="Shifalyx — ERP médical intelligent"
+            className="h-auto w-72 max-w-full object-contain"
+          />
         </div>
 
         <div className="text-center mb-4">
-          <h1 className="text-xl font-bold text-foreground mb-1">
-            Cabinet Médical
-          </h1>
           <p className="text-sm text-muted-foreground">
             {selectedUser 
               ? `Connectez-vous en tant que ${selectedUser.prenom}`
@@ -147,6 +160,8 @@ export default function Login() {
               users={users}
               onSelect={handleUserSelect}
               isLoading={isLoadingUsers}
+              loadError={usersLoadError}
+              onRetry={() => void loadUsers()}
             />
           ) : (
             <div className="space-y-4">

@@ -6,6 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useCreatePatient } from "@/hooks/usePatients";
+import {
+  formatPatientName,
+  getMoroccanPhoneDigits,
+  isValidMoroccanPhone,
+  sanitizeMoroccanPhoneInput,
+} from "@/lib/utils";
 
 interface NewPatientDialogProps {
   open: boolean;
@@ -15,6 +21,7 @@ interface NewPatientDialogProps {
 
 const NewPatientDialog = ({ open, onOpenChange, onCreated }: NewPatientDialogProps) => {
   const createPatient = useCreatePatient();
+  const [phoneError, setPhoneError] = useState("");
   const [formData, setFormData] = useState({
     nom: "",
     prenom: "",
@@ -37,6 +44,11 @@ const NewPatientDialog = ({ open, onOpenChange, onCreated }: NewPatientDialogPro
     e.preventDefault();
     
     if (!formData.nom || !formData.prenom || !formData.sexe) return;
+    if (!isValidMoroccanPhone(formData.telephone) || !isValidMoroccanPhone(formData.telephone_personne_contact)) {
+      setPhoneError("Chaque numéro renseigné doit contenir 10 chiffres et commencer par 0.");
+      return;
+    }
+    setPhoneError("");
 
     try {
       const patient = await createPatient.mutateAsync({
@@ -47,17 +59,17 @@ const NewPatientDialog = ({ open, onOpenChange, onCreated }: NewPatientDialogPro
         sexe: formData.sexe,
         poids: formData.poids ? Number(formData.poids) : null,
         taille: formData.taille ? Number(formData.taille) : null,
-        telephone: formData.telephone || null,
+        telephone: getMoroccanPhoneDigits(formData.telephone) || null,
         email: formData.email || null,
         adresse: formData.adresse || null,
         mutuelle: formData.mutuelle || null,
         numero_mutuelle: formData.numero_mutuelle || null,
         personne_contact: formData.personne_contact || null,
         lien_personne_contact: formData.lien_personne_contact || null,
-        telephone_personne_contact: formData.telephone_personne_contact || null,
+        telephone_personne_contact: getMoroccanPhoneDigits(formData.telephone_personne_contact) || null,
       });
 
-      await onCreated?.(patient.id, `${formData.prenom} ${formData.nom}`.trim());
+      await onCreated?.(patient.id, formatPatientName(formData.nom, formData.prenom));
 
       setFormData({
         nom: "",
@@ -131,7 +143,6 @@ const NewPatientDialog = ({ open, onOpenChange, onCreated }: NewPatientDialogPro
                     <SelectContent>
                       <SelectItem value="F">Femme</SelectItem>
                       <SelectItem value="M">Homme</SelectItem>
-                      <SelectItem value="Autre">Autre</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -145,7 +156,24 @@ const NewPatientDialog = ({ open, onOpenChange, onCreated }: NewPatientDialogPro
             <section className="space-y-4 rounded-2xl border border-teal-100 bg-gradient-to-br from-teal-50/80 to-white p-4 shadow-sm">
               <div className="flex items-center gap-3 border-b border-teal-100 pb-3"><span className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-100 text-teal-700"><Phone className="h-4 w-4" /></span><div><h3 className="text-sm font-semibold text-teal-950">Coordonnées</h3><p className="text-xs text-teal-800/70">Pour joindre le patient</p></div></div>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="space-y-2"><Label htmlFor="telephone">Téléphone</Label><Input id="telephone" type="tel" autoComplete="tel" value={formData.telephone} onChange={(e) => setFormData({ ...formData, telephone: e.target.value })} /></div>
+                <div className="space-y-2">
+                  <Label htmlFor="telephone">Téléphone (10 chiffres)</Label>
+                  <Input
+                    id="telephone"
+                    type="tel"
+                    inputMode="numeric"
+                    autoComplete="tel-national"
+                    maxLength={20}
+                    placeholder="0612345678"
+                    value={formData.telephone}
+                    aria-invalid={!!phoneError && !!formData.telephone}
+                    onChange={(e) => {
+                      setPhoneError("");
+                      setFormData({ ...formData, telephone: sanitizeMoroccanPhoneInput(e.target.value) });
+                    }}
+                  />
+                  <p className="text-xs text-muted-foreground">Indicatif +212 implicite.</p>
+                </div>
                 <div className="space-y-2"><Label htmlFor="email" className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5 text-teal-700" />E-mail</Label><Input id="email" type="email" autoComplete="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} /></div>
               </div>
               <div className="space-y-2"><Label htmlFor="adresse" className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-teal-700" />Adresse</Label><Input id="adresse" autoComplete="street-address" value={formData.adresse} onChange={(e) => setFormData({ ...formData, adresse: e.target.value })} /></div>
@@ -164,7 +192,24 @@ const NewPatientDialog = ({ open, onOpenChange, onCreated }: NewPatientDialogPro
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-2"><Label htmlFor="personne_contact">Nom du contact</Label><Input id="personne_contact" value={formData.personne_contact} onChange={(e) => setFormData({ ...formData, personne_contact: e.target.value })} /></div>
                 <div className="space-y-2"><Label htmlFor="lien_personne_contact">Lien avec le patient</Label><Input id="lien_personne_contact" placeholder="Parent, conjoint..." value={formData.lien_personne_contact} onChange={(e) => setFormData({ ...formData, lien_personne_contact: e.target.value })} /></div>
-                <div className="space-y-2 sm:col-span-2"><Label htmlFor="telephone_personne_contact">Téléphone du contact</Label><Input id="telephone_personne_contact" type="tel" value={formData.telephone_personne_contact} onChange={(e) => setFormData({ ...formData, telephone_personne_contact: e.target.value })} /></div>
+                <div className="space-y-2 sm:col-span-2">
+                  <Label htmlFor="telephone_personne_contact">Téléphone du contact (10 chiffres)</Label>
+                  <Input
+                    id="telephone_personne_contact"
+                    type="tel"
+                    inputMode="numeric"
+                    autoComplete="tel-national"
+                    maxLength={20}
+                    placeholder="0612345678"
+                    value={formData.telephone_personne_contact}
+                    aria-invalid={!!phoneError && !!formData.telephone_personne_contact}
+                    onChange={(e) => {
+                      setPhoneError("");
+                      setFormData({ ...formData, telephone_personne_contact: sanitizeMoroccanPhoneInput(e.target.value) });
+                    }}
+                  />
+                  <p className="text-xs text-muted-foreground">Indicatif +212 implicite.</p>
+                </div>
               </div>
             </section>
 
@@ -183,6 +228,7 @@ const NewPatientDialog = ({ open, onOpenChange, onCreated }: NewPatientDialogPro
             </section>
           </div>
 
+          {phoneError && <p role="alert" className="px-6 pb-2 text-sm text-destructive">{phoneError}</p>}
           <div className="flex justify-end gap-3 border-t bg-white px-6 py-4 shadow-[0_-8px_20px_rgba(15,23,42,0.04)]">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Annuler</Button>
             <Button type="submit" disabled={!formData.nom || !formData.prenom || !formData.sexe || createPatient.isPending} className="bg-blue-600 text-white shadow-md shadow-blue-600/20 hover:bg-blue-700">

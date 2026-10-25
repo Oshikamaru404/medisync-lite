@@ -1,0 +1,19 @@
+allergen_a,allergen_b,relationship,risk_level,clinical_note
+PENICILLIN,AMOXICILLIN,DIRECT,CRITICAL,L'amoxicilline est une pénicilline. Contre-indication si allergie confirmée aux pénicillines.
+PENICILLIN,CEPHALOSPORIN,CROSS_REACTIVITY,CONTEXT_DEPENDENT,Réactivité croisée variable selon les chaînes latérales (R1). Ne pas bloquer automatiquement toutes les céphalosporines. Évaluer au cas par cas (AAAAI).
+PENICILLIN,CARBAPENEM,CROSS_REACTIVITY,LOW,Réactivité croisée limitée. Ne pas assimiler automatiquement une allergie pénicilline à une allergie carbapénème.
+CEPHALOSPORIN,CARBAPENEM,CROSS_REACTIVITY,LOW,Réactivité croisée faible.
+SULFONAMIDE_ANTIBIOTIC,NSAID,NONE,NONE,Aucune réactivité croisée attendue entre sulfamides antibiotiques et AINS.
+SULFONAMIDE_ANTIBIOTIC,ACE_INHIBITOR,NONE,NONE,Aucune réactivité croisée attendue avec les IEC (même si structure sulfonamide).
+ASPIRIN,NSAID,CROSS_REACTIVITY,HIGH,Hypersensibilité croisée fréquente aux inhibiteurs COX-1. Distinguer allergie sélective vs hypersensibilité de classe.
+LOCAL_ANESTHETIC_AMIDE,LOCAL_ANESTHETIC_AMIDE,CLASS,MODERATE,Allergie souvent molécule-spécifique au sein des amides. Tester une autre molécule amide possible sous surveillance.
+IODINATED_CONTRAST,POVIDONE_IODINE,NONE,NONE,Réaction à un produit de contraste ≠ allergie à la povidone iodée ou à l'iode alimentaire.
+ACE_INHIBITOR,SARTAN,CROSS_REACTIVITY,LOW,Réactivité croisée possible mais non systématique (angio-œdème).
+AROMATIC_ANTICONVULSANT,AROMATIC_ANTICONVULSANT,CROSS_REACTIVITY,HIGH,Risque de réactions cutanées sévères croisées (SJS/TEN/DRESS). Prudence maximale.
+FLUOROQUINOLONE,FLUOROQUINOLONE,CLASS,MODERATE,Allergie souvent molécule-spécifique. Ne pas généraliser automatiquement à toute la classe.
+MACROLIDE,MACROLIDE,CLASS,LOW,Croisement non systématique.
+PPI,PPI,CROSS_REACTIVITY,MODERATE,Réactivité croisée possible au sein des IPP.
+HEPARIN,HEPARIN,CLASS,HIGH,Possible réactivité croisée entre HNF et HBPM. Distinguer allergie vs TIH.
+INSULIN,INSULIN,CLASS,MODERATE,Allergie possible à l'insuline humaine ou aux analogues. Distinguer de l'hypoglycémie.
+CORTICOSTEROID,CORTICOSTEROID,CLASS,LOW,Allergie de contact possible (topiques). Allergie systémique rare.
+AZOLE_ANTIFUNGAL,AZOLE_ANTIFUNGAL,CLASS,MODERATE,Réactivité croisée possible au sein des azolés.

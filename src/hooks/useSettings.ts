@@ -12,7 +12,14 @@ interface Setting {
 export const useSettings = () => {
   const queryClient = useQueryClient();
 
-  const { data: settings, isLoading } = useQuery({
+  const {
+    data: settings,
+    isLoading,
+    isError,
+    isFetching,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ["settings"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -32,11 +39,13 @@ export const useSettings = () => {
   const updateSetting = useMutation({
     mutationFn: async ({ key, value }: { key: string; value: string }) => {
       // Try to update first, if no rows affected, insert
-      const { data: existing } = await supabase
+      const { data: existing, error: lookupError } = await supabase
         .from("settings")
         .select("id")
         .eq("key", key)
-        .single();
+        .maybeSingle();
+
+      if (lookupError) throw lookupError;
 
       if (existing) {
         const { error } = await supabase
@@ -54,8 +63,8 @@ export const useSettings = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });
     },
-    onError: () => {
-      toast.error("Erreur lors de la mise à jour");
+    onError: (error) => {
+      toast.error(`Impossible d’enregistrer le réglage : ${error.message}`);
     },
   });
 
@@ -64,6 +73,10 @@ export const useSettings = () => {
   return {
     settings,
     isLoading,
+    isError,
+    isFetching,
+    error,
+    refetch,
     getSettingValue,
     updateSetting,
     cabinetName,

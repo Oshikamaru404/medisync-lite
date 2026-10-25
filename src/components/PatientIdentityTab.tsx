@@ -10,6 +10,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Patient, useUpdatePatient } from "@/hooks/usePatients";
 import { differenceInYears, format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
+import {
+  formatPersonName,
+  formatPhoneNumber,
+  getMoroccanPhoneDigits,
+  isValidMoroccanPhone,
+  normalizeMoroccanPhoneInput,
+  sanitizeMoroccanPhoneInput,
+} from "@/lib/utils";
 
 type PatientWithExtras = Patient & {
   sexe?: string | null;
@@ -18,27 +26,31 @@ type PatientWithExtras = Patient & {
   telephone_personne_contact?: string | null;
 };
 
+const normalizeSex = (sex: string | null | undefined) =>
+  sex === "F" || sex === "M" ? sex : "";
+
 interface PatientIdentityTabProps {
   patient: PatientWithExtras;
 }
 
 export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [phoneError, setPhoneError] = useState("");
   const updatePatient = useUpdatePatient();
   
   const [formData, setFormData] = useState({
     prenom: patient.prenom || "",
     nom: patient.nom || "",
     date_naissance: patient.date_naissance || "",
-    sexe: (patient as any).sexe || "",
-    telephone: patient.telephone || "",
+    sexe: normalizeSex(patient.sexe),
+    telephone: normalizeMoroccanPhoneInput(patient.telephone),
     email: patient.email || "",
     adresse: patient.adresse || "",
     mutuelle: patient.mutuelle || "",
-    numero_mutuelle: (patient as any).numero_mutuelle || "",
+    numero_mutuelle: patient.numero_mutuelle || "",
     personne_contact: patient.personne_contact || "",
-    telephone_personne_contact: (patient as any).telephone_personne_contact || "",
-    lien_personne_contact: (patient as any).lien_personne_contact || "",
+    telephone_personne_contact: normalizeMoroccanPhoneInput(patient.telephone_personne_contact),
+    lien_personne_contact: patient.lien_personne_contact || "",
     poids: patient.poids?.toString() || "",
     taille: patient.taille?.toString() || "",
   });
@@ -48,15 +60,15 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
       prenom: patient.prenom || "",
       nom: patient.nom || "",
       date_naissance: patient.date_naissance || "",
-      sexe: (patient as any).sexe || "",
-      telephone: patient.telephone || "",
+      sexe: normalizeSex(patient.sexe),
+      telephone: normalizeMoroccanPhoneInput(patient.telephone),
       email: patient.email || "",
       adresse: patient.adresse || "",
       mutuelle: patient.mutuelle || "",
-      numero_mutuelle: (patient as any).numero_mutuelle || "",
+      numero_mutuelle: patient.numero_mutuelle || "",
       personne_contact: patient.personne_contact || "",
-      telephone_personne_contact: (patient as any).telephone_personne_contact || "",
-      lien_personne_contact: (patient as any).lien_personne_contact || "",
+      telephone_personne_contact: normalizeMoroccanPhoneInput(patient.telephone_personne_contact),
+      lien_personne_contact: patient.lien_personne_contact || "",
       poids: patient.poids?.toString() || "",
       taille: patient.taille?.toString() || "",
     });
@@ -72,10 +84,18 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
   };
 
   const handleSave = () => {
+    if (!isValidMoroccanPhone(formData.telephone) || !isValidMoroccanPhone(formData.telephone_personne_contact)) {
+      setPhoneError("Chaque numéro renseigné doit contenir 10 chiffres et commencer par 0.");
+      return;
+    }
+    setPhoneError("");
     updatePatient.mutate(
       { 
         id: patient.id, 
         ...formData,
+        telephone: getMoroccanPhoneDigits(formData.telephone) || null,
+        telephone_personne_contact: getMoroccanPhoneDigits(formData.telephone_personne_contact) || null,
+        sexe: formData.sexe || null,
         date_naissance: formData.date_naissance || null,
         poids: formData.poids ? parseFloat(formData.poids) : null,
         taille: formData.taille ? parseFloat(formData.taille) : null,
@@ -91,18 +111,19 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
       prenom: patient.prenom || "",
       nom: patient.nom || "",
       date_naissance: patient.date_naissance || "",
-      sexe: (patient as any).sexe || "",
-      telephone: patient.telephone || "",
+      sexe: normalizeSex(patient.sexe),
+      telephone: normalizeMoroccanPhoneInput(patient.telephone),
       email: patient.email || "",
       adresse: patient.adresse || "",
       mutuelle: patient.mutuelle || "",
-      numero_mutuelle: (patient as any).numero_mutuelle || "",
+      numero_mutuelle: patient.numero_mutuelle || "",
       personne_contact: patient.personne_contact || "",
-      telephone_personne_contact: (patient as any).telephone_personne_contact || "",
-      lien_personne_contact: (patient as any).lien_personne_contact || "",
+      telephone_personne_contact: normalizeMoroccanPhoneInput(patient.telephone_personne_contact),
+      lien_personne_contact: patient.lien_personne_contact || "",
       poids: patient.poids?.toString() || "",
       taille: patient.taille?.toString() || "",
     });
+    setPhoneError("");
     setIsEditing(false);
   };
 
@@ -185,9 +206,8 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="M">Masculin</SelectItem>
-                    <SelectItem value="F">Féminin</SelectItem>
-                    <SelectItem value="Autre">Autre</SelectItem>
+                    <SelectItem value="F">Femme</SelectItem>
+                    <SelectItem value="M">Homme</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -218,8 +238,8 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {renderField("Prénom", patient.prenom)}
-              {renderField("Nom", patient.nom)}
+              {renderField("Prénom", formatPersonName(patient.prenom))}
+              {renderField("Nom", formatPersonName(patient.nom))}
               <div>
                 <span className="text-sm text-muted-foreground">Date de naissance</span>
                 <p className="font-medium text-foreground">
@@ -239,10 +259,9 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
               <div>
                 <span className="text-sm text-muted-foreground">Sexe</span>
                 <p className="font-medium text-foreground mt-1">
-                  {(patient as any).sexe === 'M' && <Badge className="bg-patient-male/20 text-patient-male border border-patient-male/30">♂ Masculin</Badge>}
-                  {(patient as any).sexe === 'F' && <Badge className="bg-patient-female/20 text-patient-female border border-patient-female/30">♀ Féminin</Badge>}
-                  {(patient as any).sexe === 'Autre' && <Badge className="bg-patient-other/20 text-patient-other border border-patient-other/30">Autre</Badge>}
-                  {!(patient as any).sexe && <span className="text-muted-foreground italic">Non renseigné</span>}
+                  {patient.sexe === 'M' && <Badge className="bg-patient-male/20 text-patient-male border border-patient-male/30">♂ Homme</Badge>}
+                  {patient.sexe === 'F' && <Badge className="bg-patient-female/20 text-patient-female border border-patient-female/30">♀ Femme</Badge>}
+                  {patient.sexe !== 'M' && patient.sexe !== 'F' && <span className="text-muted-foreground italic">Non renseigné</span>}
                 </p>
               </div>
             </div>
@@ -268,10 +287,19 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
                 <Input
                   id="telephone"
                   type="tel"
+                  inputMode="numeric"
+                  autoComplete="tel-national"
+                  maxLength={20}
                   value={formData.telephone}
-                  onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
-                  placeholder="+212 6XX XXX XXX"
+                  aria-invalid={!!phoneError && !!formData.telephone}
+                  onChange={(e) => {
+                    setPhoneError("");
+                    setFormData({ ...formData, telephone: sanitizeMoroccanPhoneInput(e.target.value) });
+                  }}
+                  placeholder="0612345678"
                 />
+                <p className="text-xs text-muted-foreground">10 chiffres, indicatif +212 implicite.</p>
+                {phoneError && formData.telephone && <p role="alert" className="text-sm text-destructive">{phoneError}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -300,7 +328,7 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
                 <Phone className="w-4 h-4 text-muted-foreground mt-0.5" />
                 <div>
                   <span className="text-sm text-muted-foreground">Téléphone</span>
-                  <p className="font-medium text-foreground">{patient.telephone || <span className="text-muted-foreground italic">Non renseigné</span>}</p>
+                  <p className="text-lg font-semibold tabular-nums tracking-wide text-foreground">{patient.telephone ? formatPhoneNumber(patient.telephone) : <span className="text-sm font-normal italic text-muted-foreground">Non renseigné</span>}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -357,7 +385,7 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {renderField("Mutuelle / Assurance", patient.mutuelle)}
-              {renderField("Numéro d'adhérent", (patient as any).numero_mutuelle)}
+              {renderField("Numéro d'adhérent", patient.numero_mutuelle)}
             </div>
           )}
         </CardContent>
@@ -390,10 +418,19 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
                 <Input
                   id="telephone_personne_contact"
                   type="tel"
-                  value={formData.telephone_personne_contact}
-                  onChange={(e) => setFormData({ ...formData, telephone_personne_contact: e.target.value })}
-                  placeholder="+212 6XX XXX XXX"
+                inputMode="numeric"
+                autoComplete="tel-national"
+                maxLength={20}
+                value={formData.telephone_personne_contact}
+                aria-invalid={!!phoneError && !!formData.telephone_personne_contact}
+                onChange={(e) => {
+                  setPhoneError("");
+                  setFormData({ ...formData, telephone_personne_contact: sanitizeMoroccanPhoneInput(e.target.value) });
+                }}
+                placeholder="0612345678"
                 />
+                <p className="text-xs text-muted-foreground">10 chiffres, indicatif +212 implicite.</p>
+                {phoneError && formData.telephone_personne_contact && <p role="alert" className="text-sm text-destructive">{phoneError}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lien_personne_contact">Lien de parenté</Label>
@@ -418,8 +455,8 @@ export const PatientIdentityTab = ({ patient }: PatientIdentityTabProps) => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {renderField("Nom complet", patient.personne_contact)}
-              {renderField("Téléphone", (patient as any).telephone_personne_contact)}
-              {renderField("Lien de parenté", (patient as any).lien_personne_contact)}
+              {renderField("Téléphone", formatPhoneNumber(patient.telephone_personne_contact))}
+              {renderField("Lien de parenté", patient.lien_personne_contact)}
             </div>
           )}
         </CardContent>

@@ -9,6 +9,7 @@ export type ConsultationHistoryEntry = {
   status: string;
   montant: number | null;
   invoice_status: string | null;
+  settlement_instruction: "due_at_reception" | "deferred" | "free" | null;
   invoice_number: string | null;
   called_at: string | null;
   completed_at: string | null;
@@ -22,6 +23,8 @@ export type PatientStats = {
   totalPaid: number;
   pendingAmount: number;
 };
+
+const isMissingSettlementInstructionColumn = (error: { code?: string }) => error.code === "42703";
 
 export const usePatientHistory = (patientId: string | undefined) => {
   return useQuery({
@@ -42,7 +45,7 @@ export const usePatientHistory = (patientId: string | undefined) => {
       }
 
       // Fetch queue entries (consultations)
-      const { data: queueData, error: queueError } = await supabase
+      const queueQuery = supabase
         .from('queue')
         .select(`
           id,
@@ -56,13 +59,39 @@ export const usePatientHistory = (patientId: string | undefined) => {
           invoices (
             numero,
             montant,
-            statut
+            statut,
+            consigne_reglement
           )
         `)
         .eq('patient_id', patientId)
         .in('status', ['completed', 'in_consultation'])
         .order('created_at', { ascending: false });
 
+      let { data: queueData, error: queueError } = await queueQuery;
+      if (queueError && isMissingSettlementInstructionColumn(queueError)) {
+        const legacyQueueResult = await supabase
+          .from('queue')
+          .select(`
+            id,
+            created_at,
+            motif,
+            status,
+            montant_consultation,
+            called_at,
+            completed_at,
+            invoice_id,
+            invoices (
+              numero,
+              montant,
+              statut
+            )
+          `)
+          .eq('patient_id', patientId)
+          .in('status', ['completed', 'in_consultation'])
+          .order('created_at', { ascending: false });
+        queueData = legacyQueueResult.data;
+        queueError = legacyQueueResult.error;
+      }
       if (queueError) throw queueError;
 
       // Fetch appointments
@@ -83,14 +112,15 @@ export const usePatientHistory = (patientId: string | undefined) => {
       if (invoicesError) throw invoicesError;
 
       // Transform queue entries to history format
-      const queueHistory: ConsultationHistoryEntry[] = (queueData || []).map((entry: any) => ({
+      const queueHistory: ConsultationHistoryEntry[] = (queueData || []).map((entry) => ({
         id: entry.id,
         date: entry.created_at,
         type: 'queue' as const,
         motif: entry.motif,
         status: entry.status,
-        montant: entry.invoices?.montant || entry.montant_consultation,
+        montant: entry.invoices?.montant ?? entry.montant_consultation,
         invoice_status: entry.invoices?.statut || null,
+        settlement_instruction: entry.invoices?.consigne_reglement || null,
         invoice_number: entry.invoices?.numero || null,
         called_at: entry.called_at,
         completed_at: entry.completed_at,
@@ -98,8 +128,8 @@ export const usePatientHistory = (patientId: string | undefined) => {
 
       // Transform appointments to history format (only past confirmed ones)
       const appointmentHistory: ConsultationHistoryEntry[] = (appointmentsData || [])
-        .filter((apt: any) => apt.statut === 'confirmed' && new Date(apt.date) < new Date())
-        .map((apt: any) => ({
+        .filter((apt) => apt.statut === 'confirmed' && new Date(apt.date) < new Date())
+        .map((apt) => ({
           id: apt.id,
           date: `${apt.date}T${apt.heure_debut}`,
           type: 'appointment' as const,
@@ -107,6 +137,7 @@ export const usePatientHistory = (patientId: string | undefined) => {
           status: apt.statut,
           montant: null,
           invoice_status: null,
+          settlement_instruction: null,
           invoice_number: null,
           called_at: null,
           completed_at: null,

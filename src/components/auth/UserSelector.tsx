@@ -11,9 +11,11 @@ interface UserSelectorProps {
   }>;
   onSelect: (userId: string) => void;
   isLoading?: boolean;
+  loadError?: boolean;
+  onRetry?: () => void;
 }
 
-export function UserSelector({ users, onSelect, isLoading }: UserSelectorProps) {
+export function UserSelector({ users, onSelect, isLoading, loadError, onRetry }: UserSelectorProps) {
   const roleLabels: Record<string, string> = {
     medecin: 'Médecin',
     secretaire: 'Secrétaire',
@@ -35,6 +37,25 @@ export function UserSelector({ users, onSelect, isLoading }: UserSelectorProps) 
             className="animate-pulse bg-muted rounded-xl h-24"
           />
         ))}
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="py-6 text-center">
+        <p className="text-sm text-muted-foreground">
+          Impossible de charger les profils. Vérifiez votre connexion puis réessayez.
+        </p>
+        {onRetry && (
+          <button
+            type="button"
+            onClick={onRetry}
+            className="mt-3 rounded-md px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            Réessayer
+          </button>
+        )}
       </div>
     );
   }

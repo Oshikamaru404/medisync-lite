@@ -6,6 +6,24 @@ const corsHeaders = {
 };
 
 interface PrescriptionItem {
+  request_type?: "medication" | "laboratory" | "imaging";
+  request_details?: {
+    indication?: string;
+    priority?: "routine" | "urgent" | "very_urgent";
+    specimen?: string;
+    preparation?: string;
+    modality?: string;
+    region?: string;
+    laterality?: string;
+    contrast?: string;
+    doseQuantity?: string;
+    customDoseQuantity?: string;
+    doseUnit?: string;
+    customDoseUnit?: string;
+    frequencyPerDay?: string;
+    timesOfDay?: string[];
+    intakeTiming?: string;
+  } | null;
   nom_medicament: string;
   dosage: string | null;
   posologie: string;
@@ -18,6 +36,7 @@ interface PrescriptionRequest {
     id: string;
     date: string;
     notes: string | null;
+    prescription_type?: "medication" | "laboratory" | "imaging";
     items: PrescriptionItem[];
     patient: {
       nom: string;
@@ -40,6 +59,10 @@ interface PrescriptionRequest {
     phone: string;
     email: string;
   };
+  documentIdentity: {
+    reference: string;
+    qrCodeDataUrl: string;
+  };
 }
 
 serve(async (req) => {
@@ -48,9 +71,28 @@ serve(async (req) => {
   }
 
   try {
-    const { prescription, cabinet }: PrescriptionRequest = await req.json();
+    const { prescription, cabinet, documentIdentity }: PrescriptionRequest = await req.json();
+    if (!prescription?.id || !prescription.patient?.nom || !prescription.patient?.prenom || !Array.isArray(prescription.items)) {
+      return new Response(JSON.stringify({ error: "Invalid prescription payload" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (!documentIdentity
+      || !/^RX-\d{4}-[A-F0-9]{16}$/.test(documentIdentity.reference)
+      || !/^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(documentIdentity.qrCodeDataUrl)) {
+      return new Response(JSON.stringify({ error: "A valid prescription reference and QR code are required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     console.log("Generating PDF for prescription:", prescription.id);
+    const documentTitle = prescription.prescription_type === "laboratory"
+      ? "PRESCRIPTION BIOLOGIQUE"
+      : prescription.prescription_type === "imaging"
+        ? "PRESCRIPTION D’IMAGERIE"
+        : "ORDONNANCE";
 
     const formatDate = (dateStr: string) => {
       const date = new Date(dateStr);
@@ -75,22 +117,91 @@ serve(async (req) => {
 
     const patientAge = calculateAge(prescription.patient.date_naissance);
 
+    const escapeHtml = (value: string) =>
+      value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    const printableText = (value: string | null | undefined) => escapeHtml(value || "").replace(/\n/g, "<br>");
+    const iconSvg = (kind: string, color: string) => {
+      const paths: Record<string, string> = {
+        morning: `<path d="M3 17h18M5 17a7 7 0 0 1 14 0M12 3v2M4.9 7.9l1.4 1.4M19.1 7.9l-1.4 1.4"/>`,
+        noon: `<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>`,
+        evening: `<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/><path d="M17 3v4m-2-2h4"/>`,
+        bedtime: `<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/><path d="m17 4 1 2 2 1-2 1-1 2-1-2-2-1 2-1 1-2Z"/>`,
+        meal: `<path d="M3 2v7a3 3 0 0 0 6 0V2M6 2v20M19 2v20m0-20c-3 3-3 8 0 10"/>`,
+        coffee: `<path d="M10 2v2m4-2v2M4 7h14v9a4 4 0 0 1-4 4h-6a4 4 0 0 1-4-4V7Zm14 2h1a3 3 0 0 1 0 6h-1"/>`,
+        clock: `<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>`,
+        soup: `<path d="M3 11h18a8 8 0 0 1-8 8h-2a8 8 0 0 1-8-8Zm2 11h14M7 7c0-1 1-1.5 1-2.5S7 3 7 2m5 5c0-1 1-1.5 1-2.5S12 3 12 2m5 5c0-1 1-1.5 1-2.5S17 3 17 2"/>`,
+      };
+      return `<svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[kind] || ""}</svg>`;
+    };
+    const posologyIconsHtml = (item: PrescriptionItem) => {
+      const details = item.request_details;
+      const times = [
+        { value: "morning", label: "Matin", color: "#8a5a00", icon: "morning" },
+        { value: "noon", label: "Midi", color: "#a94716", icon: "noon" },
+        { value: "evening", label: "Soir", color: "#3730a3", icon: "evening" },
+        { value: "bedtime", label: "Coucher", color: "#5b21b6", icon: "bedtime" },
+      ];
+      const selectedTimes = details?.timesOfDay || [];
+      const quantity = details?.doseQuantity === "other" ? details.customDoseQuantity : details?.doseQuantity;
+      const intake: Record<string, string> = {
+        before_meal: "Avant le repas",
+        with_meal: "Pendant le repas",
+        after_meal: "Après le repas",
+        empty_stomach: "À jeun",
+        any_time: "Indifférent",
+      };
+      const intakeTiming = details?.intakeTiming ? intake[details.intakeTiming] : null;
+      const schedule = selectedTimes.length
+        ? `<div class="schedule-grid" role="group" aria-label="Répartition des prises">${times.map(({ value, label, color, icon }, index) => {
+          const selected = selectedTimes.includes(value);
+          return `<div class="schedule-slot${index > 0 ? " schedule-slot-divider" : ""}" aria-label="${label} : ${selected ? (quantity ? printableText(quantity) : "prise prévue") : "aucune prise prévue"}">
+            <span class="schedule-label" title="${label}">${iconSvg(icon, "#111827")}</span>
+            <strong>${selected ? (quantity ? printableText(quantity) : "✓") : "—"}</strong>
+          </div>`;
+        }).join("")}</div>`
+        : "";
+      if (!schedule && !intakeTiming) return "";
+      return `${schedule}${intakeTiming ? `<div class="posology-intake">${printableText(intakeTiming)}</div>` : ""}`;
+    };
     const medicationsHtml = prescription.items
       .map(
-        (item, index) => `
+        (item, index) => {
+          const requestType = item.request_type || "medication";
+          const details = item.request_details;
+          const detailRows = requestType === "medication" ? "" : [
+            requestType === "laboratory" ? "Demande d’analyse biologique" : "Demande d’imagerie",
+            details?.priority && details.priority !== "routine" ? `Priorité : ${details.priority === "urgent" ? "URGENTE" : "TRÈS URGENTE"}` : "",
+            details?.modality ? `Modalité : ${details.modality}` : "",
+            details?.region ? `Région / organe : ${details.region}` : "",
+            details?.laterality && details.laterality !== "Non précisé" ? `Côté : ${details.laterality}` : "",
+            details?.contrast && details.contrast !== "À préciser" ? `Contraste : ${details.contrast}` : "",
+            details?.specimen ? `Prélèvement : ${details.specimen}` : "",
+            details?.indication ? `Indication : ${details.indication}` : "",
+            details?.preparation ? `Préparation : ${details.preparation}` : "",
+            item.instructions ? `Précisions : ${item.instructions}` : "",
+          ].filter(Boolean).map((row) => `<div>${printableText(row)}</div>`).join("");
+          return `
         <div class="medication-row">
           <div class="medication-left">
             <div class="medication-name">
               <span class="medication-number">${index + 1}.</span>
-              ${item.nom_medicament.toUpperCase()}${item.dosage ? ` ${item.dosage}` : ""}
+              ${printableText(item.nom_medicament.toUpperCase())}${requestType === "medication" && item.dosage ? ` ${printableText(item.dosage)}` : ""}
             </div>
-            <div class="medication-posology">${item.posologie}</div>
+            ${requestType === "medication"
+              ? `<div class="medication-posology">${printableText(item.posologie)}${posologyIconsHtml(item)}</div>`
+              : `<div class="medication-posology">${detailRows}</div>`}
           </div>
           <div class="medication-duration">
-            ${item.duree ? `Pendant ${item.duree}` : ""}
+            ${requestType === "medication" && item.duree ? `Pendant ${printableText(item.duree)}` : ""}
           </div>
         </div>
-      `
+      `;
+        },
       )
       .join("");
 
@@ -260,8 +371,8 @@ serve(async (req) => {
         <meta charset="UTF-8">
         <style>
           @page {
-            size: A4;
-            margin: 15mm;
+            size: A5 portrait;
+            margin: 8mm;
           }
           * {
             margin: 0;
@@ -272,10 +383,10 @@ serve(async (req) => {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.4;
             color: #1a365d;
-            max-width: 210mm;
-            min-height: 297mm;
+            max-width: 148mm;
+            min-height: 194mm;
             margin: 0 auto;
-            padding: 20px 30px;
+            padding: 12px 16px;
             position: relative;
             background: #fff;
           }
@@ -370,24 +481,24 @@ serve(async (req) => {
           
           .title {
             text-align: center;
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 700;
             color: #1a365d;
-            letter-spacing: 3px;
-            margin: 25px 0 35px 0;
+            letter-spacing: 2px;
+            margin: 18px 0 22px 0;
             text-transform: uppercase;
           }
           
           .medications {
-            margin-bottom: 40px;
-            min-height: 300px;
+            margin-bottom: 24px;
+            min-height: 110px;
           }
           .medication-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 25px;
-            padding-left: 30px;
+            margin-bottom: 16px;
+            padding-left: 8px;
           }
           .medication-left {
             flex: 1;
@@ -409,7 +520,42 @@ serve(async (req) => {
             font-size: 13px;
             font-weight: 700;
             color: #1a365d;
-            margin-left: 40px;
+            margin-left: 28px;
+          }
+          .posology-icons { margin-top: 8px; }
+          .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            overflow: hidden;
+            border: 1px solid #87958c;
+            border-radius: 5px;
+            margin-top: 5px;
+            height: 26px;
+          }
+          .schedule-slot {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            min-height: 0;
+            padding: 1px;
+            background: #fff;
+            text-align: center;
+          }
+          .schedule-slot-divider { border-left: 1px solid #87958c; }
+          .schedule-label { display: flex; align-items: center; }
+          .schedule-label svg { width: 12px; height: 12px; }
+          .schedule-slot strong { color: #111; font-size: 11px; font-weight: 700; line-height: 1; }
+          .posology-intake {
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #40584b;
+            border: 1px solid #d5e2da;
+            border-radius: 5px;
+            padding: 2px 6px;
           }
           .medication-duration {
             font-size: 13px;
@@ -420,9 +566,9 @@ serve(async (req) => {
           
           .notes {
             background-color: #f7fafc;
-            padding: 15px;
+            padding: 10px;
             border-radius: 5px;
-            margin-bottom: 30px;
+            margin-bottom: 18px;
             border-left: 3px solid #1a365d;
           }
           .notes-title {
@@ -436,10 +582,10 @@ serve(async (req) => {
           }
           
           .footer {
-            position: absolute;
-            bottom: 20px;
-            left: 30px;
-            right: 30px;
+            position: relative;
+            margin-top: 18px;
+            padding-top: 10px;
+            border-top: 1px solid #87958c;
           }
           .footer-divider {
             display: flex;
@@ -477,6 +623,126 @@ serve(async (req) => {
             align-items: center;
             gap: 5px;
           }
+          .document-identity {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            font-size: 10px;
+            color: #334155;
+          }
+          .document-identity img {
+            width: 21mm;
+            height: 21mm;
+            image-rendering: pixelated;
+          }
+          .document-reference {
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            font-weight: 700;
+            letter-spacing: .04em;
+            color: #111827;
+          }
+          @media print {
+            body {
+              width: 128mm !important;
+              max-width: 128mm !important;
+              min-height: 0 !important;
+              margin: 0 auto !important;
+              padding: 0 !important;
+              overflow: visible !important;
+              line-height: 1.25 !important;
+            }
+            .header {
+              margin-bottom: 10px !important;
+            }
+            .header-center {
+              flex-basis: 56px !important;
+            }
+            .header-center svg, .header-center img {
+              width: 52px !important;
+              height: 52px !important;
+            }
+            .doctor-name { font-size: 15px !important; }
+            .specialty, .arabic-text { font-size: 11px !important; }
+            .patient-section { margin-bottom: 8px !important; }
+            .divider { margin: 8px 0 !important; }
+            .title {
+              font-size: 17px !important;
+              margin: 8px 0 12px !important;
+            }
+            .medications {
+              min-height: 0 !important;
+              margin-bottom: 8px !important;
+            }
+            .medication-row {
+              margin-bottom: 6px !important;
+              padding-left: 4px !important;
+            }
+            .medication-name {
+              margin-bottom: 2px !important;
+              font-size: 11px !important;
+            }
+            .medication-number {
+              margin-right: 8px !important;
+              min-width: 18px !important;
+            }
+            .medication-posology {
+              margin-left: 22px !important;
+              font-size: 10px !important;
+            }
+            .schedule-grid { margin-top: 2px !important; height: 21px !important; }
+            .schedule-slot { height: 19px !important; }
+            .schedule-label svg { width: 11px !important; height: 11px !important; }
+            .posology-intake {
+              margin-top: 3px !important;
+              padding: 1px 5px !important;
+            }
+            .medication-duration { font-size: 10px !important; }
+            .notes {
+              margin: 8px 0 !important;
+              padding: 7px !important;
+            }
+            .footer {
+              margin-top: 8px !important;
+              padding-top: 6px !important;
+            }
+            .footer-divider, .footer-warning {
+              margin-bottom: 5px !important;
+            }
+            .document-identity img {
+              width: 16mm !important;
+              height: 16mm !important;
+            }
+            body {
+              color: #000 !important;
+              -webkit-print-color-adjust: economy;
+              print-color-adjust: economy;
+            }
+            .medication-row {
+              break-inside: avoid;
+              page-break-inside: avoid;
+            }
+            .medication-name, .medication-posology, .medication-duration,
+            .doctor-name, .title, .notes-title,
+            .notes-content, .patient-name, .patient-date, .footer-contact,
+            .document-identity, .posology-intake {
+              color: #000 !important;
+            }
+            .schedule-grid, .schedule-slot-divider {
+              border-color: #333 !important;
+            }
+            .schedule-slot, .notes {
+              background: #fff !important;
+            }
+            .notes {
+              border: 1px solid #777 !important;
+              border-left: 3px solid #333 !important;
+            }
+            .document-identity img {
+              filter: none !important;
+            }
+          }
         </style>
       </head>
       <body>
@@ -509,7 +775,7 @@ serve(async (req) => {
           <div class="divider-line"></div>
         </div>
 
-        <div class="title">ORDONNANCE</div>
+        <div class="title">${documentTitle}</div>
 
         <div class="medications">
           ${medicationsHtml}
@@ -517,8 +783,8 @@ serve(async (req) => {
 
         ${prescription.notes ? `
         <div class="notes">
-          <div class="notes-title">Recommandations :</div>
-          <div class="notes-content">${prescription.notes}</div>
+          <div class="notes-title">${prescription.prescription_type === "medication" || !prescription.prescription_type ? "Recommandations :" : "Renseignements complémentaires :"}</div>
+          <div class="notes-content">${printableText(prescription.notes)}</div>
         </div>
         ` : ""}
 
@@ -536,6 +802,13 @@ serve(async (req) => {
             <div class="contact-item">
               ${cabinet.phone ? `📞 ${cabinet.phone}` : ""}
             </div>
+          </div>
+          <div class="document-identity">
+            <div>
+              <div>Réf. · accès cabinet</div>
+              <div class="document-reference">${escapeHtml(documentIdentity.reference)}</div>
+            </div>
+            <img src="${documentIdentity.qrCodeDataUrl}" alt="QR code d’identification sécurisé" />
           </div>
         </div>
       </body>

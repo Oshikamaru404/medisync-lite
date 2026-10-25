@@ -1,0 +1,37 @@
+id,code,name_fr,name_en,category,type,severity_default,description
+ALG001,PENICILLIN,Pénicillines,Penicillins,antibiotic,class,CRITICAL,Classe des pénicillines. Réactivité croisée possible avec certaines céphalosporines selon chaînes latérales.
+ALG002,AMOXICILLIN,Amoxicilline,Amoxicillin,antibiotic,molecule,CRITICAL,Molécule amoxicilline et associations.
+ALG003,CEPHALOSPORIN,Céphalosporines,Cephalosporins,antibiotic,class,HIGH,Classe des céphalosporines. Réactivité croisée avec pénicillines context-dependent.
+ALG004,CARBAPENEM,Carbapénèmes,Carbapenems,antibiotic,class,HIGH,Classe des carbapénèmes. Réactivité croisée limitée avec pénicillines.
+ALG005,SULFONAMIDE_ANTIBIOTIC,Sulfamides antibiotiques,Sulfonamide antibiotics,antibiotic,class,CRITICAL,Sulfamides antimicrobiens uniquement. PAS de réactivité croisée attendue avec sulfates/sulfites.
+ALG006,NSAID,AINS (anti-inflammatoires non stéroïdiens),NSAIDs,antiinflammatory,class,HIGH,Classe AINS. Distinguer hypersensibilité de classe COX-1 vs allergie sélective à une molécule.
+ALG007,ASPIRIN,Aspirine / salicylés,Aspirin / salicylates,antiinflammatory,molecule,HIGH,Acide acétylsalicylique et dérivés salicylés.
+ALG008,CHLORHEXIDINE,Chlorhexidine,Chlorhexidine,antiseptic,molecule,CRITICAL,Antiseptique. Peut être présent dans de nombreuses formulations et dispositifs.
+ALG009,LOCAL_ANESTHETIC_AMIDE,Anesthésiques locaux amides,Local anesthetics (amides),anesthetic,class,HIGH,"Lidocaïne, articaïne, prilocaïne. Pas de croisement automatique avec les esters."
+ALG010,HEPARIN,Héparines,Heparins,anticoagulant,class,HIGH,Héparine non fractionnée et HBPM. Distinguer allergie vs TIH/HIT.
+ALG011,INSULIN,Insulines,Insulins,hormone,class,HIGH,Insulines humaines et analogues.
+ALG012,ALLOPURINOL,Allopurinol,Allopurinol,antigout,molecule,CRITICAL,Risque de réactions cutanées sévères (SJS/TEN/DRESS).
+ALG013,VANCOMYCIN,Vancomycine,Vancomycin,antibiotic,molecule,HIGH,Distinguer allergie IgE vs réaction d'infusion (Red Man Syndrome).
+ALG014,AROMATIC_ANTICONVULSANT,Antiépileptiques aromatiques,Aromatic anticonvulsants,antiepileptic,class,CRITICAL,"Carbamazépine, oxcarbazépine, lamotrigine, etc. Risque de réactions cutanées sévères."
+ALG015,FLUOROQUINOLONE,Fluoroquinolones,Fluoroquinolones,antibiotic,class,HIGH,"Ciprofloxacine, lévofloxacine, ofloxacine, moxifloxacine. Allergie souvent molécule-spécifique."
+ALG016,MACROLIDE,Macrolides,Macrolides,antibiotic,class,MODERATE,"Azithromycine, clarithromycine, spiramycine. Croisement non systématique."
+ALG017,TETRACYCLINE,Tétracyclines,Tetracyclines,antibiotic,class,MODERATE,"Doxycycline, chlortétracycline, etc."
+ALG018,AMINOGLYCOSIDE,Aminosides,Aminoglycosides,antibiotic,class,HIGH,"Gentamicine, amikacine, néomycine. Allergie de contact fréquente pour néomycine topique."
+ALG019,GLYCOPEPTIDE,Glycopeptides,Glycopeptides,antibiotic,class,HIGH,"Vancomycine (déjà listée séparément), teicoplanine."
+ALG020,NITROIMIDAZOLE,Nitro-imidazolés,Nitroimidazoles,antibiotic,class,MODERATE,"Métronidazole, secnidazole."
+ALG021,OPIOID,Opioïdes / morphiniques,Opioids,analgesic,class,HIGH,"Tramadol, morphine, codéine, fentanyl. Distinguer allergie vs effet secondaire."
+ALG022,PARACETAMOL,Paracétamol,Paracetamol,analgesic,molecule,MODERATE,Allergie vraie rare. Souvent intolérance.
+ALG023,IODINATED_CONTRAST,Produits de contraste iodés,Iodinated contrast media,contrast,class,HIGH,Réaction antérieure à un produit de contraste ≠ allergie à l'iode alimentaire ou à la povidone iodée.
+ALG024,POVIDONE_IODINE,Povidone iodée,Povidone-iodine,antiseptic,molecule,MODERATE,Antiseptique. Distinct de l'allergie aux produits de contraste.
+ALG025,ACE_INHIBITOR,IEC (inhibiteurs de l'enzyme de conversion),ACE inhibitors,cardiovascular,class,MODERATE,Plus souvent angio-œdème que vraie allergie IgE.
+ALG026,SARTAN,Sartans (ARA2),ARBs,cardiovascular,class,MODERATE,Réactivité croisée possible mais non systématique avec IEC.
+ALG027,STATIN,Statines,Statins,cardiovascular,class,LOW,Allergie vraie rare.
+ALG028,CORTICOSTEROID,Corticoïdes,Corticosteroids,hormone,class,MODERATE,Allergie de contact possible (surtout topiques). Allergie systémique rare.
+ALG029,PPI,IPP (inhibiteurs de la pompe à protons),Proton pump inhibitors,gastro,class,MODERATE,"Oméprazole, ésoméprazole, lansoprazole, rabéprazole. Croisement possible au sein de la classe."
+ALG030,BETA_BLOCKER,Bêta-bloquants,Beta-blockers,cardiovascular,class,LOW,Allergie rare.
+ALG031,CALCIUM_CHANNEL_BLOCKER,Inhibiteurs calciques,Calcium channel blockers,cardiovascular,class,LOW,Allergie rare.
+ALG032,ANTIHISTAMINE,Antihistaminiques,Antihistamines,allergy,class,LOW,Allergie rare. Distinguer effet sédatif.
+ALG033,AZOLE_ANTIFUNGAL,Antifongiques azolés,Azole antifungals,antifungal,class,MODERATE,"Fluconazole, kétoconazole, voriconazole, éconazole."
+ALG034,BENZALKONIUM,Chlorure de benzalkonium,Benzalkonium chloride,excipient,molecule,MODERATE,Conservateur. Peut provoquer irritation ou allergie de contact.
+ALG035,MACROGOL_PEG,Macrogol / PEG,Macrogol / PEG,excipient,molecule,MODERATE,Polyéthylène glycol. Réactions d'hypersensibilité rapportées.
+ALG036,LATEX,Latex,Latex,device,allergen,CRITICAL,"Allergène transversal (gants, dispositifs, sondes...). Non lié à une DCI."

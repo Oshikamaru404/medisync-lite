@@ -1,4 +1,4 @@
-import { ArrowLeft, TrendingUp, Users, Calendar, Banknote } from "lucide-react";
+import { TrendingUp, Users, Calendar, Banknote } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -188,9 +188,6 @@ const Statistiques = () => {
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-foreground">Statistiques</h1>
               <p className="text-sm text-muted-foreground">

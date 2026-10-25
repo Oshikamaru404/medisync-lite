@@ -1,5 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 
 export interface Document {
@@ -11,84 +12,190 @@ export interface Document {
   created_at: string;
 }
 
+export interface DocumentAnalysis {
+  documentType: string;
+  documentDate: string;
+  summary: string;
+  detailedReport: string;
+  keyPoints: string[];
+  labResults: Array<{
+    name: string;
+    value: string;
+    unit: string;
+    referenceRange: string;
+    flag: "low" | "normal" | "high" | "unknown";
+    confidence: number;
+  }>;
+  extractedText: string;
+  verificationNotes: string[];
+  generatedAt?: string;
+  model?: string;
+  reviewStatus?: "to_review";
+}
+
+export interface NewDocument {
+  patient_id: string;
+  type: string;
+  nom: string;
+  file: File;
+}
+
+export const getDocumentAnalysis = async (
+  documentId: string,
+  patientId: string,
+  sessionToken: string,
+) => {
+  const result = await invokeDocumentFunction<{ analysis: DocumentAnalysis | null }>(
+    "get_analysis",
+    sessionToken,
+    { documentId, patientId },
+  );
+  return result.analysis;
+};
+
+export const saveDocumentAnalysis = async (
+  documentId: string,
+  patientId: string,
+  sessionToken: string,
+  analysis: DocumentAnalysis,
+) => {
+  const result = await invokeDocumentFunction<{ analysis: DocumentAnalysis }>(
+    "save_analysis",
+    sessionToken,
+    { documentId, patientId, analysis },
+  );
+  if (!result.analysis) throw new Error("Le rapport n’a pas pu être associé à cette pièce.");
+  return result.analysis;
+};
+
+const invokeDocumentFunction = async <T,>(
+  action: string,
+  sessionToken: string,
+  payload: Record<string, unknown> = {},
+): Promise<T> => {
+  if (!sessionToken) throw new Error("Votre session a expiré. Reconnectez-vous pour accéder aux documents.");
+
+  const { data, error } = await supabase.functions.invoke("patient-documents", {
+    body: { action, sessionToken, ...payload },
+  });
+  if (error) {
+    let message = error.message;
+    if ("context" in error && error.context instanceof Response) {
+      const responseBody = await error.context.clone().json().catch(() => null) as { error?: string } | null;
+      message = responseBody?.error || message;
+    }
+    throw new Error(message);
+  }
+  if (data?.error) throw new Error(data.error);
+  return data as T;
+};
+
+export const getDocumentSignedUrl = async (
+  documentId: string,
+  patientId: string,
+  sessionToken: string,
+) => {
+  const result = await invokeDocumentFunction<{ signedUrl: string }>(
+    "signed_url",
+    sessionToken,
+    { documentId, patientId },
+  );
+  if (!result.signedUrl) throw new Error("Le service documentaire n’a pas fourni de lien temporaire. Réessayez.");
+  return result.signedUrl;
+};
+
 export const useDocuments = (patientId: string | undefined) => {
+  const queryClient = useQueryClient();
+  const { sessionToken } = useAuth();
+
   return useQuery({
     queryKey: ["documents", patientId],
     queryFn: async () => {
       if (!patientId) return [];
-      
-      const { data, error } = await supabase
-        .from("documents")
-        .select("*")
-        .eq("patient_id", patientId)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      return data as Document[];
+      const result = await invokeDocumentFunction<{ documents: Document[] }>(
+        "list",
+        sessionToken ?? "",
+        { patientId },
+      );
+      void queryClient.invalidateQueries({ queryKey: ["settings"] });
+      return result.documents;
     },
-    enabled: !!patientId,
+    enabled: !!patientId && !!sessionToken,
   });
 };
 
 export const useCreateDocument = () => {
   const queryClient = useQueryClient();
+  const { sessionToken } = useAuth();
 
   return useMutation({
-    mutationFn: async (document: Omit<Document, "id" | "created_at">) => {
-      const { data, error } = await supabase
-        .from("documents")
-        .insert(document)
-        .select()
-        .single();
+    mutationFn: async ({ file, ...metadata }: NewDocument) => {
+      if (!sessionToken) throw new Error("Votre session a expiré. Reconnectez-vous avant d’ajouter une pièce.");
+      if (file.size > 20 * 1024 * 1024) throw new Error("Le fichier ne doit pas dépasser 20 Mo.");
 
-      if (error) throw error;
-      return data;
+      const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
+      const prepared = await invokeDocumentFunction<{ path: string; token: string }>(
+        "prepare_upload",
+        sessionToken,
+        {
+          patientId: metadata.patient_id,
+          extension,
+          contentType: file.type,
+        },
+      );
+
+      const { error: uploadError } = await supabase.storage
+        .from("patient-documents-private")
+        .uploadToSignedUrl(prepared.path, prepared.token, file, {
+          contentType: file.type,
+          upsert: false,
+        });
+      if (uploadError) throw uploadError;
+
+      const result = await invokeDocumentFunction<{ document: Document }>(
+        "register_upload",
+        sessionToken,
+        {
+          patientId: metadata.patient_id,
+          path: prepared.path,
+          name: metadata.nom,
+          type: metadata.type,
+        },
+      );
+      return result.document;
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["documents", variables.patient_id] });
-      toast({
-        title: "Succès",
-        description: "Document ajouté avec succès",
-      });
+      void queryClient.invalidateQueries({ queryKey: ["documents", variables.patient_id] });
     },
     onError: (error) => {
-      toast({
-        title: "Erreur",
-        description: "Impossible d'ajouter le document",
-        variant: "destructive",
-      });
-      console.error("Error creating document:", error);
+      console.error("Error creating patient document:", error);
     },
   });
 };
 
 export const useDeleteDocument = () => {
   const queryClient = useQueryClient();
+  const { sessionToken } = useAuth();
 
   return useMutation({
     mutationFn: async ({ id, patientId }: { id: string; patientId: string }) => {
-      const { error } = await supabase
-        .from("documents")
-        .delete()
-        .eq("id", id);
-
-      if (error) throw error;
+      await invokeDocumentFunction("delete", sessionToken ?? "", {
+        documentId: id,
+        patientId,
+      });
       return { id, patientId };
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["documents", data.patientId] });
-      toast({
-        title: "Succès",
-        description: "Document supprimé",
-      });
+      void queryClient.invalidateQueries({ queryKey: ["documents", data.patientId] });
+      toast({ title: "Pièce supprimée", description: "Le fichier a été retiré du dossier." });
     },
     onError: (error) => {
       toast({
-        title: "Erreur",
-        description: "Impossible de supprimer le document",
+        title: "Suppression impossible",
+        description: error instanceof Error ? error.message : "Impossible de supprimer le document.",
         variant: "destructive",
       });
-      console.error("Error deleting document:", error);
+      console.error("Error deleting patient document:", error);
     },
   });
 };

@@ -1,0 +1,5274 @@
+{
+  "catalog": [
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B100",
+      "name": "Acide urique sanguin",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B101",
+      "name": "Albuminémie (méthode immunologique)",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B102",
+      "name": "Ammoniémie",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B103",
+      "name": "Bilirubine (totale + directe + indirecte)",
+      "coefficient": "70",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B104",
+      "name": "Calcium",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B105",
+      "name": "Chlore",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B106",
+      "name": "Cholestérol total",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B107",
+      "name": "Cholestérol estérifié",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B108",
+      "name": "Cholestérol HDL",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B109",
+      "name": "Cholestérol LDL",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B110",
+      "name": "Cholestérol HDL + LDL",
+      "coefficient": "80",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B111",
+      "name": "Créatinine",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B112",
+      "name": "Électrophorèse de l'hémoglobine",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B113",
+      "name": "Électrophorèse des lipides",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B114",
+      "name": "Électrophorèse des protides",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B115",
+      "name": "Fer sérique",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B116",
+      "name": "Fer sérique + CTF",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B117",
+      "name": "Fructosamine",
+      "coefficient": "80",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B118",
+      "name": "Glycémie",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B119",
+      "name": "Hémoglobine glycosylée (HbA1c)",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B120",
+      "name": "Ionogramme complet (Na K Cl Prot RA)",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B121",
+      "name": "Lipides totaux",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B122",
+      "name": "Lipoprotéine A",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B123",
+      "name": "Lipoprotéine B",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B124",
+      "name": "Lipoprotéines A + B",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B125",
+      "name": "Lithium",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B126",
+      "name": "Magnésium plasmatique",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B127",
+      "name": "Magnésium érythrocytaire",
+      "coefficient": "80",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B129",
+      "name": "Phosphore minéral",
+      "coefficient": "40",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B130",
+      "name": "Protéines totales",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B131",
+      "name": "Potassium",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B132",
+      "name": "Réserve alcaline",
+      "coefficient": "40",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B133",
+      "name": "Sodium",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B134",
+      "name": "Triglycérides",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B135",
+      "name": "Urée",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B136",
+      "name": "Aldolase",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B137",
+      "name": "Amylase",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B138",
+      "name": "CPK (Créatine phosphokinase)",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B139",
+      "name": "CPK-MB",
+      "coefficient": "200",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B140",
+      "name": "G6PDH",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B141",
+      "name": "Gamma-GT (GGT)",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B142",
+      "name": "LDH",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B143",
+      "name": "Phosphatases alcalines",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B144",
+      "name": "Phosphatases acides",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B145",
+      "name": "Phosphatases prostatiques",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B146",
+      "name": "Transaminases ASAT (TGO)",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B147",
+      "name": "Transaminases ALAT (TGP)",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B148",
+      "name": "Lipase",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B149",
+      "name": "Troponine",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B150",
+      "name": "Beta-HCG quantitatif",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B151",
+      "name": "Beta-HCG qualitatif",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B152",
+      "name": "17-Beta Oestradiol",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B153",
+      "name": "Cortisol",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B154",
+      "name": "Ferritine",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B155",
+      "name": "Insuline",
+      "coefficient": "300",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B156",
+      "name": "LH",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B157",
+      "name": "Progestérone",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B158",
+      "name": "Prolactine",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B159",
+      "name": "T3 ou FT3",
+      "coefficient": "200",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B160",
+      "name": "T4 ou FT4",
+      "coefficient": "200",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B161",
+      "name": "T4 libre",
+      "coefficient": "200",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B162",
+      "name": "Testostérone",
+      "coefficient": "300",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B163",
+      "name": "TSH",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B164",
+      "name": "TSH ultra-sensible",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B165",
+      "name": "T3 libre (T3L)",
+      "coefficient": "300",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B166",
+      "name": "Acétone (recherche urine)",
+      "coefficient": "10",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B167",
+      "name": "Acide urique urinaire",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B168",
+      "name": "Calcium urinaire",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B170",
+      "name": "Créatinine urinaire",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B171",
+      "name": "Électrophorèse des protéines urinaires",
+      "coefficient": "180",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B172",
+      "name": "Identification d'un calcul urinaire",
+      "coefficient": "80",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B176",
+      "name": "Protéine (recherche urine)",
+      "coefficient": "20",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B177",
+      "name": "Protéine (dosage urine)",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B180",
+      "name": "Sucre (recherche urine)",
+      "coefficient": "10",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B181",
+      "name": "Sucre (recherche + dosage urine)",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B182",
+      "name": "Urée urinaire",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B203",
+      "name": "Clearance acide urique",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B204",
+      "name": "Clearance urée",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B205",
+      "name": "Clearance créatinine",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B206",
+      "name": "HGPO (hyperglycémie provoquée orale)",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B207",
+      "name": "HLM (Test d'Addis)",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B212",
+      "name": "Adénogramme",
+      "coefficient": "75",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B213",
+      "name": "Goutte épaisse",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B214",
+      "name": "Hématocrite",
+      "coefficient": "20",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B215",
+      "name": "Hémoglobine",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B216",
+      "name": "NFS (Numération Formule Sanguine)",
+      "coefficient": "80",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B217",
+      "name": "Numération des plaquettes",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B218",
+      "name": "Myélogramme (étude cytologique)",
+      "coefficient": "120",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B222",
+      "name": "Réticulocytes",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B223",
+      "name": "Vitesse de sédimentation (VS)",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B224",
+      "name": "Coombs direct / indirect",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B225",
+      "name": "RAI (recherche agglutinines irrégulières)",
+      "coefficient": "40",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B229",
+      "name": "Groupage ABO + Rhésus",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B230",
+      "name": "Phénotype érythrocytaire",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B233",
+      "name": "Fibrinogène",
+      "coefficient": "40",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B236",
+      "name": "Taux de prothrombine (TP / INR)",
+      "coefficient": "40",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B239",
+      "name": "TCA / TCK",
+      "coefficient": "40",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B241",
+      "name": "Examen cytobactériologique (ECBU urine / vaginal / etc.) - Cytologie + Culture + Identification",
+      "coefficient": "90",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B242",
+      "name": "Antibiogramme",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B246",
+      "name": "Examen mycologique (recherche)",
+      "coefficient": "30",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B247",
+      "name": "Examen mycologique (culture + identification)",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B248",
+      "name": "Recherche de BK + concentration",
+      "coefficient": "35",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B250",
+      "name": "Hémoculture (aérobies + anaérobies)",
+      "coefficient": "80",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B254",
+      "name": "Parasitologie des selles (direct + enrichissement)",
+      "coefficient": "40",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B255",
+      "name": "Coproculture + identification",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B256",
+      "name": "Recherche de sang dans les selles (calorimétrique)",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B257",
+      "name": "Recherche de sang dans les selles (immunologique)",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B263",
+      "name": "Antistaphylolysine",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B266",
+      "name": "Antistreptolysine O (ASLO)",
+      "coefficient": "80",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B268",
+      "name": "Brucellose (Wright)",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B269",
+      "name": "Chlamydia trachomatis (sérologie)",
+      "coefficient": "180",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B270",
+      "name": "Helicobacter pylori (sérologie)",
+      "coefficient": "180",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B279",
+      "name": "Salmonellose (Widal et Félix)",
+      "coefficient": "80",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B283",
+      "name": "Syphilis VDRL qualitatif",
+      "coefficient": "20",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B284",
+      "name": "Syphilis VDRL quantitatif",
+      "coefficient": "60",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B285",
+      "name": "Syphilis TPHA qualitatif",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B286",
+      "name": "Syphilis TPHA quantitatif",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B291",
+      "name": "Amibiase (sérologie)",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B294",
+      "name": "Hydatidose (hémagglutination)",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B307",
+      "name": "Toxoplasmose IgG",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B308",
+      "name": "Toxoplasmose IgM",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B313",
+      "name": "Adénovirus (sérologie)",
+      "coefficient": "110",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B315",
+      "name": "Hépatite A IgG",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B316",
+      "name": "Hépatite A IgM",
+      "coefficient": "250",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B317",
+      "name": "Hépatite B Ag HBs",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B318",
+      "name": "Hépatite B Ac anti-HBs",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B319",
+      "name": "Hépatite B Ac anti-HBc",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B320",
+      "name": "Hépatite C Ac anti-HCV",
+      "coefficient": "200",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B321",
+      "name": "HIV 1+2 (dépistage)",
+      "coefficient": "200",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B342",
+      "name": "Rougeole IgG ou IgM",
+      "coefficient": "330",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B343",
+      "name": "Rubéole IgG",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B344",
+      "name": "Rubéole IgM",
+      "coefficient": "400",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B347",
+      "name": "Auto-anticorps antinucléaires (AAN)",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B348",
+      "name": "Anticorps anti-microsomaux (anti-TPO)",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B349",
+      "name": "Anticorps anti-thyroglobuline",
+      "coefficient": "150",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B350",
+      "name": "Complément total CH50",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Arrêté 1796-03 (2005)"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B439",
+      "name": "Vitamine D (25-OH)",
+      "coefficient": "450",
+      "unit": "B",
+      "source": "Assimilation Arrêté 827-12"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B442",
+      "name": "Osmolarité sanguine",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Assimilation Arrêté 827-12"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B443",
+      "name": "Osmolarité urinaire",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Assimilation Arrêté 827-12"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B445",
+      "name": "Acide lactique",
+      "coefficient": "100",
+      "unit": "B",
+      "source": "Assimilation Arrêté 827-12"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B446",
+      "name": "Débit de filtration glomérulaire (DFG)",
+      "coefficient": "50",
+      "unit": "B",
+      "source": "Assimilation Arrêté 827-12"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B449",
+      "name": "Gazométrie (pH pCO2 pO2 SatO2)",
+      "coefficient": "200",
+      "unit": "B",
+      "source": "Assimilation Arrêté 827-12"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B450",
+      "name": "Myoglobine",
+      "coefficient": "200",
+      "unit": "B",
+      "source": "Assimilation Arrêté 827-12"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B563",
+      "name": "PSA libre",
+      "coefficient": "300",
+      "unit": "B",
+      "source": "Assimilation Arrêté 827-12"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B581",
+      "name": "Caryotype constitutionnel postnatal",
+      "coefficient": "1200",
+      "unit": "B",
+      "source": "Assimilation Arrêté 1968-16"
+    },
+    {
+      "type": "laboratory",
+      "category": "Biologie",
+      "code": "B591",
+      "name": "Recherche de stupéfiants dans les urines",
+      "coefficient": "300",
+      "unit": "B",
+      "source": "Assimilation Arrêté 1968-16"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T101",
+      "name": "Radiographie de la main",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T102",
+      "name": "Radiographie du poignet",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T103",
+      "name": "Radiographie de l'avant-bras",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T104",
+      "name": "Radiographie du coude",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T105",
+      "name": "Radiographie du bras",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T106",
+      "name": "Radiographie de deux segments du membre supérieur",
+      "coefficient": "22",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T107",
+      "name": "Radiographie de trois segments ou plus du membre supérieur",
+      "coefficient": "30",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T108",
+      "name": "Radiographie des deux mains et/ou poignets (même plaque)",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T109",
+      "name": "Bilan radiologique complet du poignet (≥ 4 incidences)",
+      "coefficient": "22",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T110",
+      "name": "Bilan radiologique complet du coude (≥ 4 incidences)",
+      "coefficient": "22",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T111",
+      "name": "Radiographie de la ceinture scapulaire / épaule / omoplate / clavicule",
+      "coefficient": "8",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T119",
+      "name": "Radiographie du pied (≥ 2 incidences)",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T120",
+      "name": "Radiographie de la cheville (≥ 2 incidences)",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T121",
+      "name": "Radiographie de la jambe",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T122",
+      "name": "Radiographie du genou",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T123",
+      "name": "Radiographie de la cuisse",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T124",
+      "name": "Radiographie de deux segments du membre inférieur",
+      "coefficient": "22",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T125",
+      "name": "Radiographie de trois segments ou plus du membre inférieur",
+      "coefficient": "30",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T126",
+      "name": "Radiographie du bassin",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T127",
+      "name": "Radiographie de la hanche",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T130",
+      "name": "Radiographie du rachis cervical",
+      "coefficient": "20",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T131",
+      "name": "Radiographie du rachis dorsal",
+      "coefficient": "20",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T132",
+      "name": "Radiographie du rachis lombaire",
+      "coefficient": "20",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T133",
+      "name": "Radiographie du rachis entier (ou grande partie)",
+      "coefficient": "30",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T140",
+      "name": "Radiographie du crâne",
+      "coefficient": "20",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T141",
+      "name": "Radiographie des sinus de la face",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T150",
+      "name": "Radiographie du thorax (téléthorax)",
+      "coefficient": "16",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T151",
+      "name": "Radiographie des poumons avec opacification bronchique",
+      "coefficient": "25",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T160",
+      "name": "Abdomen sans préparation (ASP)",
+      "coefficient": "15",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T161",
+      "name": "Radiographie de la vésicule et voies biliaires",
+      "coefficient": "43",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T162",
+      "name": "Transit œso-gastro-duodénal",
+      "coefficient": "85",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T163",
+      "name": "Lavement baryté / examen du côlon",
+      "coefficient": "90",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T164",
+      "name": "Transit du grêle",
+      "coefficient": "90",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T222",
+      "name": "Abdomen sans préparation (hors opacification urinaire)",
+      "coefficient": "16",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T223",
+      "name": "Urographie intraveineuse (UIV) + cystographie + ASP",
+      "coefficient": "35",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T229",
+      "name": "Mammographie bilatérale",
+      "coefficient": "30",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T230",
+      "name": "Mammographie unilatérale",
+      "coefficient": "20",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T231",
+      "name": "Mammographie bilatérale dépistage organisé (≥ 2 incidences)",
+      "coefficient": "41",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "T400",
+      "name": "Tomographie classique (os larynx poumons)",
+      "coefficient": "40",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "KE",
+      "name": "Échographie abdominale / pelvienne / rénale / hépatique",
+      "coefficient": "variable",
+      "unit": "KE",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "KE",
+      "name": "Échographie obstétricale (1er 2e 3e trimestre)",
+      "coefficient": "variable",
+      "unit": "KE",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "KE",
+      "name": "Échographie thyroïdienne",
+      "coefficient": "variable",
+      "unit": "KE",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "KE",
+      "name": "Échographie mammaire",
+      "coefficient": "variable",
+      "unit": "KE",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "KE",
+      "name": "Échographie cardiaque (échocardiographie)",
+      "coefficient": "variable",
+      "unit": "KE",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "KE",
+      "name": "Écho-Doppler artériel ou veineux des membres",
+      "coefficient": "variable",
+      "unit": "KE",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "KE",
+      "name": "Écho-Doppler des troncs supra-aortiques",
+      "coefficient": "variable",
+      "unit": "KE",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "Z",
+      "name": "Scanner (TDM) crâne sans injection",
+      "coefficient": "19 + forfait technique",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "Z",
+      "name": "Scanner (TDM) thorax / abdomen / pelvis",
+      "coefficient": "19 + forfait technique",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "Z",
+      "name": "Scanner (TDM) avec injection de produit de contraste",
+      "coefficient": "supplément",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "Z",
+      "name": "IRM (selon région)",
+      "coefficient": "variable + forfait technique",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "Z",
+      "name": "Ostéodensitométrie",
+      "coefficient": "17",
+      "unit": "Z",
+      "source": "NGAP (textes associés)"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "Z",
+      "name": "Panoramique dentaire",
+      "coefficient": "variable",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "Z",
+      "name": "Téléthorax de face",
+      "coefficient": "16",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    },
+    {
+      "type": "imaging",
+      "category": "Radiologie",
+      "code": "Z",
+      "name": "Radiographie des parties molles",
+      "coefficient": "variable",
+      "unit": "Z",
+      "source": "NGAP Arrêté 177-06"
+    }
+  ],
+  "baskets": [
+    {
+      "id": "laboratory-1.1",
+      "type": "laboratory",
+      "name": "BILAN DE DÉPISTAGE / CHECK-UP STANDARD",
+      "section": "1.1",
+      "items": [
+        {
+          "name": "NFS",
+          "references": [
+            {
+              "code": "B216",
+              "coefficient": "80",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "VS",
+          "references": [
+            {
+              "code": "B223",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Glycémie à jeun",
+          "references": [
+            {
+              "code": "B118",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Créatinine",
+          "references": [
+            {
+              "code": "B111",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Urée",
+          "references": [
+            {
+              "code": "B135",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Acide urique",
+          "references": [
+            {
+              "code": "B100",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Transaminases ASAT + ALAT",
+          "references": [
+            {
+              "code": "B146",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            },
+            {
+              "code": "B147",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Gamma-GT",
+          "references": [
+            {
+              "code": "B141",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Phosphatases alcalines",
+          "references": [
+            {
+              "code": "B143",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Cholestérol total",
+          "references": [
+            {
+              "code": "B106",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Triglycérides",
+          "references": [
+            {
+              "code": "B134",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "HDL + LDL ou HDL+LDL",
+          "references": [
+            {
+              "code": "B108",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            },
+            {
+              "code": "B109",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            },
+            {
+              "code": "B110",
+              "coefficient": "80",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ionogramme (Na, K, Cl, RA)",
+          "references": [
+            {
+              "code": "B120",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "TSH ultra-sensible",
+          "references": [
+            {
+              "code": "B164",
+              "coefficient": "250",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-1.2",
+      "type": "laboratory",
+      "name": "BILAN PRÉOPÉRATOIRE STANDARD",
+      "section": "1.2",
+      "items": [
+        {
+          "name": "NFS",
+          "references": [
+            {
+              "code": "B216",
+              "coefficient": "80",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Groupage ABO + Rhésus",
+          "references": [
+            {
+              "code": "B229",
+              "coefficient": "60",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "RAI",
+          "references": [
+            {
+              "code": "B225",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "TP / INR",
+          "references": [
+            {
+              "code": "B236",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "TCA",
+          "references": [
+            {
+              "code": "B239",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Fibrinogène",
+          "references": [
+            {
+              "code": "B233",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Créatinine",
+          "references": [
+            {
+              "code": "B111",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Glycémie",
+          "references": [
+            {
+              "code": "B118",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ionogramme",
+          "references": [
+            {
+              "code": "B120",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "ECG (hors biologie)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-1.3",
+      "type": "laboratory",
+      "name": "BILAN INFLAMMATOIRE / SYNDROME INFLAMMATOIRE",
+      "section": "1.3",
+      "items": [
+        {
+          "name": "NFS",
+          "references": [
+            {
+              "code": "B216",
+              "coefficient": "80",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "VS",
+          "references": [
+            {
+              "code": "B223",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "CRP (souvent assimilée)"
+        },
+        {
+          "name": "Fibrinogène",
+          "references": [
+            {
+              "code": "B233",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Électrophorèse des protéines",
+          "references": [
+            {
+              "code": "B114",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ferritine",
+          "references": [
+            {
+              "code": "B154",
+              "coefficient": "250",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-2.1",
+      "type": "laboratory",
+      "name": "BILAN FONCTION RÉNALE SIMPLE",
+      "section": "2.1",
+      "items": [
+        {
+          "name": "Créatinine",
+          "references": [
+            {
+              "code": "B111",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Urée",
+          "references": [
+            {
+              "code": "B135",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Acide urique",
+          "references": [
+            {
+              "code": "B100",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ionogramme (Na, K, Cl, RA)",
+          "references": [
+            {
+              "code": "B120",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Protéinurie (recherche + dosage)",
+          "references": [
+            {
+              "code": "B176",
+              "coefficient": "20",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            },
+            {
+              "code": "B177",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "DFG estimé",
+          "references": [
+            {
+              "code": "B446",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Assimilation Arrêté 827-12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-2.2",
+      "type": "laboratory",
+      "name": "BILAN FONCTION RÉNALE COMPLET",
+      "section": "2.2",
+      "items": [
+        {
+          "name": "Créatinine",
+          "references": [
+            {
+              "code": "B111",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Urée",
+          "references": [
+            {
+              "code": "B135",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Acide urique",
+          "references": [
+            {
+              "code": "B100",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ionogramme complet",
+          "references": [
+            {
+              "code": "B120",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Calcium",
+          "references": [
+            {
+              "code": "B104",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Phosphore",
+          "references": [
+            {
+              "code": "B129",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Magnésium",
+          "references": [
+            {
+              "code": "B126",
+              "coefficient": "60",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Protéinurie 24h ou rapport protéine/créatinine"
+        },
+        {
+          "name": "Microalbuminurie 24h ou rapport microalbuminurie/créatininurie",
+          "references": [
+            {
+              "code": "B482"
+            },
+            {
+              "code": "B483"
+            }
+          ]
+        },
+        {
+          "name": "Clearance de la créatinine",
+          "references": [
+            {
+              "code": "B205",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Électrophorèse des protéines urinaires",
+          "references": [
+            {
+              "code": "B171",
+              "coefficient": "180",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Sédiment urinaire / ECBU",
+          "references": [
+            {
+              "code": "B241",
+              "coefficient": "90",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-2.3",
+      "type": "laboratory",
+      "name": "BILAN DE SURVEILLANCE INSUFFISANCE RÉNALE CHRONIQUE",
+      "section": "2.3",
+      "items": [
+        {
+          "name": "NFS",
+          "references": [
+            {
+              "code": "B216",
+              "coefficient": "80",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Créatinine + DFG",
+          "references": [
+            {
+              "code": "B111",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            },
+            {
+              "code": "B446",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Assimilation Arrêté 827-12"
+            }
+          ]
+        },
+        {
+          "name": "Urée",
+          "references": [
+            {
+              "code": "B135",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ionogramme (surtout K et RA)"
+        },
+        {
+          "name": "Calcium + Phosphore + PTH (si disponible)"
+        },
+        {
+          "name": "Bicarbonates / Réserve alcaline",
+          "references": [
+            {
+              "code": "B132",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Albumine",
+          "references": [
+            {
+              "code": "B101",
+              "coefficient": "60",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ferritine + Fer + CTF (si anémie)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-2.4",
+      "type": "laboratory",
+      "name": "BILAN LITHIASE URINAIRE",
+      "section": "2.4",
+      "items": [
+        {
+          "name": "Calcémie",
+          "references": [
+            {
+              "code": "B104",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Phosphorémie",
+          "references": [
+            {
+              "code": "B129",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Acide urique sanguin",
+          "references": [
+            {
+              "code": "B100",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Créatinine",
+          "references": [
+            {
+              "code": "B111",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Calciurie 24h"
+        },
+        {
+          "name": "Phosphaturie 24h"
+        },
+        {
+          "name": "Uricosurie 24h"
+        },
+        {
+          "name": "Oxalurie",
+          "references": [
+            {
+              "code": "B128"
+            }
+          ]
+        },
+        {
+          "name": "Analyse du calcul",
+          "references": [
+            {
+              "code": "B172",
+              "coefficient": "80",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-3.1",
+      "type": "laboratory",
+      "name": "BILAN HÉPATIQUE SIMPLE (transaminases)",
+      "section": "3.1",
+      "items": [
+        {
+          "name": "ASAT (TGO)",
+          "references": [
+            {
+              "code": "B146",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "ALAT (TGP)",
+          "references": [
+            {
+              "code": "B147",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Gamma-GT",
+          "references": [
+            {
+              "code": "B141",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Phosphatases alcalines",
+          "references": [
+            {
+              "code": "B143",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Bilirubine totale + directe + indirecte",
+          "references": [
+            {
+              "code": "B103",
+              "coefficient": "70",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-3.2",
+      "type": "laboratory",
+      "name": "BILAN HÉPATIQUE COMPLET",
+      "section": "3.2",
+      "items": [
+        {
+          "name": "ASAT + ALAT",
+          "references": [
+            {
+              "code": "B146",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            },
+            {
+              "code": "B147",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Gamma-GT",
+          "references": [
+            {
+              "code": "B141",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Phosphatases alcalines",
+          "references": [
+            {
+              "code": "B143",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Bilirubine totale + conjuguée",
+          "references": [
+            {
+              "code": "B103",
+              "coefficient": "70",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Albumine",
+          "references": [
+            {
+              "code": "B101",
+              "coefficient": "60",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Protéines totales",
+          "references": [
+            {
+              "code": "B130",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Électrophorèse des protéines",
+          "references": [
+            {
+              "code": "B114",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "TP / Facteur V (si trouble de synthèse)"
+        },
+        {
+          "name": "LDH",
+          "references": [
+            {
+              "code": "B142",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Amylase + Lipase (si douleur abdominale)",
+          "references": [
+            {
+              "code": "B137",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            },
+            {
+              "code": "B148",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-3.3",
+      "type": "laboratory",
+      "name": "BILAN D'EXPLORATION DES CYTOLYSES / CHOLESTASES",
+      "section": "3.3",
+      "items": [
+        {
+          "name": "Bilan hépatique complet (ci-dessus)"
+        },
+        {
+          "name": "Sérologies hépatites A, B, C"
+        },
+        {
+          "name": "Ferritine + Coefficient de saturation (suspicion hémochromatose)"
+        },
+        {
+          "name": "Céruloplasmine (si suspicion maladie de Wilson – hors nomenclature standard)"
+        },
+        {
+          "name": "Auto-anticorps (AAN, anti-muscles lisses, anti-LKM…)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-3.4",
+      "type": "laboratory",
+      "name": "BILAN PANCRÉATIQUE",
+      "section": "3.4",
+      "items": [
+        {
+          "name": "Amylase",
+          "references": [
+            {
+              "code": "B137",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Lipase",
+          "references": [
+            {
+              "code": "B148",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "NFS + CRP"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-4.1",
+      "type": "laboratory",
+      "name": "BILAN LIPIDIQUE STANDARD",
+      "section": "4.1",
+      "items": [
+        {
+          "name": "Cholestérol total",
+          "references": [
+            {
+              "code": "B106",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "HDL",
+          "references": [
+            {
+              "code": "B108",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "LDL ou calculé",
+          "references": [
+            {
+              "code": "B109",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Triglycérides",
+          "references": [
+            {
+              "code": "B134",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "(Option) Apo A1 + Apo B",
+          "references": [
+            {
+              "code": "B122",
+              "coefficient": "150",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            },
+            {
+              "code": "B123",
+              "coefficient": "150",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-4.2",
+      "type": "laboratory",
+      "name": "BILAN CARDIOVASCULAIRE DE RISQUE",
+      "section": "4.2",
+      "items": [
+        {
+          "name": "Bilan lipidique complet"
+        },
+        {
+          "name": "Glycémie à jeun + HbA1c",
+          "references": [
+            {
+              "code": "B119",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Créatinine + DFG"
+        },
+        {
+          "name": "Acide urique"
+        },
+        {
+          "name": "Homocystéine (si disponible)"
+        },
+        {
+          "name": "CRP ultrasensible (si disponible)"
+        },
+        {
+          "name": "Troponine en cas de suspicion SCA",
+          "references": [
+            {
+              "code": "B149",
+              "coefficient": "250",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-4.3",
+      "type": "laboratory",
+      "name": "BILAN DE SURVEILLANCE SOUS STATINES / FIBRATES",
+      "section": "4.3",
+      "items": [
+        {
+          "name": "Bilan lipidique"
+        },
+        {
+          "name": "ASAT + ALAT + Gamma-GT (tolérance hépatique)"
+        },
+        {
+          "name": "CPK si myalgies",
+          "references": [
+            {
+              "code": "B138",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-5.1",
+      "type": "laboratory",
+      "name": "BILAN THYROÏDIEN DE DÉPISTAGE",
+      "section": "5.1",
+      "items": [
+        {
+          "name": "TSH ultra-sensible",
+          "references": [
+            {
+              "code": "B164",
+              "coefficient": "250",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-5.2",
+      "type": "laboratory",
+      "name": "BILAN THYROÏDIEN COMPLET",
+      "section": "5.2",
+      "items": [
+        {
+          "name": "TSH ultra-sensible",
+          "references": [
+            {
+              "code": "B164",
+              "coefficient": "250",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "T4 libre",
+          "references": [
+            {
+              "code": "B161",
+              "coefficient": "200",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "T3 libre",
+          "references": [
+            {
+              "code": "B165",
+              "coefficient": "300",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Anticorps anti-TPO (anti-microsomaux)",
+          "references": [
+            {
+              "code": "B348",
+              "coefficient": "150",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Anticorps anti-thyroglobuline",
+          "references": [
+            {
+              "code": "B349",
+              "coefficient": "150",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-5.3",
+      "type": "laboratory",
+      "name": "BILAN HYPERTHYROÏDIE / MALADIE DE BASEDOW",
+      "section": "5.3",
+      "items": [
+        {
+          "name": "TSH + T4L + T3L"
+        },
+        {
+          "name": "Anticorps anti-récepteurs de la TSH (TRAK – hors nomenclature de base)"
+        },
+        {
+          "name": "NFS + transaminases (avant antithyroïdiens de synthèse)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-5.4",
+      "type": "laboratory",
+      "name": "BILAN HYPOTHYROÏDIE",
+      "section": "5.4",
+      "items": [
+        {
+          "name": "TSH + T4L"
+        },
+        {
+          "name": "Anticorps anti-TPO ± anti-thyroglobuline"
+        },
+        {
+          "name": "Cholestérol + triglycérides (conséquences métaboliques)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-6.1",
+      "type": "laboratory",
+      "name": "BILAN DIAGNOSTIC DIABÈTE",
+      "section": "6.1",
+      "items": [
+        {
+          "name": "Glycémie à jeun",
+          "references": [
+            {
+              "code": "B118",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "HbA1c",
+          "references": [
+            {
+              "code": "B119",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "(Option) HGPO 75g",
+          "references": [
+            {
+              "code": "B206",
+              "coefficient": "150",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-6.2",
+      "type": "laboratory",
+      "name": "BILAN DE SUIVI DU DIABÉTIQUE",
+      "section": "6.2",
+      "items": [
+        {
+          "name": "Glycémie à jeun"
+        },
+        {
+          "name": "HbA1c (tous les 3 mois)"
+        },
+        {
+          "name": "Microalbuminurie / rapport albumine/créatinine",
+          "references": [
+            {
+              "code": "B483"
+            }
+          ]
+        },
+        {
+          "name": "Créatinine + DFG"
+        },
+        {
+          "name": "Bilan lipidique"
+        },
+        {
+          "name": "NFS (si traitement par metformine prolongé – vitamine B12)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-6.3",
+      "type": "laboratory",
+      "name": "BILAN DU DIABÈTE GESTATIONNEL",
+      "section": "6.3",
+      "items": [
+        {
+          "name": "Glycémie à jeun"
+        },
+        {
+          "name": "HGPO 75g – protocole OMS",
+          "references": [
+            {
+              "code": "B206",
+              "coefficient": "150",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-7.1",
+      "type": "laboratory",
+      "name": "BILAN D'ANÉMIE STANDARD",
+      "section": "7.1",
+      "items": [
+        {
+          "name": "NFS",
+          "references": [
+            {
+              "code": "B216",
+              "coefficient": "80",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Réticulocytes",
+          "references": [
+            {
+              "code": "B222",
+              "coefficient": "30",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Fer sérique",
+          "references": [
+            {
+              "code": "B115",
+              "coefficient": "60",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Coefficient de saturation de la transferrine (CTF)",
+          "references": [
+            {
+              "code": "B116",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ferritine",
+          "references": [
+            {
+              "code": "B154",
+              "coefficient": "250",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Vitamine B12",
+          "references": [
+            {
+              "code": "B438"
+            }
+          ]
+        },
+        {
+          "name": "Folates sériques"
+        },
+        {
+          "name": "CRP / VS (contexte inflammatoire)"
+        },
+        {
+          "name": "Créatinine (anémie rénale)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-7.2",
+      "type": "laboratory",
+      "name": "BILAN MARTIAL ISOLÉ",
+      "section": "7.2",
+      "items": [
+        {
+          "name": "Fer sérique",
+          "references": [
+            {
+              "code": "B115",
+              "coefficient": "60",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "CTF",
+          "references": [
+            {
+              "code": "B116",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Ferritine",
+          "references": [
+            {
+              "code": "B154",
+              "coefficient": "250",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "(Option) Récepteurs solubles de la transferrine"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-7.3",
+      "type": "laboratory",
+      "name": "BILAN D'HÉMOLYSE",
+      "section": "7.3",
+      "items": [
+        {
+          "name": "NFS + réticulocytes"
+        },
+        {
+          "name": "Bilirubine libre"
+        },
+        {
+          "name": "LDH",
+          "references": [
+            {
+              "code": "B142",
+              "coefficient": "50",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Haptoglobine"
+        },
+        {
+          "name": "Test de Coombs direct",
+          "references": [
+            {
+              "code": "B224",
+              "coefficient": "60",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Électrophorèse de l'hémoglobine si suspicion hémoglobinopathie",
+          "references": [
+            {
+              "code": "B112",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-8.1",
+      "type": "laboratory",
+      "name": "BILAN DE COAGULATION STANDARD",
+      "section": "8.1",
+      "items": [
+        {
+          "name": "TP / INR",
+          "references": [
+            {
+              "code": "B236",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "TCA",
+          "references": [
+            {
+              "code": "B239",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Fibrinogène",
+          "references": [
+            {
+              "code": "B233",
+              "coefficient": "40",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Temps de saignement – rarement demandé aujourd’hui",
+          "references": [
+            {
+              "code": "B237"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-8.2",
+      "type": "laboratory",
+      "name": "BILAN DE THROMBOPHILIE (exploration)",
+      "section": "8.2",
+      "items": [
+        {
+          "name": "Antithrombine III"
+        },
+        {
+          "name": "Protéine C"
+        },
+        {
+          "name": "Protéine S"
+        },
+        {
+          "name": "Résistance à la protéine C activée / Facteur V Leiden"
+        },
+        {
+          "name": "Mutation prothrombine"
+        },
+        {
+          "name": "Homocystéine"
+        },
+        {
+          "name": "Anticorps antiphospholipides / Anticardiolipine / Anti-β2GP1"
+        },
+        {
+          "name": "Lupus anticoagulant"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-8.3",
+      "type": "laboratory",
+      "name": "SURVEILLANCE ANTICOAGULANT",
+      "section": "8.3",
+      "items": [
+        {
+          "name": "Sous AVK : TP / INR"
+        },
+        {
+          "name": "Sous Héparine non fractionnée : TCA ou Héparinémie",
+          "references": [
+            {
+              "code": "B234"
+            }
+          ]
+        },
+        {
+          "name": "Sous HBPM : activité anti-Xa (si disponible)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-9.1",
+      "type": "laboratory",
+      "name": "BILAN PRÉCONCEPTIONNEL / DÉSIRE DE GROSSESSE",
+      "section": "9.1",
+      "items": [
+        {
+          "name": "Groupage ABO + Rhésus + RAI"
+        },
+        {
+          "name": "Sérologie toxoplasmose (IgG + IgM)"
+        },
+        {
+          "name": "Sérologie rubéole (IgG)"
+        },
+        {
+          "name": "Sérologie HIV"
+        },
+        {
+          "name": "Sérologie syphilis (VDRL + TPHA)"
+        },
+        {
+          "name": "Sérologie hépatite B (Ag HBs)"
+        },
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "TSH"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-9.2",
+      "type": "laboratory",
+      "name": "BILAN DU 1er TRIMESTRE DE GROSSESSE",
+      "section": "9.2",
+      "items": [
+        {
+          "name": "Groupage + RAI"
+        },
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "Sérologies (toxo, rubéole, HIV, syphilis, hépatite B)"
+        },
+        {
+          "name": "ECBU"
+        },
+        {
+          "name": "(Option) Marqueurs sériques du 1er trimestre (PAPP-A + β-HCG libre)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-9.3",
+      "type": "laboratory",
+      "name": "BILAN DU 2e / 3e TRIMESTRE",
+      "section": "9.3",
+      "items": [
+        {
+          "name": "NFS (recherche d’anémie)"
+        },
+        {
+          "name": "Glycémie / HGPO (dépistage diabète gestationnel)"
+        },
+        {
+          "name": "ECBU (bactériurie asymptomatique)"
+        },
+        {
+          "name": "RAI si Rhésus négatif"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-9.4",
+      "type": "laboratory",
+      "name": "BILAN D'INFERTILITÉ FÉMININE",
+      "section": "9.4",
+      "items": [
+        {
+          "name": "FSH + LH (J2-J3)"
+        },
+        {
+          "name": "Oestradiol (J2-J3)"
+        },
+        {
+          "name": "Prolactine"
+        },
+        {
+          "name": "TSH"
+        },
+        {
+          "name": "AMH (si disponible)"
+        },
+        {
+          "name": "Progestérone (en phase lutéale)"
+        },
+        {
+          "name": "Sérologies (Chlamydia, etc.)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-9.5",
+      "type": "laboratory",
+      "name": "BILAN D'INFERTILITÉ MASCULINE",
+      "section": "9.5",
+      "items": [
+        {
+          "name": "Spermogramme"
+        },
+        {
+          "name": "FSH + LH + Testostérone"
+        },
+        {
+          "name": "Prolactine"
+        },
+        {
+          "name": "(Option) Caryotype, fragmentation ADN spermatique",
+          "references": [
+            {
+              "code": "B570"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-10.1",
+      "type": "laboratory",
+      "name": "BILAN RHUMATOLOGIQUE STANDARD",
+      "section": "10.1",
+      "items": [
+        {
+          "name": "NFS + VS + CRP"
+        },
+        {
+          "name": "Acide urique (goutte)"
+        },
+        {
+          "name": "Facteur rhumatoïde"
+        },
+        {
+          "name": "Anticorps anti-CCP (anti-peptides citrullinés)"
+        },
+        {
+          "name": "AAN (anticorps antinucléaires)",
+          "references": [
+            {
+              "code": "B347",
+              "coefficient": "150",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Complément CH50",
+          "references": [
+            {
+              "code": "B350",
+              "coefficient": "100",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Créatinine + ECBU (si lupus / vascularite)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-10.2",
+      "type": "laboratory",
+      "name": "BILAN LUPUS / CONNECTIVITE",
+      "section": "10.2",
+      "items": [
+        {
+          "name": "AAN"
+        },
+        {
+          "name": "Anti-ADN natif"
+        },
+        {
+          "name": "Anti-Sm, Anti-RNP, Anti-SSA, Anti-SSB"
+        },
+        {
+          "name": "Complément C3 C4 CH50"
+        },
+        {
+          "name": "NFS + VS + CRP"
+        },
+        {
+          "name": "Créatinine + protéinurie"
+        },
+        {
+          "name": "Anticorps antiphospholipides"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-10.3",
+      "type": "laboratory",
+      "name": "BILAN SPONDYLARTHRITE / RHUMATISME INFLAMMATOIRE",
+      "section": "10.3",
+      "items": [
+        {
+          "name": "NFS + VS + CRP"
+        },
+        {
+          "name": "HLA-B27 (si disponible)"
+        },
+        {
+          "name": "Radiographies (hors biologie)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-11.1",
+      "type": "laboratory",
+      "name": "BILAN SÉROLOGIQUE DE DÉPISTAGE STANDARD",
+      "section": "11.1",
+      "items": [
+        {
+          "name": "HIV 1+2",
+          "references": [
+            {
+              "code": "B321",
+              "coefficient": "200",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "Hépatite B (Ag HBs + Ac anti-HBs ± Ac anti-HBc)"
+        },
+        {
+          "name": "Hépatite C (Ac anti-HCV)"
+        },
+        {
+          "name": "Syphilis (VDRL + TPHA)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-11.2",
+      "type": "laboratory",
+      "name": "BILAN FIÈVRE AU LONG COURS / SYNDROME INFLAMMATOIRE PROLONGÉ",
+      "section": "11.2",
+      "items": [
+        {
+          "name": "NFS + VS + CRP"
+        },
+        {
+          "name": "Hémocultures",
+          "references": [
+            {
+              "code": "B250",
+              "coefficient": "80",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "ECBU"
+        },
+        {
+          "name": "Radiographie thorax"
+        },
+        {
+          "name": "Sérologies (Brucellose, Salmonella, Rickettsies, CMV, EBV, Toxoplasmose…)"
+        },
+        {
+          "name": "Quantiféron / IDR (tuberculose)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-11.3",
+      "type": "laboratory",
+      "name": "BILAN DES HÉPATITES VIRALES",
+      "section": "11.3",
+      "items": [
+        {
+          "name": "Hépatite A (IgM + IgG)"
+        },
+        {
+          "name": "Hépatite B (Ag HBs, Ac anti-HBs, Ac anti-HBc, Ag HBe, Ac anti-HBe, ADN viral si besoin)"
+        },
+        {
+          "name": "Hépatite C (Ac anti-HCV + charge virale si positive)"
+        },
+        {
+          "name": "Hépatite E (si disponible)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-12.1",
+      "type": "laboratory",
+      "name": "BILAN D'INSUFFISANCE CARDIAQUE",
+      "section": "12.1",
+      "items": [
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Ionogramme + créatinine"
+        },
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "Bilan lipidique"
+        },
+        {
+          "name": "TSH"
+        },
+        {
+          "name": "NT-proBNP ou BNP (si disponible)"
+        },
+        {
+          "name": "Troponine (si suspicion SCA associée)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-12.2",
+      "type": "laboratory",
+      "name": "BILAN AVANT MISE SOUS AMIODARONE / ANTIARYTHMIQUES",
+      "section": "12.2",
+      "items": [
+        {
+          "name": "TSH + T4L"
+        },
+        {
+          "name": "Transaminases"
+        },
+        {
+          "name": "Créatinine"
+        },
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Radiographie thorax"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-13.1",
+      "type": "laboratory",
+      "name": "BILAN DE SURVEILLANCE SOUS CORTICOÏDES AU LONG COURS",
+      "section": "13.1",
+      "items": [
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Ionogramme (K)"
+        },
+        {
+          "name": "Ostéodensitométrie (hors biologie)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-13.2",
+      "type": "laboratory",
+      "name": "BILAN D'EXPLORATION D'UNE DYSPNÉE",
+      "section": "13.2",
+      "items": [
+        {
+          "name": "NFS (anémie)"
+        },
+        {
+          "name": "TSH"
+        },
+        {
+          "name": "NT-proBNP"
+        },
+        {
+          "name": "D-dimères (si suspicion EP)"
+        },
+        {
+          "name": "Gazométrie artérielle",
+          "references": [
+            {
+              "code": "B449",
+              "coefficient": "200",
+              "unit": "B",
+              "source": "Assimilation Arrêté 827-12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-14.1",
+      "type": "laboratory",
+      "name": "BILAN D'ÉPILEPSIE / CRISE CONVULSIVE",
+      "section": "14.1",
+      "items": [
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Ionogramme (Na, Ca, Mg)"
+        },
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "Créatinine"
+        },
+        {
+          "name": "Bilan hépatique"
+        },
+        {
+          "name": "Dosage d’antiépileptiques",
+          "references": [
+            {
+              "code": "B574"
+            },
+            {
+              "code": "B575"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-14.2",
+      "type": "laboratory",
+      "name": "BILAN D'AVC / AIT",
+      "section": "14.2",
+      "items": [
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "Ionogramme + créatinine"
+        },
+        {
+          "name": "Bilan lipidique"
+        },
+        {
+          "name": "TP + TCA"
+        },
+        {
+          "name": "Troponine"
+        },
+        {
+          "name": "Homocystéine (si sujet jeune)"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-15.1",
+      "type": "laboratory",
+      "name": "BILAN DE RETARD DE CROISSANCE",
+      "section": "15.1",
+      "items": [
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "VS + CRP"
+        },
+        {
+          "name": "Ionogramme + créatinine"
+        },
+        {
+          "name": "Bilan hépatique"
+        },
+        {
+          "name": "TSH + T4L"
+        },
+        {
+          "name": "IGF-1 / GH (si disponible)"
+        },
+        {
+          "name": "Anticorps anti-transglutaminase (maladie cœliaque)"
+        },
+        {
+          "name": "Calcémie + phosphorémie + phosphatases alcalines"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-15.2",
+      "type": "laboratory",
+      "name": "BILAN D'INFECTION URINAIRE DE L'ENFANT",
+      "section": "15.2",
+      "items": [
+        {
+          "name": "ECBU",
+          "references": [
+            {
+              "code": "B241",
+              "coefficient": "90",
+              "unit": "B",
+              "source": "Arrêté 1796-03 (2005)"
+            }
+          ]
+        },
+        {
+          "name": "NFS + CRP"
+        },
+        {
+          "name": "Créatinine"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-16.1",
+      "type": "laboratory",
+      "name": "BILAN DE DÉNUTRITION / FRAGILITÉ",
+      "section": "16.1",
+      "items": [
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Albumine + Préalbumine"
+        },
+        {
+          "name": "Cholestérol total"
+        },
+        {
+          "name": "Lymphocytes"
+        },
+        {
+          "name": "Créatinine + DFG"
+        },
+        {
+          "name": "Vitamine D",
+          "references": [
+            {
+              "code": "B439",
+              "coefficient": "450",
+              "unit": "B",
+              "source": "Assimilation Arrêté 827-12"
+            }
+          ]
+        },
+        {
+          "name": "Vitamine B12 + Folates"
+        },
+        {
+          "name": "TSH"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-16.2",
+      "type": "laboratory",
+      "name": "BILAN DE CHUTE / CONFUSION DU SUJET ÂGÉ",
+      "section": "16.2",
+      "items": [
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Ionogramme (surtout Na)"
+        },
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "Créatinine"
+        },
+        {
+          "name": "Calcémie"
+        },
+        {
+          "name": "TSH"
+        },
+        {
+          "name": "Vitamine B12"
+        },
+        {
+          "name": "ECG + radiographie thorax"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-17.1",
+      "type": "laboratory",
+      "name": "BILAN AVANT CHIMIOTHÉRAPIE / IMMUNOSUPPRESSEURS",
+      "section": "17.1",
+      "items": [
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Créatinine + DFG"
+        },
+        {
+          "name": "Bilan hépatique complet"
+        },
+        {
+          "name": "Ionogramme"
+        },
+        {
+          "name": "Glycémie"
+        },
+        {
+          "name": "Sérologies (HIV, hépatites B et C)"
+        },
+        {
+          "name": "Groupage + RAI"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-17.2",
+      "type": "laboratory",
+      "name": "BILAN DE SURVEILLANCE SOUS MÉTHOTREXATE",
+      "section": "17.2",
+      "items": [
+        {
+          "name": "NFS"
+        },
+        {
+          "name": "Transaminases + Gamma-GT"
+        },
+        {
+          "name": "Créatinine"
+        },
+        {
+          "name": "Albumine"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-17.3",
+      "type": "laboratory",
+      "name": "BILAN DE SURVEILLANCE SOUS CORTICOÏDES AU LONG COURS",
+      "section": "17.3",
+      "items": [
+        {
+          "name": "Glycémie à jeun + HbA1c"
+        },
+        {
+          "name": "Ionogramme (K)"
+        },
+        {
+          "name": "Bilan lipidique"
+        },
+        {
+          "name": "Ostéodensitométrie"
+        },
+        {
+          "name": "Recherche d’insuffisance surrénale si sevrage"
+        }
+      ]
+    },
+    {
+      "id": "laboratory-17.4",
+      "type": "laboratory",
+      "name": "BILAN ALLERGOLOGIQUE DE BASE",
+      "section": "17.4",
+      "items": [
+        {
+          "name": "NFS + éosinophiles"
+        },
+        {
+          "name": "IgE totales"
+        },
+        {
+          "name": "Phadiatop / tests multi-allergéniques"
+        },
+        {
+          "name": "Test d’activation des basophiles si disponible",
+          "references": [
+            {
+              "code": "B580"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "laboratory-17.5",
+      "type": "laboratory",
+      "name": "BILAN TOXICOLOGIQUE",
+      "section": "17.5",
+      "items": [
+        {
+          "name": "Recherche de stupéfiants urinaires",
+          "references": [
+            {
+              "code": "B591",
+              "coefficient": "300",
+              "unit": "B",
+              "source": "Assimilation Arrêté 1968-16"
+            }
+          ]
+        },
+        {
+          "name": "Dosage de médicaments (Carbamazépine, Valproate, Lithium, Digoxine…)"
+        },
+        {
+          "name": "Métaux lourds (plomb, mercure…) si exposition professionnelle"
+        }
+      ]
+    },
+    {
+      "id": "imaging-1.1",
+      "type": "imaging",
+      "name": "BILAN TRAUMATOLOGIQUE MEMBRE SUPÉRIEUR",
+      "section": "1.1",
+      "items": [
+        {
+          "name": "Radiographie de la main",
+          "references": [
+            {
+              "code": "T101",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie du poignet ± bilan complet ≥ 4 incidences",
+          "references": [
+            {
+              "code": "T102",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            },
+            {
+              "code": "T109",
+              "coefficient": "22",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie de l’avant-bras",
+          "references": [
+            {
+              "code": "T103",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie du coude ± bilan complet",
+          "references": [
+            {
+              "code": "T104",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            },
+            {
+              "code": "T110",
+              "coefficient": "22",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie du bras",
+          "references": [
+            {
+              "code": "T105",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie de l’épaule / ceinture scapulaire",
+          "references": [
+            {
+              "code": "T111",
+              "coefficient": "8",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        }
+      ]
+    },
+    {
+      "id": "imaging-1.2",
+      "type": "imaging",
+      "name": "BILAN TRAUMATOLOGIQUE MEMBRE INFÉRIEUR",
+      "section": "1.2",
+      "items": [
+        {
+          "name": "Radiographie du pied",
+          "references": [
+            {
+              "code": "T119",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie de la cheville",
+          "references": [
+            {
+              "code": "T120",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie de la jambe",
+          "references": [
+            {
+              "code": "T121",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie du genou",
+          "references": [
+            {
+              "code": "T122",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie de la cuisse",
+          "references": [
+            {
+              "code": "T123",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie de la hanche",
+          "references": [
+            {
+              "code": "T127",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie du bassin",
+          "references": [
+            {
+              "code": "T126",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        }
+      ]
+    },
+    {
+      "id": "imaging-1.3",
+      "type": "imaging",
+      "name": "BILAN DU RACHIS",
+      "section": "1.3",
+      "items": [
+        {
+          "name": "Rachis cervical face + profil ± 3/4",
+          "references": [
+            {
+              "code": "T130",
+              "coefficient": "20",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Autre"
+        },
+        {
+          "name": "Rachis dorsal face + profil",
+          "references": [
+            {
+              "code": "T131",
+              "coefficient": "20",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Autre"
+        },
+        {
+          "name": "Rachis lombaire face + profil ± 3/4 + cliché centré L5-S1",
+          "references": [
+            {
+              "code": "T132",
+              "coefficient": "20",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Autre"
+        },
+        {
+          "name": "Rachis entier (grande plaque) si scoliose ou bilan global",
+          "references": [
+            {
+              "code": "T133",
+              "coefficient": "30",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-1.4",
+      "type": "imaging",
+      "name": "BILAN THORACIQUE STANDARD",
+      "section": "1.4",
+      "items": [
+        {
+          "name": "Téléthorax de face ± profil",
+          "references": [
+            {
+              "code": "T150",
+              "coefficient": "16",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Indications : toux, dyspnée, fièvre, contrôle préopératoire, tabagisme…",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-2.1",
+      "type": "imaging",
+      "name": "BILAN DOULEUR ABDOMINALE AIGUË",
+      "section": "2.1",
+      "items": [
+        {
+          "name": "ASP (Abdomen Sans Préparation) face debout + couché",
+          "references": [
+            {
+              "code": "T160",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            },
+            {
+              "code": "T222",
+              "coefficient": "16",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Échographie abdominale complète",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        }
+      ]
+    },
+    {
+      "id": "imaging-2.2",
+      "type": "imaging",
+      "name": "BILAN LITHIASE BILIAIRE / DOULEUR DE L’HYPOCHONDRE DROIT",
+      "section": "2.2",
+      "items": [
+        {
+          "name": "Échographie abdominale (foie, voies biliaires, vésicule, pancréas)",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "ASP si suspicion de calcul radio-opaque",
+          "modality": "Radiologie"
+        }
+      ]
+    },
+    {
+      "id": "imaging-2.3",
+      "type": "imaging",
+      "name": "BILAN TRANSIT / OCCLUSION",
+      "section": "2.3",
+      "items": [
+        {
+          "name": "ASP face debout + couché",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Transit œso-gastro-duodénal si indication",
+          "references": [
+            {
+              "code": "T162",
+              "coefficient": "85",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Autre"
+        },
+        {
+          "name": "Lavement baryté / examen du côlon",
+          "references": [
+            {
+              "code": "T163",
+              "coefficient": "90",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Autre"
+        },
+        {
+          "name": "Transit du grêle",
+          "references": [
+            {
+              "code": "T164",
+              "coefficient": "90",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-2.4",
+      "type": "imaging",
+      "name": "BILAN HÉPATIQUE / PANCRÉATIQUE",
+      "section": "2.4",
+      "items": [
+        {
+          "name": "Échographie abdominale",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Scanner abdomino-pelvien avec injection (si doute ou bilan d’extension)",
+          "modality": "Scanner (TDM)"
+        },
+        {
+          "name": "IRM hépatique / bili-IRM (si disponible et indication précise)",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-3.1",
+      "type": "imaging",
+      "name": "BILAN COLIQUE NÉPHRÉTIQUE / LITHIASE URINAIRE",
+      "section": "3.1",
+      "items": [
+        {
+          "name": "ASP (recherche de calcul radio-opaque)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Échographie rénale et vésicale",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Urographie Intraveineuse (UIV) – de moins en moins utilisée",
+          "references": [
+            {
+              "code": "T223",
+              "coefficient": "35",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Autre"
+        },
+        {
+          "name": "Scanner abdomino-pelvien sans injection (protocole lithiase) – gold standard actuel",
+          "modality": "Scanner (TDM)"
+        }
+      ]
+    },
+    {
+      "id": "imaging-3.2",
+      "type": "imaging",
+      "name": "BILAN HÉMATURIE",
+      "section": "3.2",
+      "items": [
+        {
+          "name": "Échographie rénale + vésicale",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Uroscanner (TDM urographique avec injection)",
+          "modality": "Scanner (TDM)"
+        },
+        {
+          "name": "Cystoscopie (hors radiologie)",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-3.3",
+      "type": "imaging",
+      "name": "BILAN INSUFFISANCE RÉNALE / SUIVI",
+      "section": "3.3",
+      "items": [
+        {
+          "name": "Échographie rénale (taille, différenciation cortico-médullaire, dilatation)",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Écho-Doppler des artères rénales si suspicion de sténose",
+          "modality": "Doppler"
+        }
+      ]
+    },
+    {
+      "id": "imaging-4.1",
+      "type": "imaging",
+      "name": "ÉCHOGRAPHIE OBSTÉTRICALE",
+      "section": "4.1",
+      "items": [
+        {
+          "name": "Échographie du 1er trimestre (datation + clarté nucale)",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Échographie morphologique du 2e trimestre",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Échographie du 3e trimestre (croissance + bien-être fœtal)",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Échographie pelvienne (si pathologie gynécologique associée)",
+          "modality": "Echographie"
+        }
+      ]
+    },
+    {
+      "id": "imaging-4.2",
+      "type": "imaging",
+      "name": "BILAN PATHOLOGIE PELVIENNE",
+      "section": "4.2",
+      "items": [
+        {
+          "name": "Échographie pelvienne par voie abdominale + endovaginale",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Indications : métrorragies, masse pelvienne, douleur, infertilité, suivi kyste…",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-4.3",
+      "type": "imaging",
+      "name": "MAMMOGRAPHIE / SEIN",
+      "section": "4.3",
+      "items": [
+        {
+          "name": "Mammographie bilatérale – dépistage ou diagnostic",
+          "references": [
+            {
+              "code": "T229",
+              "coefficient": "30",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Mammographie unilatérale",
+          "references": [
+            {
+              "code": "T230",
+              "coefficient": "20",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Mammographie de dépistage organisé (≥ 2 incidences)",
+          "references": [
+            {
+              "code": "T231",
+              "coefficient": "41",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Échographie mammaire associée (quasi systématique avant 40 ans ou seins denses)",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "IRM mammaire (indications particulières : haut risque, prothèses, bilan d’extension)",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-5.1",
+      "type": "imaging",
+      "name": "BILAN SINUSIEN",
+      "section": "5.1",
+      "items": [
+        {
+          "name": "Radiographie des sinus de la face",
+          "references": [
+            {
+              "code": "T141",
+              "coefficient": "15",
+              "unit": "Z",
+              "source": "NGAP Arrêté 177-06"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Scanner des sinus (gold standard actuel)",
+          "modality": "Scanner (TDM)"
+        }
+      ]
+    },
+    {
+      "id": "imaging-5.2",
+      "type": "imaging",
+      "name": "BILAN DENTAIRE / MAXILLO-FACIAL",
+      "section": "5.2",
+      "items": [
+        {
+          "name": "Panoramique dentaire (orthopantomogramme)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographies rétro-alvéolaires (dentaire)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Scanner Cone Beam (CBCT) – de plus en plus utilisé",
+          "modality": "Scanner (TDM)"
+        }
+      ]
+    },
+    {
+      "id": "imaging-5.3",
+      "type": "imaging",
+      "name": "BILAN CERVICAL",
+      "section": "5.3",
+      "items": [
+        {
+          "name": "Échographie cervicale (thyroïde, parathyroïdes, ganglions, glandes salivaires)",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Scanner ou IRM cervicale selon indication",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-6.1",
+      "type": "imaging",
+      "name": "BILAN NODULE THYROÏDIEN / GOITRE",
+      "section": "6.1",
+      "items": [
+        {
+          "name": "Échographie thyroïdienne – examen de première intention",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Scintigraphie thyroïdienne (médecine nucléaire) si hyperthyroïdie",
+          "modality": "Autre"
+        },
+        {
+          "name": "Cytoponction échoguidée si nodule suspect",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-7.1",
+      "type": "imaging",
+      "name": "BILAN ARTHROSE / DOULEUR ARTICULAIRE",
+      "section": "7.1",
+      "items": [
+        {
+          "name": "Radiographies de l’articulation concernée (face + profil ± incidences spécifiques)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Exemples :",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-7.2",
+      "type": "imaging",
+      "name": "BILAN RACHIS LOURD (lombalgie chronique, sciatique…)",
+      "section": "7.2",
+      "items": [
+        {
+          "name": "Radiographies du rachis lombaire face + profil ± 3/4 + cliché centré",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Scanner lombaire ou IRM lombaire selon orientation (discale vs osseuse)",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-7.3",
+      "type": "imaging",
+      "name": "BILAN SPONDYLARTHRITE / SACRO-ILIITES",
+      "section": "7.3",
+      "items": [
+        {
+          "name": "Radiographies du bassin face (articulations sacro-iliaques)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "IRM des sacro-iliaques (examen le plus sensible au stade précoce)",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-7.4",
+      "type": "imaging",
+      "name": "OSTÉODENSITOMÉTRIE",
+      "section": "7.4",
+      "items": [
+        {
+          "name": "Ostéodensitométrie osseuse – rachis lombaire + hanche",
+          "references": [
+            {
+              "code": "Z"
+            }
+          ],
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Indications : femme ménopausée, corticothérapie prolongée, fractures…",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-8.1",
+      "type": "imaging",
+      "name": "BILAN D’INSUFFISANCE CARDIAQUE / DYSPNÉE",
+      "section": "8.1",
+      "items": [
+        {
+          "name": "Téléthorax de face",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Échocardiographie transthoracique",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Autre"
+        },
+        {
+          "name": "(Option) Écho-Doppler des membres inférieurs si œdèmes",
+          "modality": "Doppler"
+        }
+      ]
+    },
+    {
+      "id": "imaging-8.2",
+      "type": "imaging",
+      "name": "BILAN ARTÉRIOPATHIE DES MEMBRES INFÉRIEURS",
+      "section": "8.2",
+      "items": [
+        {
+          "name": "Écho-Doppler artériel des membres inférieurs",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Doppler"
+        },
+        {
+          "name": "Angioscanner des membres inférieurs si indication de revascularisation",
+          "modality": "Scanner (TDM)"
+        }
+      ]
+    },
+    {
+      "id": "imaging-8.3",
+      "type": "imaging",
+      "name": "BILAN PHLÉBITE / MALADIE VEINEUSE",
+      "section": "8.3",
+      "items": [
+        {
+          "name": "Écho-Doppler veineux des membres inférieurs",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Doppler"
+        },
+        {
+          "name": "Indications : suspicion TVP, varices, suivi post-thrombotique",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-9.1",
+      "type": "imaging",
+      "name": "BILAN CÉPHALÉES / AVC / AIT",
+      "section": "9.1",
+      "items": [
+        {
+          "name": "Scanner cérébral sans injection (urgence AVC)",
+          "modality": "Scanner (TDM)"
+        },
+        {
+          "name": "Scanner cérébral avec injection ou Angio-scanner si besoin",
+          "modality": "Scanner (TDM)"
+        },
+        {
+          "name": "IRM cérébrale (gold standard pour la plupart des indications non urgentes)",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-9.2",
+      "type": "imaging",
+      "name": "BILAN RACHIS CERVICAL NEUROLOGIQUE (névralgie cervico-brachiale…)",
+      "section": "9.2",
+      "items": [
+        {
+          "name": "Radiographies du rachis cervical",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "IRM cervicale (meilleur examen des parties molles et moelle)",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-9.3",
+      "type": "imaging",
+      "name": "BILAN CRISE CONVULSIVE / ÉPILEPSIE",
+      "section": "9.3",
+      "items": [
+        {
+          "name": "Scanner cérébral en urgence si premier épisode",
+          "modality": "Scanner (TDM)"
+        },
+        {
+          "name": "IRM cérébrale (bilan étiologique)",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-10.1",
+      "type": "imaging",
+      "name": "BILAN TOUX / DYSPNÉE / SUSPICION DE PNEUMOPATHIE",
+      "section": "10.1",
+      "items": [
+        {
+          "name": "Téléthorax de face ± profil",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Scanner thoracique (si radiographie non contributive ou suspicion de pathologie interstitielle / néoplasique)",
+          "modality": "Scanner (TDM)"
+        }
+      ]
+    },
+    {
+      "id": "imaging-10.2",
+      "type": "imaging",
+      "name": "BILAN EMBOLIE PULMONAIRE",
+      "section": "10.2",
+      "items": [
+        {
+          "name": "Angio-scanner thoracique (examen de référence)",
+          "modality": "Scanner (TDM)"
+        },
+        {
+          "name": "Scintigraphie de ventilation-perfusion (si contre-indication au scanner)",
+          "modality": "Scanner (TDM)"
+        }
+      ]
+    },
+    {
+      "id": "imaging-11.1",
+      "type": "imaging",
+      "name": "BILAN D’EXTENSION STANDARD (selon cancer)",
+      "section": "11.1",
+      "items": [
+        {
+          "name": "Scanner thoraco-abdomino-pelvien avec injection",
+          "modality": "Scanner (TDM)"
+        },
+        {
+          "name": "Échographie hépatique (selon localisation primitive)",
+          "modality": "Echographie"
+        },
+        {
+          "name": "Scintigraphie osseuse (si cancer ostéophile)",
+          "modality": "Autre"
+        },
+        {
+          "name": "TEP-scanner (si disponible et indication retenue)",
+          "modality": "Scanner (TDM)"
+        },
+        {
+          "name": "IRM selon organe (cerveau, foie, pelvis…)",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-12.1",
+      "type": "imaging",
+      "name": "BILAN TRAUMATOLOGIQUE ENFANT",
+      "section": "12.1",
+      "items": [
+        {
+          "name": "Radiographies centrées sur la zone douloureuse (mêmes codes que l’adulte)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Attention particulière aux cartilages de conjugaison",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-12.2",
+      "type": "imaging",
+      "name": "BILAN DOULEUR ABDOMINALE ENFANT",
+      "section": "12.2",
+      "items": [
+        {
+          "name": "Échographie abdominale – examen de première intention",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "ASP si suspicion d’occlusion ou de perforation",
+          "modality": "Radiologie"
+        }
+      ]
+    },
+    {
+      "id": "imaging-12.3",
+      "type": "imaging",
+      "name": "BILAN INFECTION URINAIRE RÉCIDIVANTE ENFANT",
+      "section": "12.3",
+      "items": [
+        {
+          "name": "Échographie rénale et vésicale",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Echographie"
+        },
+        {
+          "name": "Cystographie rétrograde (si indication de reflux)",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-13.1",
+      "type": "imaging",
+      "name": "BILAN CHUTE DU SUJET ÂGÉ",
+      "section": "13.1",
+      "items": [
+        {
+          "name": "Radiographies du bassin + hanches (recherche de fracture du col)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographies du rachis (tassements)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Scanner cérébral si traumatisme crânien ou trouble neurologique",
+          "modality": "Scanner (TDM)"
+        }
+      ]
+    },
+    {
+      "id": "imaging-13.2",
+      "type": "imaging",
+      "name": "BILAN DOULEUR OSSEUSE / SUSPICION DE MÉTASTASES",
+      "section": "13.2",
+      "items": [
+        {
+          "name": "Radiographies des zones douloureuses",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Scintigraphie osseuse",
+          "modality": "Autre"
+        },
+        {
+          "name": "Scanner ou IRM selon orientation",
+          "modality": "IRM"
+        }
+      ]
+    },
+    {
+      "id": "imaging-14.1",
+      "type": "imaging",
+      "name": "BILAN PRÉOPÉRATOIRE D’IMAGERIE",
+      "section": "14.1",
+      "items": [
+        {
+          "name": "Téléthorax de face",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "(Autres examens selon type de chirurgie et terrain)",
+          "modality": "Autre"
+        }
+      ]
+    },
+    {
+      "id": "imaging-14.2",
+      "type": "imaging",
+      "name": "BILAN AVANT CORTICOTHÉRAPIE PROLONGÉE",
+      "section": "14.2",
+      "items": [
+        {
+          "name": "Ostéodensitométrie",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Radiographie du thorax (recherche de tuberculose latente)",
+          "modality": "Radiologie"
+        }
+      ]
+    },
+    {
+      "id": "imaging-14.3",
+      "type": "imaging",
+      "name": "BILAN DE SURVEILLANCE SOUS TRAITEMENT (ex. : polyarthrite)",
+      "section": "14.3",
+      "items": [
+        {
+          "name": "Radiographies des mains et des pieds (recherche d’érosions)",
+          "modality": "Radiologie"
+        },
+        {
+          "name": "Échographie articulaire (synovite)",
+          "modality": "Echographie"
+        },
+        {
+          "name": "L’indication clinique précise",
+          "modality": "Autre"
+        },
+        {
+          "name": "Le côté (droit / gauche / bilatéral)",
+          "modality": "Autre"
+        },
+        {
+          "name": "Les incidences souhaitées si nécessaire",
+          "modality": "Autre"
+        },
+        {
+          "name": "« Avec injection » ou « sans injection » pour les scanners et IRM",
+          "modality": "IRM"
+        },
+        {
+          "name": "Commencer par l’examen le moins irradiant et le plus accessible",
+          "modality": "Autre"
+        },
+        {
+          "name": "Radiographie ou échographie en première intention dans la majorité des cas",
+          "modality": "Echographie"
+        },
+        {
+          "name": "Scanner et IRM en deuxième intention sauf urgence ou indication d’emblée",
+          "modality": "IRM"
+        },
+        {
+          "name": "Grossesse → éviter les rayons X (préférer échographie ou IRM)",
+          "modality": "IRM"
+        },
+        {
+          "name": "Allergie à l’iode → scanner sans injection ou IRM",
+          "modality": "IRM"
+        },
+        {
+          "name": "Insuffisance rénale → prudence avec les produits de contraste iodés et gadolinium",
+          "modality": "Autre"
+        },
+        {
+          "name": "Txxx et Z = radiations ionisantes",
+          "references": [
+            {
+              "code": "Z"
+            }
+          ],
+          "modality": "Autre"
+        },
+        {
+          "name": "KE = échographie et Doppler",
+          "references": [
+            {
+              "code": "KE"
+            }
+          ],
+          "modality": "Doppler"
+        },
+        {
+          "name": "Les forfaits techniques s’ajoutent pour le scanner et l’IRM",
+          "modality": "IRM"
+        },
+        {
+          "name": "L’échographie et les radiographies standards sont disponibles dans la plupart des cabinets et centres",
+          "modality": "Echographie"
+        },
+        {
+          "name": "Scanner et IRM sont plus concentrés dans les grands centres et CHU",
+          "modality": "IRM"
+        }
+      ]
+    }
+  ]
+}
